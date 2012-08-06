@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">FIXiT</string>
+    <string name="select_location">Select Location</string>
+    <string name="detailsScreenMainText">Follow the steps below to let your Council know about public damage</string>
+    <string name="detailsScreenTakeAPhoto">1. Take a Photo</string>
+    <string name="detailsScreenRecordLocation">2. Record Location</string>
+    <string name="detailsScreenDescribeProblem">3. Describe Problem</string>
+    <string name="detailsScreenContactDetails">4. Enter Contact Details</string>
+    <string name="noPhotoAdded">No photo added</string>
+    <string name="photoAdded">Photo Added</string>
+    <string name="noLocationRecorded">No location recorded</string>
+    <string name="locationRecorded">Location recorded</string>
+    <string name="noDescriptionAdded">No description added</string>
+    <string name="descriptionAdded">Description added</string>
+    <string name="noContactDetailsAdded">No contact details added</string>
+    <string name="contactDetailsAdded">Contact details added</string>
+    <string name="submitReportButtonText">SUBMIT YOUR REPORT</string>
+    <string name="back">Back</string>
+    <string name="done">Done</string>
+    <string name="descriptionTitle">Describe Problem</string>
+    <string name="contactDetailsTitle">Contact Details</string>
+    <string name="firstName">First Name</string>
+    <string name="lastName">Last Name</string>
+    <string name="contactNumber">Number</string>
+    <string name="contactEmail">Email</string>
+    <string name="noDescriptionEntered">No Description Entered</string>
+    <string name="pleaseEnterDescription">Please enter a description of the problem</string>
+    <string name="pleaseEnterDetails">Please enter all contact details</string>
+    <string name="pleaseEnterAddress">Please enter address</string>
+    <string name="savingDescription">Saving description of problem</string>
+    <string name="savingContactDetails">Saving contact details</string>
+    <string name="savingAddress">Saving address</string>
+    <string name="gps_message">Your GPS seems to be disabled, do you want to enable it?</string>
+    <string name="no_internet_message">No internet connection detected, do you want to enable it?</string>
+    <string name="gps_positive_button_title">Yes</string>
+    <string name="gps_negative_button_title">No</string>
+    <string name="gps_no_location_message">No location found. Please enter manually</string>
+    <string name="locationTitle">Record Location</string>
+    <string name="userAddress">Address</string>
+    <string name="errorInReverseGeoCoding">Unable to convert location coordinates to address</string>
+    <string name="thisIsTheLocationFound">This is the location found</string>
+    <string name="newLocationFound">New location found...</string>
+    <string name="wouldYouLikeToUpdate">Would you like to update your address to</string>
+    <string name="noAddressFound">No address found at location:</string>
+    <string name="wouldYouLikeToUpdateStill">Would you like to update your location?</string>
+    <string name="errorInGeoCoding">Unable to convert address to location coordinates</string>
+    <string name="pleaseCompleteAllSteps">Please complete all steps before submitting your report</string>
+</resources>

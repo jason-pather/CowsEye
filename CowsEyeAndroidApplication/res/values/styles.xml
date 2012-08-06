@@ -1,0 +1,124 @@
+<resources>
+
+    <!-- Table row styles -->
+    <style name="tableRow">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">8dip</item>
+    </style>
+
+    <style name="topTableRow" parent="@style/tableRow">
+        <item name="android:background">@drawable/top_table_row_border</item>
+    </style>
+
+    <style name="middleTableRow" parent="@style/tableRow">
+        <item name="android:background">@drawable/middle_table_row_border</item>
+        <item name="android:layout_marginTop">-2dip</item>
+    </style>
+
+    <style name="bottomTableRow" parent="@style/tableRow">
+        <item name="android:background">@drawable/bottom_table_row_border</item>
+    </style>
+
+    <style name="tableRowImage">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_gravity">left|center_vertical</item>
+        <item name="android:paddingRight">5dip</item>
+    </style>
+
+    <style name="titleHeading">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:dividerHeight">1dp</item>
+        <item name="android:divider">@color/divider_gray</item>
+        <item name="android:background">@drawable/header_style</item>
+    </style>
+
+    <style name="detailsMainText">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textSize">16dip</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/details_main_text</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingTop">7dp</item>
+        <item name="android:paddingBottom">3dp</item>
+    </style>
+
+    <style name="firstRowDetails">
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+        <item name="android:layout_gravity">top</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">0.6</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="secondRowDetails">
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">0.4</item>
+        <item name="android:layout_gravity">bottom</item>
+        <item name="android:textColor">@color/details_background_gray</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="detailsArrow">
+        <item name="android:layout_gravity">right|center_vertical</item>
+        <item name="android:layout_width">14dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:src">@drawable/right_arrow</item>
+    </style>
+
+    <style name="buttonStyle" parent="android:Widget.Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:padding">6dp</item>
+        <item name="android:layout_margin">5dp</item>
+    </style>
+
+    <style name="backButtonStyle" parent="@style/buttonStyle">
+        <item name="android:layout_gravity">left|center_vertical</item>
+        <item name="android:text">@string/app_name</item>
+        <item name="android:background">@drawable/back_button</item>
+    </style>
+
+    <style name="doneButtonStyle" parent="@style/buttonStyle">
+        <item name="android:layout_gravity">right|center_vertical</item>
+        <item name="android:text">@string/done</item>
+        <item name="android:background">@drawable/done_button</item>
+    </style>
+
+    <style name="contactLayoutStyle">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:paddingRight">12dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:weightSum">1</item>
+        <item name="android:background">@drawable/middle_table_row_border</item>
+        <item name="android:layout_marginTop">-2dip</item>
+    </style>
+
+    <style name="contactTextFieldStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">0.5</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+    </style>
+
+</resources>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/details_background"
+    android:orientation="vertical" >
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/contactDetailsScreenTitle"
+            style="@style/titleHeading"
+            android:text="@string/contactDetailsTitle" />
+
+        <Button
+            android:id="@+id/backButton"
+            style="@style/backButtonStyle" />
+
+        <Button
+            android:id="@+id/doneButton"
+            style="@style/doneButtonStyle" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+        <LinearLayout style="@style/contactLayoutStyle" >
+
+            <TextView
+                style="@style/contactTextFieldStyle"
+                android:text="@string/firstName" />
+
+            <EditText
+                android:id="@+id/firstNameEditText"
+                style="@style/contactTextFieldStyle"
+                android:inputType="text" />
+
+            <requestFocus />
+        </LinearLayout>
+
+        <LinearLayout style="@style/contactLayoutStyle" >
+
+            <TextView
+                style="@style/contactTextFieldStyle"
+                android:text="@string/lastName" />
+
+            <EditText
+                android:id="@+id/lastNameEditText"
+                style="@style/contactTextFieldStyle"
+                android:inputType="text" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/contactLayoutStyle" >
+
+            <TextView
+                style="@style/contactTextFieldStyle"
+                android:layout_weight="0.3"
+                android:text="@string/contactNumber" />
+
+            <EditText
+                android:id="@+id/contactNumberEditText"
+                style="@style/contactTextFieldStyle"
+                android:layout_weight="0.7"
+                android:inputType="number" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/contactLayoutStyle" >
+
+            <TextView
+                style="@style/contactTextFieldStyle"
+                android:layout_weight="0.3"
+                android:text="@string/contactEmail" />
+
+            <EditText
+                android:id="@+id/contactEmailEditText"
+                style="@style/contactTextFieldStyle"
+                android:inputType="text"
+                android:imeOptions="actionDone"
+                android:layout_weight="0.7" />
+        
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

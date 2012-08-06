@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_pressed="true"><shape>
+            <gradient android:angle="270" android:endColor="@color/btn_dash_end_pressed" android:startColor="@color/btn_dash_start_pressed" />
+
+            <padding android:bottom="50dip" android:left="30dip" android:right="30dip" android:top="30dip" />
+        </shape></item>
+    <item><shape>
+            <gradient android:angle="270" android:endColor="@color/btn_dash_end_gray" android:startColor="@color/btn_dash_start_gray" />
+
+            <padding android:bottom="50dip" android:left="30dip" android:right="30dip" android:top="30dip" />
+        </shape></item>
+
+</selector>
