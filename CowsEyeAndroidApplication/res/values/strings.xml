@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-	<string name="app_name">Waterways Pollution Reporter</string>
+	<string name="app_name">RiverWatch</string>
 	<string name="capture_image">Capture Image</string>
 	<string name="select_location">Select Location</string>
 	<string name="enter_description">Enter Description</string>
 	<string name="select_pollution_event">Select Pollution Event</string>
-	<string name="enter_contact_details">Enter Dontact Details</string>
+	<string name="enter_contact_details">Enter Contact Details</string>
+	<string name="submit"> Submit </string>
 
 	<string name="noPhotoAdded">No photo added</string>
 	<string name="photoAdded">Photo Added</string>

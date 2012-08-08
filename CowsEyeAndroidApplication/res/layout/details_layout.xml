@@ -42,5 +42,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/enter_contact_details"/>
-    </LinearLayout>
+         <Button
+            android:id="@+id/button_submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/submit"/>
+             </LinearLayout>
  </LinearLayout>

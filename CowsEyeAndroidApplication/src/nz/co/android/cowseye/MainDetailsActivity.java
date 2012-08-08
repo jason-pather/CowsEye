@@ -61,6 +61,7 @@ public class MainDetailsActivity extends Activity {
 	private Button buttonPollutionEvent;
 	private Button buttonDescription;
 	private Button buttonContactDetails;
+	private Button buttonSubmit;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -89,6 +90,7 @@ public class MainDetailsActivity extends Activity {
 		buttonPollutionEvent = (Button)findViewById(R.id.button_select_pollution_event);
 		buttonDescription = (Button)findViewById(R.id.button_enter_description);
 		buttonContactDetails = (Button)findViewById(R.id.button_enter_contact_details);
+		buttonSubmit = (Button)findViewById(R.id.button_submit);
 
 		buttonPhoto.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
