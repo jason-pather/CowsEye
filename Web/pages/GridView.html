@@ -9,18 +9,15 @@
 
     <!-- Le styles -->
     <link href="../assets/css/bootstrap.css" rel="stylesheet">
-
-       <style> 
-	  body {
-        padding-top: 41px; /* 60px to make the container go all the way to the bottom of the topbar */
+    <style>
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
       }
-	 
-	  
-	  html, body { height: 100% }
     </style>
     <link href="../assets/css/bootstrap-responsive.css" rel="stylesheet">
 	<link href="../assets/css/custom.css" rel="stylesheet">
-	<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -32,6 +29,7 @@
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
 	
+
   </head>
 
   <body>
@@ -48,16 +46,53 @@
           <div class="nav-collapse">
             <ul class="nav">
               <li><a href="Index.html">Index</a></li>
-              <li><a href="GridView.html">Grid</a></li>
-              <li class = "active" ><a href="MapView.html">Map</a></li>
+              <li class = "active"><a href="GridView.html">Grid</a></li>
+              <li><a href="MapView.html">Map</a></li>
 			  <li><a href="ApproveView.html">Approve</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
       </div>
     </div>
-		<div id="map_canvas"></div>
-		<!--<iframe width="100%" height="100%" frameborder="0" src="map.html"></iframe>-->
+
+    <div class="container">
+      <h1>Gird View</h1>
+      <p>A test Picure Viewer<br> Randomly displayed pictures in a very pretty grid, with modal popups</p>
+		<ul class="thumbnails" id = "picgrid">
+		<!--
+			This is where the thumbnails go
+		-->
+		</ul>
+	</div>
+	<div class="modal hide fade in" id="myModal">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">×</button>
+			<h3>Mock Incident</h3>
+		</div>
+		<div class="modal-body">
+			<div href="#" class="thumbnail" id="testThumbnail">
+				<img src="http://placehold.it/1040x640" alt="">	
+			</div>
+			<h2>The Title</h2>
+			<p> This is a sample picture to be used as a place holder when testing for content or something and another line for good measure, anlala and some more writing alalala and some more writing alalala and some more writing alalala </p>
+			<h2>Comments</h2>
+			<p> This is the first comment on this incident </p>
+			<p> This is the second comment on this incident, yay another comment</p>
+			<p> This is the second comment on this incident, yay another comment</p>
+			<p> This is the fourth comment, no wait the second comment was double post</p>
+			<textarea class="input-xlarge" id="textarea" rows="3" style="margin: 0px; width: 695px; height: 114px; "></textarea>
+			<p></p>
+			<a href="#" class="btn btn-success">Leave Comment</a>
+
+		</div>
+		<div class="modal-footer">
+		<a href="#" class="btn btn-danger" data-dismiss="modal">Close</a>
+		
+		</div>
+		
+	</div>
+	
+</div>
 
 
 
@@ -69,7 +104,7 @@
     <script src="../assets/js/jquery.js"></script>
     <script src="../assets/js/bootstrap-transition.js"></script>
     <script src="../assets/js/bootstrap-alert.js"></script>
-    <script src="../assets/js/bootstrap-modal.js"></script>
+    
     <script src="../assets/js/bootstrap-dropdown.js"></script>
     <script src="../assets/js/bootstrap-scrollspy.js"></script>
     <script src="../assets/js/bootstrap-tab.js"></script>
@@ -80,14 +115,14 @@
     <script src="../assets/js/bootstrap-carousel.js"></script>
     <script src="../assets/js/bootstrap-typeahead.js"></script>
 -->
-
-	<script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
-		<script src="../assets/js/jquery.js"></script>
+	
+	<script src="../assets/js/jquery.js"></script>
 	<script src="../assets/js/bootstrap-transition.js"></script>
 	<script src="../assets/js/bootstrap-modal.js"></script>
-	<script src="../assets/js/mapview.js"></script>
-		<script>
-			$('#myModal').modal({show:true})
-		</script>
+	<script src="../assets/js/picview.js"></script>
+	<script>
+		$('#myModal').modal({show:false})
+	</script>
+	
   </body>
 </html>

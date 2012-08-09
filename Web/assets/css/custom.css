@@ -1,0 +1,20 @@
+#map_canvas img {
+	max-width: 9999px;
+    margin: 0;
+    padding: 0;
+	height: 100%;
+}
+
+body .modal {
+    width: 750px;
+    margin: -345px 0 0 -375px;
+}
+
+.modal-body {
+    max-height: 550px;
+}
+
+.btn-long{
+margin-top:160px;
+	width:150px;
+}
