@@ -1,8 +1,5 @@
 <resources>
 
-    <color name="background_gray">#333333</color>
-    <color name="details_background_gray">#C5CCD4</color>
-    <color name="detail_added_green">#00B029</color>
     <color name="back_button_start_colour">#8EA4C1</color>
     <color name="back_button_end_colour">#4A6C9B</color>
     <color name="done_button_start_colour">#7A9DE9</color>
@@ -16,10 +13,8 @@
     <color name="item_background_no_link">#EBEBEB</color>
     <color name="margin">#757575</color>
     <color name="divider_gray">#C5C8D0</color>
-    
-    
-        <color name="preview_background_start">#C0BABA</color>
+    <color name="preview_background_start">#C0BABA</color>
     <color name="preview_background_end">#C0DAFF</color>
-     <color name="riverWatch_outline_color">#003310</color>
+    <color name="riverWatch_outline_color">#003310</color>
 
 </resources>

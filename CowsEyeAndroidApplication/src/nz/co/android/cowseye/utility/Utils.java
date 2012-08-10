@@ -3,16 +3,9 @@ package nz.co.android.cowseye.utility;
 import java.io.File;
 import java.util.Date;
 
-import com.google.android.maps.GeoPoint;
-
-import nz.co.android.cowseye.RecordLocationActivity;
-import nz.co.android.cowseye.MainScreenActivity;
-import nz.co.android.cowseye.SelectImageActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;

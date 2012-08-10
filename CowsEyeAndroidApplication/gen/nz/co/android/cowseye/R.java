@@ -11,25 +11,22 @@ public final class R {
     public static final class attr {
     }
     public static final class color {
-        public static final int back_button_end_colour=0x7f040004;
-        public static final int back_button_start_colour=0x7f040003;
-        public static final int background_gray=0x7f040000;
-        public static final int detail_added_green=0x7f040002;
-        public static final int details_background_end=0x7f040008;
-        public static final int details_background_gray=0x7f040001;
-        public static final int details_background_start=0x7f040007;
-        public static final int details_main_text=0x7f040009;
-        public static final int divider_gray=0x7f04000f;
-        public static final int done_button_end_colour=0x7f040006;
-        public static final int done_button_start_colour=0x7f040005;
-        public static final int header_end=0x7f04000b;
-        public static final int header_start=0x7f04000c;
-        public static final int item_background_no_link=0x7f04000d;
-        public static final int margin=0x7f04000e;
-        public static final int preview_background_end=0x7f040011;
-        public static final int preview_background_start=0x7f040010;
-        public static final int riverWatch_outline_color=0x7f040012;
-        public static final int submit_report_button_text=0x7f04000a;
+        public static final int back_button_end_colour=0x7f040001;
+        public static final int back_button_start_colour=0x7f040000;
+        public static final int details_background_end=0x7f040005;
+        public static final int details_background_start=0x7f040004;
+        public static final int details_main_text=0x7f040006;
+        public static final int divider_gray=0x7f04000c;
+        public static final int done_button_end_colour=0x7f040003;
+        public static final int done_button_start_colour=0x7f040002;
+        public static final int header_end=0x7f040008;
+        public static final int header_start=0x7f040009;
+        public static final int item_background_no_link=0x7f04000a;
+        public static final int margin=0x7f04000b;
+        public static final int preview_background_end=0x7f04000e;
+        public static final int preview_background_start=0x7f04000d;
+        public static final int riverWatch_outline_color=0x7f04000f;
+        public static final int submit_report_button_text=0x7f040007;
     }
     public static final class drawable {
         public static final int back_button=0x7f020000;
@@ -70,6 +67,7 @@ public final class R {
         public static final int preview_image=0x7f070016;
         public static final int preview_text=0x7f070017;
         public static final int preview_title=0x7f070013;
+        public static final int select_image_from_gallery_button=0x7f070019;
         public static final int submit_button=0x7f070014;
     }
     public static final class layout {
@@ -123,6 +121,7 @@ public final class R {
         public static final int savingAddress=0x7f05001f;
         public static final int savingContactDetails=0x7f05001e;
         public static final int savingDescription=0x7f05001d;
+        public static final int select_image_from_gallery=0x7f050032;
         public static final int select_image_title=0x7f05002f;
         public static final int select_location=0x7f050002;
         public static final int select_pollution_event=0x7f050004;
@@ -141,7 +140,7 @@ public final class R {
         public static final int detailsArrow=0x7f060002;
         public static final int detailsMainText=0x7f060001;
         public static final int nextButtonStyle=0x7f060005;
-        public static final int preview_image_style=0x7f060008;
+        public static final int preview_image_framelayout_style=0x7f060008;
         public static final int text_style=0x7f060009;
         public static final int titleHeading=0x7f060000;
     }

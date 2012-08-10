@@ -1,14 +1,18 @@
 package nz.co.android.cowseye;
 
+import java.io.File;
+import java.io.IOException;
+
 import nz.co.android.cowseye.common.Constants;
 import nz.co.android.cowseye.utility.Utils;
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.database.Cursor;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -24,19 +28,39 @@ public class SelectImageActivity extends Activity {
 
 	private Button backButton;
 	private Button nextButton;
-	
+
 	private Button captureImageButton;
 	private Uri cameraFileUri; // holds path to the image taken or retrieved
-	
+
 	private ImageView previewImageView;
 	private TextView previewTextView;
-	
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.select_image_layout);
 		setupUI();
+		loadState(savedInstanceState);
+	}
+
+	/** Loads any state back in 
+	 *  Loads the path of the image if taken*/
+	private void loadState(Bundle savedInstanceState) {
+		if(savedInstanceState!=null){
+			if(savedInstanceState.containsKey(Constants.IMAGE_URI_KEY)){
+				cameraFileUri = Uri.parse(savedInstanceState.getString(Constants.IMAGE_URI_KEY));
+				setPreviewImageOn();
+			}
+		}
+	}
+
+	/** Save the camera file URI if we have taken a picture */
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		if(cameraFileUri!=null && !cameraFileUri.equals(""))
+			outState.putString(Constants.IMAGE_URI_KEY, cameraFileUri.toString());
 	}
 
 	/* Sets up the User Interface */
@@ -52,26 +76,27 @@ public class SelectImageActivity extends Activity {
 		//goes to the description activity
 		nextButton.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, DescriptionActivity.class));
 		captureImageButton.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				takeImageWithCamera();
 			}
 		});
 	}
-	
+
 	/** Creates an intents to open the camera application and initiates it*/
 	protected void takeImageWithCamera() {
 		// create Intent to take a picture and return control to the calling application
 		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		// create a file to save the image
 		cameraFileUri = Utils.getNewCameraFileUri();
+		Log.d(toString(), "cameraFileUri now : "+cameraFileUri);
 		// set the image file name
 		intent.putExtra(MediaStore.EXTRA_OUTPUT, cameraFileUri); 
 		//trigger activity
 		startActivityForResult(intent, 	Constants.REQUEST_CODE_CAMERA);
 	}
-	
+
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -79,15 +104,27 @@ public class SelectImageActivity extends Activity {
 		if (requestCode == Constants.REQUEST_CODE_CAMERA && resultCode == Activity.RESULT_OK){
 			if (data == null || data.getData() == null) {
 				//Picture has been taken, cameraFileUri holds path to photo taken
-				//sets text view text to invisible
-				previewTextView.setVisibility(View.INVISIBLE);
-				//TODO set background preview image to image taken
-//				Bitmap b = BitmapFactory.decodeFile(Uri.);
-//				previewImageView.setImageBitmap(b);
-
-				
+				setPreviewImageOn();
 				//TODO save this URI to an EventBuilder
+
 			}
 		}
 	}
+
+	/** Enables the preview image */
+	private void setPreviewImageOn() {
+		//sets preview text view to invisible
+		previewTextView.setVisibility(View.INVISIBLE);
+		//sets image to visible
+		previewImageView.setVisibility(View.VISIBLE);
+		//Remove image background
+		//set background preview image to image taken
+		//TODO Shift this to async task background thread with progress dialog in preview box
+		//TODO Add rotating buttons for rotation of bitmap - this will also mean the layout at the top should have more room
+		//Or just make the user select the image from the gallery?
+		previewImageView.setImageURI(cameraFileUri);
+
+	}
+
+
 }

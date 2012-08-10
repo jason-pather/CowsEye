@@ -12,7 +12,8 @@ public interface Constants {
 	public static final int REQUEST_CODE_PROBLEM_DESCRIPTION = 3;
 	public static final int REQUEST_CODE_CONTACT_DETAILS = 4;
 	
-	/* Keys for information passed between activities */
+	/* Keys for information passed between activities or within for activity destroy on rotation */
+	public static final String IMAGE_URI_KEY = "image_uri_key";
 	public static final String DESCRIPTION_KEY = "description";
 	public static final String CONTACT_DETAILS_KEY = "contact";
 	public static final String LOCATION_KEY = "location";
@@ -28,6 +29,7 @@ public interface Constants {
 	public static final String SHARED_PREFS_NUMBER= "number";
 
 	public static final String GOOGLE_MAP_LINK = "https://maps.google.com/maps?q=";
+	
 
 
 }

@@ -3,13 +3,10 @@
 
     <stroke
         android:width="2dp"
-        
+	        
         android:color="@color/riverWatch_outline_color" />
-
-   <gradient
-	   android:endColor="@color/preview_background_end"
-	   android:startColor="@color/preview_background_start"
-	   android:type="linear"
-	   android:angle="90"></gradient>
+	<solid 
+	    android:color="@color/details_background_start"
+	    />
 
 </shape>
