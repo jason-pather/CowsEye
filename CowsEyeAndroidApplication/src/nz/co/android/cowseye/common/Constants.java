@@ -10,7 +10,8 @@ public interface Constants {
 	public static final int REQUEST_CODE_CAMERA = 1;
 	public static final int REQUEST_CODE_LOCATION = 2;
 	public static final int REQUEST_CODE_PROBLEM_DESCRIPTION = 3;
-	public static final int REQUEST_CODE_CONTACT_DETAILS = 4;
+	public static final int REQUEST_CODE_TAKE_PICTURE = 4;
+
 	
 	/* Keys for information passed between activities or within for activity destroy on rotation */
 	public static final String IMAGE_URI_KEY = "image_uri_key";
@@ -29,6 +30,11 @@ public interface Constants {
 	public static final String SHARED_PREFS_NUMBER= "number";
 
 	public static final String GOOGLE_MAP_LINK = "https://maps.google.com/maps?q=";
+
+	public static final int IMAGE_WIDTH = 640;
+	public static final int IMAGE_HEIGHT = 480;
+
+
 	
 
 

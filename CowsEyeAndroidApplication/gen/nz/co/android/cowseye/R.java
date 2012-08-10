@@ -64,6 +64,7 @@ public final class R {
         public static final int locationScreenTitle=0x7f070009;
         public static final int mapview=0x7f07000a;
         public static final int nextButton=0x7f070015;
+        public static final int previewFrameLayout=0x7f07001a;
         public static final int preview_image=0x7f070016;
         public static final int preview_text=0x7f070017;
         public static final int preview_title=0x7f070013;
@@ -78,6 +79,7 @@ public final class R {
         public static final int main_screen_layout=0x7f030004;
         public static final int preview_layout=0x7f030005;
         public static final int select_image_layout=0x7f030006;
+        public static final int take_picture=0x7f030007;
     }
     public static final class string {
         public static final int app_name=0x7f050000;
@@ -94,6 +96,8 @@ public final class R {
         public static final int enter_description=0x7f050003;
         public static final int errorInGeoCoding=0x7f05002d;
         public static final int errorInReverseGeoCoding=0x7f050027;
+        public static final int failed_camera_please_try_again=0x7f050034;
+        public static final int failed_to_connect_to_camera_message=0x7f050035;
         public static final int firstName=0x7f050015;
         public static final int gps_message=0x7f050020;
         public static final int gps_negative_button_title=0x7f050023;
@@ -127,6 +131,7 @@ public final class R {
         public static final int select_pollution_event=0x7f050004;
         public static final int submit=0x7f050006;
         public static final int submitReportButtonText=0x7f05000f;
+        public static final int take_picture_title=0x7f050033;
         public static final int thisIsTheLocationFound=0x7f050028;
         public static final int userAddress=0x7f050026;
         public static final int wouldYouLikeToUpdate=0x7f05002a;

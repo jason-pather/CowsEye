@@ -54,5 +54,8 @@
     <string name="preview_title">Preview</string>
     <string name="no_preview_available">No Preview Available</string>
     <string name="select_image_from_gallery">Select Image From Gallery</string>
+    <string name="take_picture_title">Capture Image</string>
+    <string name="failed_camera_please_try_again">Failed to save image, please try again</string>
+    <string name="failed_to_connect_to_camera_message">Failed to open camera. Please try again later</string>
 
 </resources>

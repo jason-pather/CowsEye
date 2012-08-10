@@ -87,7 +87,6 @@ public class Utils {
 		}
 		@Override
 		public void onClick(View v) {
-			activity.finish();
 			activity.startActivity(activityToStartIntent);
 		}	
 	}

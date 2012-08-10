@@ -3,7 +3,7 @@ package nz.co.android.cowseye.service;
 import java.io.IOException;
 import java.util.List;
 
-import nz.co.android.cowseye.RecordLocationActivity;
+import nz.co.android.cowseye.activity.RecordLocationActivity;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;

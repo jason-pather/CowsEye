@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-import nz.co.android.cowseye.RecordLocationActivity;
 import nz.co.android.cowseye.R;
+import nz.co.android.cowseye.activity.RecordLocationActivity;
 import nz.co.android.cowseye.service.ReverseGeoCodeCoordinatesService;
 import android.app.AlertDialog;
 import android.content.Context;
