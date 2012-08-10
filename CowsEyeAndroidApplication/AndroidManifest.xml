@@ -22,14 +22,8 @@
         <uses-library android:name="com.google.android.maps" />
 
         <activity
-            android:name=".OpeningActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Black.NoTitleBar" >
-
-        </activity>
-        <activity
             android:label="@string/app_name"
-            android:name=".MainDetailsActivity"
+            android:name=".MainScreenActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
             
@@ -41,12 +35,12 @@
         </activity>
         <activity
             android:label="@string/locationTitle"
-            android:name=".LocationActivity"
+            android:name=".RecordLocationActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
         <activity
-            android:label="@string/descriptionTitle"
+            android:label="@string/description_title"
             android:name=".DescriptionActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar"
@@ -58,6 +52,18 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar"
             android:windowSoftInputMode="stateAlwaysVisible" >
+        </activity>
+         <activity
+            android:label="@string/select_image_title"
+            android:name=".SelectImageActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar">
+        </activity>
+           <activity
+            android:label="@string/preview_title"
+            android:name=".PreviewActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar">
         </activity>
     </application>
 

@@ -30,7 +30,7 @@ import com.google.android.maps.GeoPoint;
  * @author Mitchell Lane
  *
  */
-public class MainDetailsActivity extends Activity {
+public class MainScreenActivity extends Activity {
 
 	//TODO move this to UTILS
 	public static final String PHOTO_DONE_KEY = "photo_dk";
@@ -67,7 +67,7 @@ public class MainDetailsActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.details_layout);
+		setContentView(R.layout.main_screen_layout);
 		setupUI();
 	}
 
@@ -92,6 +92,9 @@ public class MainDetailsActivity extends Activity {
 		buttonContactDetails = (Button)findViewById(R.id.button_enter_contact_details);
 		buttonSubmit = (Button)findViewById(R.id.button_submit);
 
+		buttonSubmit.setOnClickListener(new SubmitPollutionEventOnClickListener());
+		
+		
 		buttonPhoto.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				takeImageWithCamera();
@@ -100,7 +103,7 @@ public class MainDetailsActivity extends Activity {
 		buttonLocation.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				// launch location intent
-				Intent intent = new Intent(MainDetailsActivity.this, LocationActivity.class);
+				Intent intent = new Intent(MainScreenActivity.this, RecordLocationActivity.class);
 				// if we have previous details, insert them.
 				if(userAddress!=null && !userAddress.equals(""))
 					intent.putExtra(Constants.LOCATION_KEY, userAddress);
@@ -110,7 +113,7 @@ public class MainDetailsActivity extends Activity {
 		buttonDescription.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				//launch problem  description intent
-				Intent intent = new Intent(MainDetailsActivity.this, DescriptionActivity.class);
+				Intent intent = new Intent(MainScreenActivity.this, DescriptionActivity.class);
 				// if we have previous details, insert them.
 				if(details!=null && !details.equals(""))
 					intent.putExtra(Constants.DESCRIPTION_KEY, details);
@@ -120,7 +123,7 @@ public class MainDetailsActivity extends Activity {
 		buttonContactDetails.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				//launch contact details intent
-				startActivityForResult(new Intent(MainDetailsActivity.this,ContactDetailsActivity.class), Constants.REQUEST_CODE_CONTACT_DETAILS);
+				startActivityForResult(new Intent(MainScreenActivity.this,ContactDetailsActivity.class), Constants.REQUEST_CODE_CONTACT_DETAILS);
 			}
 		});
 	}
@@ -207,8 +210,15 @@ public class MainDetailsActivity extends Activity {
 		final AlertDialog alert = builder.create();
 		alert.show();
 	}
+	
+	/** Starts a submission of a pollution event */
+	public class SubmitPollutionEventOnClickListener implements OnClickListener{
 
-
-
+		@Override
+		public void onClick(View v) {
+			startActivity(new Intent(MainScreenActivity.this, SelectImageActivity.class));
+		}
+		
+	}
 
 }

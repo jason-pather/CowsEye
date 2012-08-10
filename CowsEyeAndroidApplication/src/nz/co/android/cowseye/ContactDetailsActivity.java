@@ -10,6 +10,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+/** The activity for inputting the description for a pollution event
+ * 
+ * This will allow the user to enter a description and select appropriate tags
+ * @author lanemitc
+ *
+ */
 public class ContactDetailsActivity extends Activity{
 
 	private Button fixitButton;

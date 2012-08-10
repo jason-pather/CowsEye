@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-import nz.co.android.cowseye.LocationActivity;
+import nz.co.android.cowseye.RecordLocationActivity;
 import nz.co.android.cowseye.R;
 import nz.co.android.cowseye.service.ReverseGeoCodeCoordinatesService;
 import android.app.AlertDialog;
@@ -39,7 +39,7 @@ public class GPSManager implements LocationListener{
 	private static MapManager mapHelper;
 
 	private static Context context;
-	private static LocationActivity locationActivity;
+	private static RecordLocationActivity locationActivity;
 
 	private LocationManager locationManager; 
 	private Geocoder geocoder;
@@ -59,7 +59,7 @@ public class GPSManager implements LocationListener{
 		this.mapHelper = mapHelper;
 		locationManager = lm;
 		context = app;
-		locationActivity = (LocationActivity)app;
+		locationActivity = (RecordLocationActivity)app;
 		geocoder = new Geocoder(context, Locale.getDefault());
 		setupGPS(savedInstanceState);
 	}

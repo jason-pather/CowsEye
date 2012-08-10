@@ -20,7 +20,7 @@
 
         <Button
             android:id="@+id/doneButton"
-            style="@style/doneButtonStyle" />
+            style="@style/nextButtonStyle" />
     </FrameLayout>
 
     <LinearLayout

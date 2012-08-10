@@ -1,6 +1,7 @@
 package nz.co.android.cowseye;
 
 import nz.co.android.cowseye.common.Constants;
+import nz.co.android.cowseye.utility.Utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -11,10 +12,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+/** The activity for inputting the description for a pollution event
+ * 
+ * This will allow the user to enter a description and select appropriate tags
+ * @author lanemitc
+ *
+ */
 public class DescriptionActivity extends Activity {
 
-	private Button fixitButton;
-	private Button doneButton;
+	private Button backButton;
+	private Button nextButton;
 
 	private EditText descriptionEditText;
 
@@ -23,39 +30,17 @@ public class DescriptionActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.description_layout);
-		fixitButton = (Button)findViewById(R.id.backButton);
-		doneButton = (Button)findViewById(R.id.doneButton);
-		setupDescriptionText();
-		fixitButton.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				//go back to the details activity by finishing this activity
-				Intent intent=new Intent();
-				setResult(RESULT_CANCELED, intent);
-				finish();
-			}
-		});
-		doneButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				//go to the contact details screen if we have details
-				if(hasDescription()){
-					Toast.makeText(DescriptionActivity.this, getResources().getString(R.string.savingDescription), Toast.LENGTH_SHORT).show();
-					saveDetails(RESULT_OK);
-					finish();
-//					Intent intent = new Intent(DescriptionActivity.this, ContactDetailsActivity.class);
-//					startActivityForResult(intent, Constants.REQUEST_CODE_CONTACT_DETAILS);
-
-				}
-				//pop up a message to warn user that they have not entered a description
-				else{
-					Toast.makeText(DescriptionActivity.this, getResources().getString(R.string.pleaseEnterDescription),Toast.LENGTH_SHORT).show();
-				}
-			}
-		});
+		backButton = (Button)findViewById(R.id.backButton);
+		nextButton = (Button)findViewById(R.id.doneButton);
+		//goes backwards
+		backButton.setOnClickListener(new Utils.BackEventOnClickListener(this));
+		//goes to the select location activity
+		nextButton.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, RecordLocationActivity.class));
+		setupUI();
 	}
 
-
-	private void setupDescriptionText() {
+	/* Sets up the UI */
+	private void setupUI() {
 		descriptionEditText = (EditText)findViewById(R.id.descriptionText);
 		//Set text of description if we have it
 		Intent intent = getIntent();
@@ -66,14 +51,15 @@ public class DescriptionActivity extends Activity {
 		.showSoftInput(descriptionEditText, InputMethodManager.SHOW_FORCED);
 	}
 
-
 	public boolean hasDescription(){
 		return !getDescription().equals("");
 	}
+	
 	public String getDescription(){
 		return descriptionEditText.getText().toString();
 	}
-
+	
+	/** When the hardware back button gets pressed */
 	@Override
 	public void onBackPressed() {
 		Intent intent=new Intent();
@@ -81,7 +67,9 @@ public class DescriptionActivity extends Activity {
 		finish();
 	}
 
-
+	/** Saves details of description in an intent 
+	 * FIX MEE
+	 * */
 	private void saveDetails(final int RESULT_TYPE) {
 		if(hasDescription())
 			Toast.makeText(DescriptionActivity.this, getResources().getString(R.string.savingDescription), Toast.LENGTH_SHORT).show();
