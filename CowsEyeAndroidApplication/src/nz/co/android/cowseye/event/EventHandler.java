@@ -70,7 +70,7 @@ public class EventHandler {
 
 	/* Deletes the image belonging to the current event */
 	private void deleteImage(Event currentEvent) {
-		String filename = currentEvent.getImagePath();
+		String filename = currentEvent.getImagePath().toString();
 		File imageFile = new File(filename);
 		//delete image
 		if(imageFile.exists())

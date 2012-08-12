@@ -46,6 +46,7 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 	 */
 	protected void submitPollutionEvent() {
 		boolean canSubmit = false;
+		//TODO
 		//canSubmit = eventHandler.build() - throws buildException if not enough data
 		canSubmit = true;
 		if(canSubmit){

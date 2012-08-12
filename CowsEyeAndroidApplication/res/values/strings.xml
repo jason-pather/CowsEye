@@ -15,24 +15,26 @@
     <string name="descriptionAdded">Description added</string>
     <string name="noContactDetailsAdded">No contact details added</string>
     <string name="contactDetailsAdded">Contact details added</string>
-    <string name="submitReportButtonText">SUBMIT YOUR REPORT</string>
+    <string name="submit_pollution_event">Submit Pollution Event</string>
     <string name="back">Back</string>
     <string name="done">Done</string>
     <string name="next">Next</string>
-    <string name="description_title">Describe Pollution</string>
+    <string name="description_title">Enter Description</string>
     <string name="contactDetailsTitle">Contact Details</string>
     <string name="firstName">First Name</string>
     <string name="lastName">Last Name</string>
     <string name="contactNumber">Number</string>
     <string name="contactEmail">Email</string>
     <string name="noDescriptionEntered">No Description Entered</string>
+    <string name="please_select_a_image">Please select an Image</string>
     <string name="pleaseEnterDescription">Please enter a description of the problem</string>
     <string name="pleaseEnterDetails">Please enter all contact details</string>
     <string name="pleaseEnterAddress">Please enter address</string>
-    <string name="savingDescription">Saving description of problem</string>
+    <string name="saving_image">Saving image</string>
+    <string name="saving_description">Saving description</string>
     <string name="savingContactDetails">Saving contact details</string>
     <string name="savingAddress">Saving address</string>
-     <string name="gps_message_submission">Submitting a pollution event use GPS to tag your location. However your GPS seems to be disabled, do you want to
+    <string name="gps_message_submission">Submitting a pollution event uses GPS to tag your location. However your GPS seems to be disabled, do you want to
 		enable it?</string>
     <string name="gps_message">Your GPS seems to be disabled, do you want to
 		enable it?</string>

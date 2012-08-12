@@ -3,6 +3,9 @@ package nz.co.android.cowseye.event;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.MultipartEntity;
+
+import android.net.Uri;
 
 /**
  * This is an event that needs to be processed by interacting with the web server at Protext
@@ -22,7 +25,7 @@ public interface Event {
 	/** Constructs a basic HTTP Post request */
 	public HttpPost constructHttpPost();
 	/** Makes an entity for the Post message */
-//	public MultipartEntity makeEntity();
+	public MultipartEntity makeEntity();
 	/** Processes the event and returns true if successfull, otherwise false */
 	public boolean processForSuccess();
 	/** Processes the event and returns the response of the event */
@@ -32,7 +35,7 @@ public interface Event {
 	/** returns the amount of times the event has failed */
 	public int getFailCount();
 	/** returns the path of the image associated with this event on disk */
-	public String getImagePath();
+	public Uri getImagePath();
 	/** returns the time stamp of the event when it was created */
 	public String getTimeStamp();
 	

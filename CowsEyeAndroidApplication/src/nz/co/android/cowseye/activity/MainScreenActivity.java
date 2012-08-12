@@ -38,35 +38,6 @@ import com.google.android.maps.GeoPoint;
  */
 public class MainScreenActivity extends Activity {
 
-	//TODO move this to UTILS
-	public static final String PHOTO_DONE_KEY = "photo_dk";
-	public static final String PROBLEM_DONE_DESCRIPTION = "problem_description_k";
-	public static final String LOCATION_DONE_KEY = "location_dk";
-	public static final String PROBLEM_DONE_KEY = "problem_dk";
-	public static final String CONTACT_DONE_KEY = "contact_dk";
-	public static final String CAMERA_FILE_KEY = "camera_fk";
-	private static final String LOCATION_LINK = "location_link";
-	private static final String LOCATION_LAT = "location_lat";
-	private static final String LOCATION_LON = "location_lon";
-	private static final String LOCATION_ADDRESS ="location_addr";
-
-
-	/* current details  */
-	private Uri cameraFileUri;
-	private String details;
-	private String firstName;
-	private String lastName;
-	private String contactEmail;
-	private String contactNumber;
-	private String googleLink;
-	private GeoPoint userLocation;
-	private String userAddress;
-
-	private Button buttonPhoto;
-	private Button buttonLocation;
-	private Button buttonPollutionEvent;
-	private Button buttonDescription;
-	private Button buttonContactDetails;
 	private Button buttonSubmit;
 	private RiverWatchApplication myApplication;
 
@@ -106,6 +77,7 @@ public class MainScreenActivity extends Activity {
 	public class SubmitPollutionEventOnClickListener implements OnClickListener{
 		@Override
 		public void onClick(View v) {
+			
 			startActivity(new Intent(MainScreenActivity.this, SelectImageActivity.class));
 		}
 

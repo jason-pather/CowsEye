@@ -1,5 +1,7 @@
 package nz.co.android.cowseye.common;
 
+import java.net.URI;
+
 
 public interface Constants {
 
@@ -35,6 +37,14 @@ public interface Constants {
 
 	public static final int IMAGE_WIDTH = 640;
 	public static final int IMAGE_HEIGHT = 480;
+
+	
+	/* Service paths */
+	public static final String SERVER_PATH = "http://";
+	public static final String SUBMISSION_PATH = SERVER_PATH + "submit";
+	
+	/* Form post entities */
+	public static final String FORM_TEST_STRING = "form_test";
 
 
 	

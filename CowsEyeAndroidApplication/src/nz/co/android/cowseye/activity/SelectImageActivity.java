@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /** The activity for selecting an image for a pollution event submission
  * 
@@ -24,7 +25,7 @@ import android.widget.TextView;
 public class SelectImageActivity extends AbstractSubmissionActivity {
 
 	private Button captureImageButton;
-	private Uri cameraFileUri; // holds path to the image taken or retrieved
+	private Uri cameraFileUri = null; // holds path to the image taken or retrieved
 
 	private ImageView previewImageView;
 	private TextView previewTextView;
@@ -37,8 +38,10 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 		setContentView(R.layout.select_image_layout);
 		setupUI();
 		loadState(savedInstanceState);
+		//starts a new submission event
+		submissionEventBuilder.startNewSubmissionEvent();
 	}
-	
+
 	/* Sets up the User Interface */
 	protected void setupUI(){
 		super.setupUI();
@@ -50,9 +53,23 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 
 		previewImageView = (ImageView)findViewById(R.id.preview_image);
 		previewTextView = (TextView)findViewById(R.id.preview_text);
-		
+
 		//goes to the description activity
-		nextButton.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, DescriptionActivity.class));
+		nextButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				if(cameraFileUri!=null){
+					//save the image URI to the submissionEventBuilder
+					submissionEventBuilder.setImagePath(cameraFileUri);
+					//start description activity
+					startActivity(new Intent(SelectImageActivity.this,DescriptionActivity.class));
+					Toast.makeText(SelectImageActivity.this, getString(R.string.saving_image), Toast.LENGTH_LONG).show();
+				}
+				else
+					Toast.makeText(SelectImageActivity.this, getString(R.string.please_select_a_image), Toast.LENGTH_LONG).show();
+			}
+		});
 		captureImageButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -76,7 +93,7 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 		if(savedInstanceState!=null){
 			if(savedInstanceState.containsKey(Constants.IMAGE_URI_KEY)){
 				cameraFileUri = Uri.parse(savedInstanceState.getString(Constants.IMAGE_URI_KEY));
-				setPreviewImageOn();
+				setPreviewImageOn(cameraFileUri);
 			}
 		}
 	}
@@ -112,46 +129,34 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		//		//Coming from capturing an image from standard intent
-		//		if (requestCode == Constants.REQUEST_CODE_CAMERA && resultCode == Activity.RESULT_OK){
-		//			if (data == null || data.getData() == null) {
-		//				//Picture has been taken, cameraFileUri holds path to photo taken
-		//				setPreviewImageOn();
-		//				//TODO save this URI to an EventBuilder
-		//
-		//			}
-		//		}
-
 		//Coming from capturing an image from native activity
 		if (requestCode == Constants.REQUEST_CODE_TAKE_PICTURE && resultCode == Activity.RESULT_OK){
 			if (data == null || data.getData() == null) {
 				//Picture has been taken natively, get the path from activity
 				cameraFileUri = Uri.parse(data.getStringExtra(Constants.IMAGE_URI_KEY));
-				setPreviewImageOn();
-				//TODO save this URI to an EventBuilder
+				setPreviewImageOn(cameraFileUri);
 			}
 		}
 		//Coming from capturing an image from native activity
 		if (requestCode == Constants.REQUEST_CODE_GALLERY && resultCode == Activity.RESULT_OK){
-				if (data != null) {
-					cameraFileUri = data.getData();
-					Log.d(toString(), "uri : "+cameraFileUri);
-				}
-				setPreviewImageOn();
-				//TODO save this URI to an EventBuilder
+			if (data != null) {
+				cameraFileUri = data.getData();
+				setPreviewImageOn(cameraFileUri);
 			}
+		}
 	}
 
-	/** Enables the preview image */
-	private void setPreviewImageOn() {
-		//sets preview text view to invisible
-		previewTextView.setVisibility(View.INVISIBLE);
-		//sets image to visible
-		previewImageView.setVisibility(View.VISIBLE);
-		//Remove image background
-		//set background preview image to image taken
-		//TODO Shift this to async task background thread with progress dialog in preview box ???
-		previewImageView.setImageURI(cameraFileUri);
+	/** Enables the preview image 
+	 * @param uriToImage - URI to the image captured or selected*/
+	private void setPreviewImageOn(Uri uriToImage) {
+		if(uriToImage!=null){
+			//sets preview text view to invisible
+			previewTextView.setVisibility(View.INVISIBLE);
+			//sets image to visible
+			previewImageView.setVisibility(View.VISIBLE);
+			//set background preview image to image taken
+			previewImageView.setImageURI(uriToImage);
+		}
 
 	}
 

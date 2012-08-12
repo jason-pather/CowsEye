@@ -4,6 +4,7 @@ import nz.co.android.cowseye.R.id;
 import nz.co.android.cowseye.R.layout;
 import nz.co.android.cowseye.R.string;
 import nz.co.android.cowseye.common.Constants;
+import nz.co.android.cowseye.event.SubmissionEventBuilder;
 import nz.co.android.cowseye.gps.GPSManager;
 import nz.co.android.cowseye.gps.MapManager;
 import nz.co.android.cowseye.utility.Utils;
@@ -49,6 +50,8 @@ public class RecordLocationActivity extends MapActivity {
 	//address got from reverse geo coding
 	private String geoAddress;
 	private GeoPoint addressCoordinates;
+	
+	private SubmissionEventBuilder submissionEventBuilder;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -85,6 +88,7 @@ public class RecordLocationActivity extends MapActivity {
 		}
 		else
 			setupManagers(savedInstanceState);
+		submissionEventBuilder = SubmissionEventBuilder.getSubmissionEventBuilder();
 
 	}
 
