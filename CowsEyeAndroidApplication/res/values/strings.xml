@@ -61,5 +61,9 @@
     <string name="take_picture_title">Capture Image</string>
     <string name="failed_camera_please_try_again">Failed to save image, please try again</string>
     <string name="failed_to_connect_to_camera_message">Failed to open camera. Please try again later</string>
-
+    <string-array name="phototag_array">
+        <item>Cow</item>
+        <item>Run off</item>
+        <item>Pollution</item>
+    </string-array>
 </resources>

@@ -8,6 +8,9 @@
 package nz.co.android.cowseye;
 
 public final class R {
+    public static final class array {
+        public static final int phototag_array=0x7f060000;
+    }
     public static final class attr {
     }
     public static final class color {
@@ -43,28 +46,29 @@ public final class R {
         public static final int you_are_here_45x45=0x7f02000b;
     }
     public static final class id {
-        public static final int addressEditText=0x7f07000c;
-        public static final int backButton=0x7f070001;
-        public static final int button_submit=0x7f07000e;
-        public static final int capture_image_button=0x7f070013;
-        public static final int contactDetailsScreenTitle=0x7f070000;
-        public static final int contactEmailEditText=0x7f070006;
-        public static final int contactNumberEditText=0x7f070005;
-        public static final int descriptionScreenTitle=0x7f070007;
-        public static final int descriptionText=0x7f070009;
-        public static final int detailsScreenTitle=0x7f07000d;
-        public static final int doneButton=0x7f070002;
-        public static final int firstNameEditText=0x7f070003;
-        public static final int lastNameEditText=0x7f070004;
-        public static final int locationScreenTitle=0x7f07000a;
-        public static final int mapview=0x7f07000b;
-        public static final int nextButton=0x7f070008;
-        public static final int previewFrameLayout=0x7f070015;
-        public static final int preview_image=0x7f070011;
-        public static final int preview_text=0x7f070012;
-        public static final int preview_title=0x7f07000f;
-        public static final int select_image_from_gallery_button=0x7f070014;
-        public static final int submit_button=0x7f070010;
+        public static final int addressEditText=0x7f08000d;
+        public static final int backButton=0x7f080001;
+        public static final int button_submit=0x7f08000f;
+        public static final int capture_image_button=0x7f080014;
+        public static final int contactDetailsScreenTitle=0x7f080000;
+        public static final int contactEmailEditText=0x7f080006;
+        public static final int contactNumberEditText=0x7f080005;
+        public static final int descriptionScreenTitle=0x7f080007;
+        public static final int descriptionText=0x7f080009;
+        public static final int detailsScreenTitle=0x7f08000e;
+        public static final int doneButton=0x7f080002;
+        public static final int firstNameEditText=0x7f080003;
+        public static final int lastNameEditText=0x7f080004;
+        public static final int locationScreenTitle=0x7f08000b;
+        public static final int mapview=0x7f08000c;
+        public static final int nextButton=0x7f080008;
+        public static final int phototag_spinner=0x7f08000a;
+        public static final int previewFrameLayout=0x7f080016;
+        public static final int preview_image=0x7f080012;
+        public static final int preview_text=0x7f080013;
+        public static final int preview_title=0x7f080010;
+        public static final int select_image_from_gallery_button=0x7f080015;
+        public static final int submit_button=0x7f080011;
     }
     public static final class layout {
         public static final int contact_details_border=0x7f030000;
@@ -136,15 +140,15 @@ public final class R {
         public static final int wouldYouLikeToUpdateStill=0x7f05002f;
     }
     public static final class style {
-        public static final int backButtonStyle=0x7f060004;
-        public static final int buttonStyle=0x7f060003;
-        public static final int contactLayoutStyle=0x7f060006;
-        public static final int contactTextFieldStyle=0x7f060007;
-        public static final int detailsArrow=0x7f060002;
-        public static final int detailsMainText=0x7f060001;
-        public static final int nextButtonStyle=0x7f060005;
-        public static final int preview_image_framelayout_style=0x7f060008;
-        public static final int text_style=0x7f060009;
-        public static final int titleHeading=0x7f060000;
+        public static final int backButtonStyle=0x7f070004;
+        public static final int buttonStyle=0x7f070003;
+        public static final int contactLayoutStyle=0x7f070006;
+        public static final int contactTextFieldStyle=0x7f070007;
+        public static final int detailsArrow=0x7f070002;
+        public static final int detailsMainText=0x7f070001;
+        public static final int nextButtonStyle=0x7f070005;
+        public static final int preview_image_framelayout_style=0x7f070008;
+        public static final int text_style=0x7f070009;
+        public static final int titleHeading=0x7f070000;
     }
 }
