@@ -88,10 +88,11 @@ public class SelectImageActivity extends Activity {
 			}
 		});
 		selectImageFromGalleryButton.setOnClickListener(new View.OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
 				//open gallery
+				//dealt with at onActivityResult()
+				retrieveImageFromGallery();
 			}
 		});
 
@@ -110,18 +111,25 @@ public class SelectImageActivity extends Activity {
 		startActivityForResult(intent, 	Constants.REQUEST_CODE_CAMERA);
 	}
 
+
+	/** Makes an intent to retrieve an image from the gallery */
+	protected void retrieveImageFromGallery() {
+		Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+		startActivityForResult(intent, Constants.REQUEST_CODE_GALLERY);
+	}
+
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-//		//Coming from capturing an image from standard intent
-//		if (requestCode == Constants.REQUEST_CODE_CAMERA && resultCode == Activity.RESULT_OK){
-//			if (data == null || data.getData() == null) {
-//				//Picture has been taken, cameraFileUri holds path to photo taken
-//				setPreviewImageOn();
-//				//TODO save this URI to an EventBuilder
-//
-//			}
-//		}
+		//		//Coming from capturing an image from standard intent
+		//		if (requestCode == Constants.REQUEST_CODE_CAMERA && resultCode == Activity.RESULT_OK){
+		//			if (data == null || data.getData() == null) {
+		//				//Picture has been taken, cameraFileUri holds path to photo taken
+		//				setPreviewImageOn();
+		//				//TODO save this URI to an EventBuilder
+		//
+		//			}
+		//		}
 
 		//Coming from capturing an image from native activity
 		if (requestCode == Constants.REQUEST_CODE_TAKE_PICTURE && resultCode == Activity.RESULT_OK){
@@ -132,6 +140,15 @@ public class SelectImageActivity extends Activity {
 				//TODO save this URI to an EventBuilder
 			}
 		}
+		//Coming from capturing an image from native activity
+		if (requestCode == Constants.REQUEST_CODE_GALLERY && resultCode == Activity.RESULT_OK){
+				if (data != null) {
+					cameraFileUri = data.getData();
+					Log.d(toString(), "uri : "+cameraFileUri);
+				}
+				setPreviewImageOn();
+				//TODO save this URI to an EventBuilder
+			}
 	}
 
 	/** Enables the preview image */

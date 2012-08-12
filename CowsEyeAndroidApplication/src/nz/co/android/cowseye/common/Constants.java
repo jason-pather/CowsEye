@@ -11,6 +11,8 @@ public interface Constants {
 	public static final int REQUEST_CODE_LOCATION = 2;
 	public static final int REQUEST_CODE_PROBLEM_DESCRIPTION = 3;
 	public static final int REQUEST_CODE_TAKE_PICTURE = 4;
+	public static final int REQUEST_CODE_GALLERY = 5;
+
 
 	
 	/* Keys for information passed between activities or within for activity destroy on rotation */
