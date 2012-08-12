@@ -67,7 +67,6 @@ public class RecordLocationActivity extends MapActivity {
 			public void onClick(View v) {
 				if(hasAllDetails()){
 					Intent intent = buildLocationDataIntent(RESULT_OK);
-					finish();
 					startActivity(intent);
 					// get coordinates from address location
 //					dialog = ProgressDialog.show(LocationActivity.this, "Acquiring coordinates from address", "Please wait...");

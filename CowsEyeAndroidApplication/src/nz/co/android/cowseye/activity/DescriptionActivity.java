@@ -22,10 +22,8 @@ import android.widget.Toast;
  * @author lanemitc
  *
  */
-public class DescriptionActivity extends Activity {
+public class DescriptionActivity extends AbstractSubmissionActivity {
 
-	private Button backButton;
-	private Button nextButton;
 
 	private EditText descriptionEditText;
 
@@ -34,17 +32,15 @@ public class DescriptionActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.description_layout);
-		backButton = (Button)findViewById(R.id.backButton);
-		nextButton = (Button)findViewById(R.id.doneButton);
-		//goes backwards
-		backButton.setOnClickListener(new Utils.BackEventOnClickListener(this));
+		nextButton = (Button)findViewById(R.id.nextButton);
 		//goes to the select location activity
 		nextButton.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, RecordLocationActivity.class));
 		setupUI();
 	}
 
 	/* Sets up the UI */
-	private void setupUI() {
+	protected void setupUI() {
+		super.setupUI();
 		descriptionEditText = (EditText)findViewById(R.id.descriptionText);
 		//Set text of description if we have it
 		Intent intent = getIntent();
@@ -63,23 +59,4 @@ public class DescriptionActivity extends Activity {
 		return descriptionEditText.getText().toString();
 	}
 	
-	/** When the hardware back button gets pressed */
-	@Override
-	public void onBackPressed() {
-		Intent intent=new Intent();
-		setResult(RESULT_CANCELED, intent);
-		finish();
-	}
-
-	/** Saves details of description in an intent 
-	 * FIX MEE
-	 * */
-	private void saveDetails(final int RESULT_TYPE) {
-		if(hasDescription())
-			Toast.makeText(DescriptionActivity.this, getResources().getString(R.string.savingDescription), Toast.LENGTH_SHORT).show();
-		//still want to save no description in case we want to delete our old one
-		Intent intent=new Intent();
-		intent.putExtra(Constants.DESCRIPTION_KEY, getDescription());
-		setResult(RESULT_TYPE, intent);
-	}
 }

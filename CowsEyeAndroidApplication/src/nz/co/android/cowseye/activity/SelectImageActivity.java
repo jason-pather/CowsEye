@@ -1,17 +1,10 @@
 package nz.co.android.cowseye.activity;
 
-import java.io.File;
-import java.io.IOException;
-
 import nz.co.android.cowseye.R;
-import nz.co.android.cowseye.R.id;
-import nz.co.android.cowseye.R.layout;
 import nz.co.android.cowseye.common.Constants;
 import nz.co.android.cowseye.utility.Utils;
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -27,10 +20,7 @@ import android.widget.TextView;
  * @author lanemitc
  *
  */
-public class SelectImageActivity extends Activity {
-
-	private Button backButton;
-	private Button nextButton;
+public class SelectImageActivity extends AbstractSubmissionActivity {
 
 	private Button captureImageButton;
 	private Uri cameraFileUri; // holds path to the image taken or retrieved
@@ -46,6 +36,34 @@ public class SelectImageActivity extends Activity {
 		setContentView(R.layout.select_image_layout);
 		setupUI();
 		loadState(savedInstanceState);
+	}
+	
+	/* Sets up the User Interface */
+	protected void setupUI(){
+		super.setupUI();
+		captureImageButton = (Button)findViewById(R.id.capture_image_button);
+		selectImageFromGalleryButton = (Button)findViewById(R.id.select_image_from_gallery_button);
+
+		previewImageView = (ImageView)findViewById(R.id.preview_image);
+		previewTextView = (TextView)findViewById(R.id.preview_text);
+		
+		//goes to the description activity
+		nextButton.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, DescriptionActivity.class));
+		captureImageButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startActivityForResult(new Intent(SelectImageActivity.this, TakePictureActivity.class), Constants.REQUEST_CODE_TAKE_PICTURE);
+			}
+		});
+		selectImageFromGalleryButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				//open gallery
+				//dealt with at onActivityResult()
+				retrieveImageFromGallery();
+			}
+		});
+
 	}
 
 	/** Loads any state back in 
@@ -65,37 +83,6 @@ public class SelectImageActivity extends Activity {
 		super.onSaveInstanceState(outState);
 		if(cameraFileUri!=null && !cameraFileUri.equals(""))
 			outState.putString(Constants.IMAGE_URI_KEY, cameraFileUri.toString());
-	}
-
-	/* Sets up the User Interface */
-	private void setupUI() {
-		backButton = (Button)findViewById(R.id.backButton);
-		nextButton = (Button)findViewById(R.id.nextButton);
-		captureImageButton = (Button)findViewById(R.id.capture_image_button);
-		selectImageFromGalleryButton = (Button)findViewById(R.id.select_image_from_gallery_button);
-
-		previewImageView = (ImageView)findViewById(R.id.preview_image);
-		previewTextView = (TextView)findViewById(R.id.preview_text);
-
-		//goes backwards
-		backButton.setOnClickListener(new Utils.BackEventOnClickListener(this));
-		//goes to the description activity
-		nextButton.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, DescriptionActivity.class));
-		captureImageButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				startActivityForResult(new Intent(SelectImageActivity.this, TakePictureActivity.class), Constants.REQUEST_CODE_TAKE_PICTURE);
-			}
-		});
-		selectImageFromGalleryButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				//open gallery
-				//dealt with at onActivityResult()
-				retrieveImageFromGallery();
-			}
-		});
-
 	}
 
 	/** Creates an intents to open the camera application and initiates it*/

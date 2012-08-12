@@ -17,7 +17,7 @@
             android:id="@+id/backButton"
             style="@style/backButtonStyle"/>
         <Button
-            android:id="@+id/doneButton"
+            android:id="@+id/nextButton"
             style="@style/nextButtonStyle" />
     </FrameLayout>
 

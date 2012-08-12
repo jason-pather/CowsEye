@@ -17,9 +17,8 @@ import android.widget.Button;
  * @author Mitchell Lane
  *
  */
-public class PreviewActivity extends Activity {
+public class PreviewActivity extends AbstractSubmissionActivity {
 	
-	private Button backButton;
 	private Button submitButton;
 	
 	/** Called when the activity is first created. */
@@ -31,15 +30,14 @@ public class PreviewActivity extends Activity {
 	}
 
 	/* Sets up the User Interface */
-	private void setupUI() {
-		backButton = (Button)findViewById(R.id.backButton);
+	protected void setupUI() {
+		super.setupUI();
 		submitButton = (Button)findViewById(R.id.submit_button);
-		//goes backwards
-		backButton.setOnClickListener(new Utils.BackEventOnClickListener(this));
 		//sends the event to the server
 		submitButton.setOnClickListener(new View.OnClickListener() {	
 			@Override
 			public void onClick(View v) {
+				//TODO Get the event out from EventBuilder
 				submitPollutionEvent();
 			}
 		});
@@ -52,6 +50,7 @@ public class PreviewActivity extends Activity {
 	protected void submitPollutionEvent() {
 		Intent intent = new Intent();
 		setResult(RESULT_OK);
+		//MUST finish all activities in stack - see friend finder
 		finish();
 	}
 }

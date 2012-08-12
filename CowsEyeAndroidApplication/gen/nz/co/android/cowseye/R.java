@@ -43,33 +43,33 @@ public final class R {
         public static final int you_are_here_45x45=0x7f02000b;
     }
     public static final class id {
-        public static final int addressEditText=0x7f07000b;
+        public static final int addressEditText=0x7f07000c;
         public static final int backButton=0x7f070001;
-        public static final int button_enter_contact_details=0x7f070011;
-        public static final int button_enter_description=0x7f07000f;
-        public static final int button_select_location=0x7f070010;
-        public static final int button_select_pollution_event=0x7f07000e;
-        public static final int button_submit=0x7f070012;
-        public static final int button_take_image=0x7f07000d;
+        public static final int button_enter_contact_details=0x7f070012;
+        public static final int button_enter_description=0x7f070010;
+        public static final int button_select_location=0x7f070011;
+        public static final int button_select_pollution_event=0x7f07000f;
+        public static final int button_submit=0x7f070013;
+        public static final int button_take_image=0x7f07000e;
         public static final int capture_image_button=0x7f070018;
         public static final int contactDetailsScreenTitle=0x7f070000;
         public static final int contactEmailEditText=0x7f070006;
         public static final int contactNumberEditText=0x7f070005;
         public static final int descriptionScreenTitle=0x7f070007;
-        public static final int descriptionText=0x7f070008;
-        public static final int detailsScreenTitle=0x7f07000c;
+        public static final int descriptionText=0x7f070009;
+        public static final int detailsScreenTitle=0x7f07000d;
         public static final int doneButton=0x7f070002;
         public static final int firstNameEditText=0x7f070003;
         public static final int lastNameEditText=0x7f070004;
-        public static final int locationScreenTitle=0x7f070009;
-        public static final int mapview=0x7f07000a;
-        public static final int nextButton=0x7f070015;
+        public static final int locationScreenTitle=0x7f07000a;
+        public static final int mapview=0x7f07000b;
+        public static final int nextButton=0x7f070008;
         public static final int previewFrameLayout=0x7f07001a;
         public static final int preview_image=0x7f070016;
         public static final int preview_text=0x7f070017;
-        public static final int preview_title=0x7f070013;
+        public static final int preview_title=0x7f070014;
         public static final int select_image_from_gallery_button=0x7f070019;
-        public static final int submit_button=0x7f070014;
+        public static final int submit_button=0x7f070015;
     }
     public static final class layout {
         public static final int contact_details_border=0x7f030000;
