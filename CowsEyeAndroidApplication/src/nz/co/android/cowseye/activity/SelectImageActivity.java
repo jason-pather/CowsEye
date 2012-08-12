@@ -2,6 +2,7 @@ package nz.co.android.cowseye.activity;
 
 import nz.co.android.cowseye.R;
 import nz.co.android.cowseye.common.Constants;
+import nz.co.android.cowseye.utility.AlertBuilder;
 import nz.co.android.cowseye.utility.Utils;
 import android.app.Activity;
 import android.content.Intent;
@@ -41,6 +42,9 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 	/* Sets up the User Interface */
 	protected void setupUI(){
 		super.setupUI();
+		//If we have GPS disabled then ask to activate it
+		if(!myApplication.isGPSEnabled())
+			AlertBuilder.buildGPSAlertMessage(SelectImageActivity.this, true).show();
 		captureImageButton = (Button)findViewById(R.id.capture_image_button);
 		selectImageFromGalleryButton = (Button)findViewById(R.id.select_image_from_gallery_button);
 

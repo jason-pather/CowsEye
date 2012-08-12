@@ -1,14 +1,11 @@
 package nz.co.android.cowseye.activity;
 
 import nz.co.android.cowseye.R;
-import nz.co.android.cowseye.R.id;
-import nz.co.android.cowseye.R.layout;
-import nz.co.android.cowseye.utility.Utils;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 /** The activity for showing a preview of the pollution event
  * 
@@ -48,9 +45,18 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 	 * @param Event - the event to submit
 	 */
 	protected void submitPollutionEvent() {
-		Intent intent = new Intent();
-		setResult(RESULT_OK);
-		//MUST finish all activities in stack - see friend finder
-		finish();
+		boolean canSubmit = false;
+		//canSubmit = eventHandler.build() - throws buildException if not enough data
+		canSubmit = true;
+		if(canSubmit){
+			Intent intent = new Intent(this, MainScreenActivity.class);
+			//Finishes all previous activities on the activity stack
+			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+			startActivity(intent);
+			finish();
+		}
+		else{
+			Toast.makeText(this, "BuildException error message ", Toast.LENGTH_LONG).show();
+		}
 	}
 }

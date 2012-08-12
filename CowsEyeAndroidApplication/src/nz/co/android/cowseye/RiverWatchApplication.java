@@ -12,6 +12,7 @@ import nz.co.android.cowseye.event.EventHandler;
 import android.app.Application;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
@@ -143,6 +144,16 @@ public class RiverWatchApplication extends Application  {
 		Boolean isWifi= networkInfo==null? false : networkInfo.isConnected();
 		return is3g || isWifi;
 	}
+
+	/** Returns whether this device has GPS enabled */
+	public boolean isGPSEnabled(){
+		LocationManager mLocationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+		if(mLocationManager==null)
+			return false;
+		// Check if GPS enabled
+		return mLocationManager.isProviderEnabled( LocationManager.GPS_PROVIDER );
+	}
+
 	
 	/** Downloads an employee image thumbnail 
 	 * @param url - url to download image thumbnail from

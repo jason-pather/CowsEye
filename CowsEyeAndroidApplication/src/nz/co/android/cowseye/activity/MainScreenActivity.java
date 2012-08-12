@@ -1,10 +1,12 @@
 package nz.co.android.cowseye.activity;
 
 import nz.co.android.cowseye.R;
+import nz.co.android.cowseye.RiverWatchApplication;
 import nz.co.android.cowseye.R.id;
 import nz.co.android.cowseye.R.layout;
 import nz.co.android.cowseye.R.string;
 import nz.co.android.cowseye.common.Constants;
+import nz.co.android.cowseye.utility.AlertBuilder;
 import nz.co.android.cowseye.utility.Utils;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -59,13 +61,14 @@ public class MainScreenActivity extends Activity {
 	private String googleLink;
 	private GeoPoint userLocation;
 	private String userAddress;
-	
+
 	private Button buttonPhoto;
 	private Button buttonLocation;
 	private Button buttonPollutionEvent;
 	private Button buttonDescription;
 	private Button buttonContactDetails;
 	private Button buttonSubmit;
+	private RiverWatchApplication myApplication;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -73,6 +76,17 @@ public class MainScreenActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_screen_layout);
 		setupUI();
+		Log.d(toString(), "onCreate");
+		myApplication = (RiverWatchApplication)getApplication();
+
+	}
+
+	/** This gets called after a successfull submission event as the activity is already open and
+	 * this current opened activity is not destroyed 
+	 */
+	@Override
+	public void onNewIntent(Intent newIntent) {
+		super.onNewIntent(newIntent);
 	}
 
 	protected boolean networkIsConnected() {
@@ -81,136 +95,20 @@ public class MainScreenActivity extends Activity {
 		Boolean isWifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnected();
 		return is3g || isWifi;
 	}
-	
-	
-	
-	//TODO move action listeners to inner classes
-	
-	/* Sets up all the action listeners for clicking on the different rows in the table */
+
+	/* Sets up the UI */
 	private void setupUI(){
-		
-		buttonPhoto = (Button)findViewById(R.id.button_take_image);
-		buttonLocation = (Button)findViewById(R.id.button_select_location);
-		buttonPollutionEvent = (Button)findViewById(R.id.button_select_pollution_event);
-		buttonDescription = (Button)findViewById(R.id.button_enter_description);
-		buttonContactDetails = (Button)findViewById(R.id.button_enter_contact_details);
 		buttonSubmit = (Button)findViewById(R.id.button_submit);
-
 		buttonSubmit.setOnClickListener(new SubmitPollutionEventOnClickListener());
-		
-		
-		buttonPhoto.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				takeImageWithCamera();
-			}
-		});
-		buttonLocation.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				// launch location intent
-				Intent intent = new Intent(MainScreenActivity.this, RecordLocationActivity.class);
-				// if we have previous details, insert them.
-				if(userAddress!=null && !userAddress.equals(""))
-					intent.putExtra(Constants.LOCATION_KEY, userAddress);
-				startActivityForResult(intent,Constants.REQUEST_CODE_LOCATION);
-			}
-		});
-		buttonDescription.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				//launch problem  description intent
-				Intent intent = new Intent(MainScreenActivity.this, DescriptionActivity.class);
-				// if we have previous details, insert them.
-				if(details!=null && !details.equals(""))
-					intent.putExtra(Constants.DESCRIPTION_KEY, details);
-				startActivityForResult(intent,Constants.REQUEST_CODE_PROBLEM_DESCRIPTION);
-			}
-		});
-	
 	}
 
-
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		//Coming from picture activity
-		if (requestCode == Constants.REQUEST_CODE_CAMERA && resultCode == Activity.RESULT_OK){
-			if (data == null || data.getData() == null) {
-				//Picture has been taken, cameraFileUri holds path to photo taken
-			}
-		}
-		// Coming from location activity
-		else if(requestCode == Constants.REQUEST_CODE_LOCATION &&  resultCode == Activity.RESULT_OK && data!=null){
-			if(data.hasExtra(Constants.LOCATION_KEY))
-				userAddress =  data.getStringExtra(Constants.LOCATION_KEY).trim();
-			if(data.hasExtra(Constants.LOCATION_GOOGLE_LINK))
-				googleLink =  data.getStringExtra(Constants.LOCATION_GOOGLE_LINK).trim();
-			int lat = -1;
-			int lon = -1;
-			if(data.hasExtra(Constants.LOCATION_LATITUDE_KEY))
-				lat =  data.getIntExtra(Constants.LOCATION_LATITUDE_KEY,-1);
-			if(data.hasExtra(Constants.LOCATION_LONGITUDE_KEY))
-				lon =  data.getIntExtra(Constants.LOCATION_LONGITUDE_KEY,-1);
-
-			if(resultCode == Activity.RESULT_OK &&!userAddress.equals("")){
-				if(lat!=-1 && lon!=-1 && !googleLink.equals("")){
-					userLocation = new GeoPoint(lat, lon);
-					Log.e(toString(), "userLocation: "+userLocation + " lat : "+lat);
-				}
-				else{
-					//erase details in case we have some from before
-					userLocation = null;
-					googleLink=null;
-				}
-			}
-		}
-		// Coming from description activity
-		else if(requestCode == Constants.REQUEST_CODE_PROBLEM_DESCRIPTION && data!=null){
-			if(data.hasExtra(Constants.DESCRIPTION_KEY)){
-				details =  data.getStringExtra(Constants.DESCRIPTION_KEY).trim();
-			}
-		}
-	}
-
-
-	protected void takeImageWithCamera() {
-		// create Intent to take a picture and return control to the calling application
-		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		// create a file to save the image
-		cameraFileUri = Utils.getNewCameraFileUri();
-		// set the image file name
-		intent.putExtra(MediaStore.EXTRA_OUTPUT, cameraFileUri); 
-		//trigger activity
-		startActivityForResult(intent, 	Constants.REQUEST_CODE_CAMERA);
-	}
-	
-	//TODO move this to UTILS
-	protected void buildAlertMessageNoInternet() {
-		//Activity transfer to wifi settings
-
-		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage(this.getResources().getString(R.string.no_internet_message))
-		.setCancelable(false)
-		.setPositiveButton(this.getResources().getString(R.string.gps_positive_button_title), new DialogInterface.OnClickListener() {
-			public void onClick(final DialogInterface dialog, final int id) {
-				startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
-			}
-		})
-		.setNegativeButton(this.getResources().getString(R.string.gps_negative_button_title), new DialogInterface.OnClickListener() {
-			public void onClick(final DialogInterface dialog, final int id) {
-				dialog.cancel();
-			}
-		});
-		final AlertDialog alert = builder.create();
-		alert.show();
-	}
-	
 	/** Starts a submission of a pollution event */
 	public class SubmitPollutionEventOnClickListener implements OnClickListener{
-
 		@Override
 		public void onClick(View v) {
 			startActivity(new Intent(MainScreenActivity.this, SelectImageActivity.class));
 		}
-		
+
 	}
 
 }

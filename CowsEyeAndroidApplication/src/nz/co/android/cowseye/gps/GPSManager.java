@@ -7,6 +7,7 @@ import java.util.Locale;
 import nz.co.android.cowseye.R;
 import nz.co.android.cowseye.activity.RecordLocationActivity;
 import nz.co.android.cowseye.service.ReverseGeoCodeCoordinatesService;
+import nz.co.android.cowseye.utility.AlertBuilder;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -161,33 +162,6 @@ public class GPSManager implements LocationListener{
 		Log.i(toString(), "User location changed : "+(int) ( location.getLatitude() * 1E6)+" , "+ (int) ( location.getLongitude() * 1E6));
 	}
 
-	private void buildAlertMessageUpdatePosition(final String address, final GeoPoint userPoint) {
-		try{
-		final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-		builder.setMessage(context.getResources().getString(R.string.newLocationFound) +"\n"+context.getResources().getString(R.string.wouldYouLikeToUpdate)+ " " + address)
-		.setCancelable(false)
-		.setPositiveButton(context.getResources().getString(R.string.gps_positive_button_title), new DialogInterface.OnClickListener() {
-			public void onClick(final DialogInterface dialog, final int id) {
-				locationActivity.setAddress(address,userPoint);
-				mapHelper.drawUserPosition(userPoint);
-				mapHelper.setMapViewToLocation(userPoint);
-				dialog.cancel();
-			}
-		})
-		.setNegativeButton(context.getResources().getString(R.string.gps_negative_button_title), new DialogInterface.OnClickListener() {
-			public void onClick(final DialogInterface dialog, final int id) {
-				dialog.cancel();
-			}
-		});
-		alert = builder.create();
-		alert.show();
-		}
-		catch(BadTokenException e){
-			//view has been destroyed
-			Log.e(toString(), "Trying to alert user of new location : "+e);
-		}
-	}
-
 	/** Converts a location with latitude and longitude coordinates to an address */
 	public void updateLocationActivity(Location location) {
 		//execute service to get a human readable address from given latitude and longitude coordinates
@@ -222,7 +196,9 @@ public class GPSManager implements LocationListener{
 	public void requestBuildAlertMessageUpdatePosition(String addr, GeoPoint userPoint) {
 		if(alert!=null)
 			alert.dismiss();
-		buildAlertMessageUpdatePosition(addr, userPoint);
+		AlertDialog alert = AlertBuilder.buildAlertMessageUpdatePosition(locationActivity, mapHelper, locationActivity, addr, userPoint);
+		if(alert!=null)
+			alert.show();
 	}
 	public Geocoder getGeoCoder() {
 		return geocoder;
@@ -232,33 +208,7 @@ public class GPSManager implements LocationListener{
 			alert.dismiss();
 		Toast.makeText(context, context.getResources().getString(R.string.gps_no_location_message), Toast.LENGTH_SHORT).show();
 		Log.e(toString(), "Cannot get a fix on user location: ");
-//		buildAlertMessageUpdatePositionWithoutAddress(userLocationGeoPoint)+;
 	}
-	
-	 void buildAlertMessageUpdatePositionWithoutAddress(final GeoPoint userPoint) {
-		try{
-		final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-		builder.setMessage(context.getResources().getString(R.string.newLocationFound) +"\n"+context.getResources().getString(R.string.noAddressFound)+ " " + (userPoint.getLatitudeE6()/1E6) + ", "+ (userPoint.getLongitudeE6()/1E6)+"\n" + context.getResources().getString(R.string.wouldYouLikeToUpdateStill))
-		.setCancelable(false)
-		.setPositiveButton(context.getResources().getString(R.string.gps_positive_button_title), new DialogInterface.OnClickListener() {
-			public void onClick(final DialogInterface dialog, final int id) {
-				mapHelper.drawUserPosition(userPoint);
-				mapHelper.setMapViewToLocation(userPoint);
-				dialog.cancel();
-			}
-		})
-		.setNegativeButton(context.getResources().getString(R.string.gps_negative_button_title), new DialogInterface.OnClickListener() {
-			public void onClick(final DialogInterface dialog, final int id) {
-				dialog.cancel();
-			}
-		});
-		alert = builder.create();
-		alert.show();
-		}
-		catch(BadTokenException e){
-			//view has been destroyed
-			Log.e(toString(), "Trying to alert user of new location : "+e);
-		}
-	}
+
 
 }

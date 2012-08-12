@@ -92,13 +92,13 @@ public class RecordLocationActivity extends MapActivity {
 		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage(this.getResources().getString(R.string.gps_message))
 		.setCancelable(false)
-		.setPositiveButton(this.getResources().getString(R.string.gps_positive_button_title), new DialogInterface.OnClickListener() {
+		.setPositiveButton(this.getResources().getString(R.string.positive_button_title), new DialogInterface.OnClickListener() {
 			public void onClick(final DialogInterface dialog, final int id) {
 				startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
 				setupManagers(savedInstanceState);
 			}
 		})
-		.setNegativeButton(this.getResources().getString(R.string.gps_negative_button_title), new DialogInterface.OnClickListener() {
+		.setNegativeButton(this.getResources().getString(R.string.negative_button_title), new DialogInterface.OnClickListener() {
 			public void onClick(final DialogInterface dialog, final int id) {
 				dialog.cancel();
 				setupManagers(savedInstanceState);

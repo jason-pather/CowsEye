@@ -32,12 +32,14 @@
     <string name="savingDescription">Saving description of problem</string>
     <string name="savingContactDetails">Saving contact details</string>
     <string name="savingAddress">Saving address</string>
+     <string name="gps_message_submission">Submitting a pollution event use GPS to tag your location. However your GPS seems to be disabled, do you want to
+		enable it?</string>
     <string name="gps_message">Your GPS seems to be disabled, do you want to
 		enable it?</string>
     <string name="no_internet_message">No internet connection detected, do you want to
 		enable it?</string>
-    <string name="gps_positive_button_title">Yes</string>
-    <string name="gps_negative_button_title">No</string>
+    <string name="positive_button_title">Yes</string>
+    <string name="negative_button_title">No</string>
     <string name="gps_no_location_message">No location found. Please enter manually</string>
     <string name="locationTitle">Record Location</string>
     <string name="userAddress">Address</string>
