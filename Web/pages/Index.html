@@ -59,6 +59,9 @@
 			<p>This is the landing page for the River Watch project<br> More coming soon</p>
 
 		</div>
+		
+		<a  href="#" class="btn btn-success" id = "textAJAXButton" >Click here to preform a test AJAX call</a>
+		
 	</div>
 
 	<!-- /container -->
@@ -81,5 +84,27 @@
     <script src="../assets/js/bootstrap-typeahead.js"></script>
 -->
 	<script src="../assets/js/jquery.js"></script>
+	<script src="../assets/js/AjaxCommons.js"></script>
+	<script src="../assets/js/MockData.js"></script>
+	<script type="text/javascript">
+
+		var call = Window.RWCall
+		
+		var testButton =  $("#textAJAXButton");
+		
+		var onSuccess = function () {
+			console.log("This call succesed")
+		}
+		
+		var onFailure = function () {
+			console.log("This call failed")
+		}
+		
+		testButton.click( function() {
+			console.log("Hello");
+			call ( onSuccess, onFailure, {}, "HelloWorld/save", {}, "POST" )
+		});	
+		
+	</script>
   </body>
 </html>
