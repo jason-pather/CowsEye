@@ -1,5 +1,7 @@
 package nz.co.android.cowseye.common;
 
+import java.net.URI;
+
 
 public interface Constants {
 
@@ -10,9 +12,13 @@ public interface Constants {
 	public static final int REQUEST_CODE_CAMERA = 1;
 	public static final int REQUEST_CODE_LOCATION = 2;
 	public static final int REQUEST_CODE_PROBLEM_DESCRIPTION = 3;
-	public static final int REQUEST_CODE_CONTACT_DETAILS = 4;
+	public static final int REQUEST_CODE_TAKE_PICTURE = 4;
+	public static final int REQUEST_CODE_GALLERY = 5;
+
+
 	
-	/* Keys for information passed between activities */
+	/* Keys for information passed between activities or within for activity destroy on rotation */
+	public static final String IMAGE_URI_KEY = "image_uri_key";
 	public static final String DESCRIPTION_KEY = "description";
 	public static final String CONTACT_DETAILS_KEY = "contact";
 	public static final String LOCATION_KEY = "location";
@@ -28,6 +34,20 @@ public interface Constants {
 	public static final String SHARED_PREFS_NUMBER= "number";
 
 	public static final String GOOGLE_MAP_LINK = "https://maps.google.com/maps?q=";
+
+	public static final int IMAGE_WIDTH = 640;
+	public static final int IMAGE_HEIGHT = 480;
+
+	
+	/* Service paths */
+	public static final String SERVER_PATH = "http://";
+	public static final String SUBMISSION_PATH = SERVER_PATH + "submit";
+	
+	/* Form post entities */
+	public static final String FORM_TEST_STRING = "form_test";
+
+
+	
 
 
 }

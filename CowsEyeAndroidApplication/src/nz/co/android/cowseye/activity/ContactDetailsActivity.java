@@ -1,5 +1,9 @@
-package nz.co.android.cowseye;
+package nz.co.android.cowseye.activity;
 
+import nz.co.android.cowseye.R;
+import nz.co.android.cowseye.R.id;
+import nz.co.android.cowseye.R.layout;
+import nz.co.android.cowseye.R.string;
 import nz.co.android.cowseye.common.Constants;
 import android.app.Activity;
 import android.content.Intent;
@@ -10,6 +14,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+/** The activity for inputting the description for a pollution event
+ * 
+ * This will allow the user to enter a description and select appropriate tags
+ * @author lanemitc
+ *
+ */
 public class ContactDetailsActivity extends Activity{
 
 	private Button fixitButton;

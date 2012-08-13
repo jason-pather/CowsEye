@@ -1,7 +1,13 @@
-package nz.co.android.cowseye;
+package nz.co.android.cowseye.activity;
+import nz.co.android.cowseye.R;
+import nz.co.android.cowseye.R.id;
+import nz.co.android.cowseye.R.layout;
+import nz.co.android.cowseye.R.string;
 import nz.co.android.cowseye.common.Constants;
+import nz.co.android.cowseye.event.SubmissionEventBuilder;
 import nz.co.android.cowseye.gps.GPSManager;
 import nz.co.android.cowseye.gps.MapManager;
+import nz.co.android.cowseye.utility.Utils;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -20,10 +26,15 @@ import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapView;
 
-public class LocationActivity extends MapActivity {
+/** 
+ * This is the activity for selecting the location of the pollution event
+ * @author Mitchell Lane
+ *
+ */
+public class RecordLocationActivity extends MapActivity {
 
-	private Button fixitButton;
-	private Button doneButton;
+	private Button backButton;
+	private Button nextButton;
 
 	private static LocationManager mLocationManager;
 	private EditText addressEditText;
@@ -39,6 +50,8 @@ public class LocationActivity extends MapActivity {
 	//address got from reverse geo coding
 	private String geoAddress;
 	private GeoPoint addressCoordinates;
+	
+	private SubmissionEventBuilder submissionEventBuilder;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -49,29 +62,22 @@ public class LocationActivity extends MapActivity {
 		Intent intent = getIntent();
 		if(intent.hasExtra(Constants.LOCATION_KEY))
 			addressEditText.setText(intent.getStringExtra(Constants.LOCATION_KEY));
-		fixitButton = (Button)findViewById(R.id.backButton);
-		doneButton = (Button)findViewById(R.id.doneButton);
-		fixitButton.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				//go back to the details activity by finishing this activity
-				//				saveDetailsOnFinish(RESULT_CANCELED);
-				Intent intent=new Intent();
-				setResult(RESULT_CANCELED, intent);
-				finish();
-			}
-		});
-		doneButton.setOnClickListener(new View.OnClickListener() {
+		backButton = (Button)findViewById(R.id.backButton);
+		nextButton = (Button)findViewById(R.id.doneButton);
+		backButton.setOnClickListener(new Utils.BackEventOnClickListener(this));
+		nextButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				if(hasAllDetails()){
-					saveDetailsOnFinish(RESULT_OK);
+					Intent intent = buildLocationDataIntent(RESULT_OK);
+					startActivity(intent);
 					// get coordinates from address location
 //					dialog = ProgressDialog.show(LocationActivity.this, "Acquiring coordinates from address", "Please wait...");
 					//TODO DO NOT 
 //					new GeoCodeCoordinatesService(LocationActivity.this, gpsManager.getGeoCoder(), addressEditText.getText().toString().trim()).execute();
 				}
 				else
-					Toast.makeText(LocationActivity.this, getResources().getString(R.string.pleaseEnterDetails), Toast.LENGTH_SHORT).show();
+					Toast.makeText(RecordLocationActivity.this, getResources().getString(R.string.pleaseEnterDetails), Toast.LENGTH_SHORT).show();
 			}
 		});
 
@@ -82,6 +88,7 @@ public class LocationActivity extends MapActivity {
 		}
 		else
 			setupManagers(savedInstanceState);
+		submissionEventBuilder = SubmissionEventBuilder.getSubmissionEventBuilder();
 
 	}
 
@@ -89,13 +96,13 @@ public class LocationActivity extends MapActivity {
 		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage(this.getResources().getString(R.string.gps_message))
 		.setCancelable(false)
-		.setPositiveButton(this.getResources().getString(R.string.gps_positive_button_title), new DialogInterface.OnClickListener() {
+		.setPositiveButton(this.getResources().getString(R.string.positive_button_title), new DialogInterface.OnClickListener() {
 			public void onClick(final DialogInterface dialog, final int id) {
 				startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
 				setupManagers(savedInstanceState);
 			}
 		})
-		.setNegativeButton(this.getResources().getString(R.string.gps_negative_button_title), new DialogInterface.OnClickListener() {
+		.setNegativeButton(this.getResources().getString(R.string.negative_button_title), new DialogInterface.OnClickListener() {
 			public void onClick(final DialogInterface dialog, final int id) {
 				dialog.cancel();
 				setupManagers(savedInstanceState);
@@ -162,10 +169,10 @@ public class LocationActivity extends MapActivity {
 		finish();
 	}
 
-	public void saveDetailsOnFinish(int RESULT_TYPE) {
+	public Intent buildLocationDataIntent(int RESULT_TYPE) {
 		if(dialog!=null)
 			dialog.dismiss();
-		Intent intent=new Intent();
+		Intent intent=new Intent(this, PreviewActivity.class);
 		intent.putExtra(Constants.LOCATION_KEY, getLocation());
 		//if reverse geo coded the address
 		if(link){
@@ -182,8 +189,8 @@ public class LocationActivity extends MapActivity {
 		}
 		Log.e(toString(), "Not putting in link :(");
 		setResult(RESULT_TYPE, intent);
-		Toast.makeText(LocationActivity.this, getResources().getString(R.string.savingAddress), Toast.LENGTH_SHORT).show();
-		finish();
+		Toast.makeText(RecordLocationActivity.this, getResources().getString(R.string.savingAddress), Toast.LENGTH_SHORT).show();
+		return intent;
 	}
 	public void errorGeoCodeAddress(){
 		dialog.dismiss();

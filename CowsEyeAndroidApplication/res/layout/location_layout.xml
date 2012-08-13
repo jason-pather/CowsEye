@@ -21,7 +21,7 @@
 
         <Button
             android:id="@+id/doneButton"
-            style="@style/doneButtonStyle" />
+            style="@style/nextButtonStyle" />
     </FrameLayout>
 
     <com.google.android.maps.MapView

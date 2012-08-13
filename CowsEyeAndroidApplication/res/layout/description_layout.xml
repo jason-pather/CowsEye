@@ -12,21 +12,27 @@
         <TextView
             android:id="@+id/descriptionScreenTitle"
             style="@style/titleHeading"
-            android:text="@string/descriptionTitle" />
+            android:text="@string/description_title" />
         <Button
             android:id="@+id/backButton"
             style="@style/backButtonStyle"/>
         <Button
-            android:id="@+id/doneButton"
-            style="@style/doneButtonStyle" />
+            android:id="@+id/nextButton"
+            style="@style/nextButtonStyle" />
     </FrameLayout>
 
     <EditText
         android:id="@+id/descriptionText"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
         android:gravity="top" >
         <requestFocus />
     </EditText>
+    
+    <Spinner
+    android:id="@+id/phototag_spinner"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" />
 
 </LinearLayout>

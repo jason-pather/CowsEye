@@ -3,7 +3,7 @@ package nz.co.android.cowseye.service;
 import java.io.IOException;
 import java.util.List;
 
-import nz.co.android.cowseye.LocationActivity;
+import nz.co.android.cowseye.activity.RecordLocationActivity;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
@@ -11,11 +11,11 @@ import android.util.Log;
 
 public class GeoCodeCoordinatesService extends AsyncTask<Void, Void, Address> {
 
-	private LocationActivity locationActivity;
+	private RecordLocationActivity locationActivity;
 	private Geocoder geocoder;
 	private String address;
 
-	public GeoCodeCoordinatesService(LocationActivity locationActivity, Geocoder geocoder, String address){
+	public GeoCodeCoordinatesService(RecordLocationActivity locationActivity, Geocoder geocoder, String address){
 		this.locationActivity = locationActivity;
 		this.geocoder = geocoder;
 		this.address = address;
@@ -45,7 +45,7 @@ public class GeoCodeCoordinatesService extends AsyncTask<Void, Void, Address> {
 		if(location==null)
 			locationActivity.errorGeoCodeAddress();
 		else
-			locationActivity.saveDetailsOnFinish(locationActivity.RESULT_OK);//, location);
+			locationActivity.buildLocationDataIntent(locationActivity.RESULT_OK);//, location);
 		
 	}
 }
