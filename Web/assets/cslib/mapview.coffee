@@ -3,10 +3,10 @@
 SetupMap = () ->
 	
 	# Map set up
-	mapCenter = new google.maps.LatLng 40.5995, 40.8714
+	mapCenter = new google.maps.LatLng -41.288889, 174.777222
 
 	mapOptions = { 
-		zoom: 13,
+		zoom: 9,
 		center: mapCenter,
 		mapTypeId: google.maps.MapTypeId.ROADMAP
 	}
@@ -17,8 +17,7 @@ SetupMap = () ->
 	
 		
 googleMap = SetupMap()
-google.maps.event.addDomListener(window, 'load', googleMap);
-
+google.maps.event.addDomListener(window, "load", googleMap);
 
 # Fix the height of the map, twitter bootstrap fucks it up, it probbly fucks up some other map things aswell
 mapCanvas = $ "#map_canvas"
@@ -40,24 +39,46 @@ oldmap.setMap googleMap
 
 # Get test data and populate map
 incidentList = Window.IncidentList 0, 12
+
+# Zoom listner
+# google.maps.event.addListener googleMap, "zoom_changed", ->
+# console.log "Zoom #{googleMap.getZoom()} "
+size = 0.05
+	
+
 for incident in incidentList.Incidents
-	
-	# distance = new google.maps.geometry.spherical.computeDistanceBetween(latlng, locationlatlng);
-	size = 0.3
-	
+		
 	newarkLat = new google.maps.LatLng incident.Lat - size, incident.Lng - size * 2
 	newarkLng = new google.maps.LatLng incident.Lat + size, incident.Lng + size * 2
 
 	imageBounds = new google.maps.LatLngBounds newarkLat, newarkLng
-
 	oldmap = new google.maps.GroundOverlay "http://placehold.it/480x360", imageBounds
 
 	google.maps.event.addListener oldmap, 'click', () => 
-		Window.CreateIncidentModal 2
+		Window.CreateIncidentModal incident.Incident_ID
 
 	oldmap.setMap googleMap
-	
-	console.log "created at #{incident.Lat} #{incident.Lng} for #{incident.Incident_ID}"
 
-nz = new google.maps.LatLng -41.288889, 174.777222
-googleMap.setCenter nz
+
+for incident in incidentList.Incidents
+
+	newarkLat = new google.maps.LatLng incident.Lat - size, incident.Lng - size * 2
+	newarkLng = new google.maps.LatLng incident.Lat + size, incident.Lng + size * 2
+	
+	borderCoordinates = [
+		new google.maps.LatLng incident.Lat - size, incident.Lng - size * 2
+		new google.maps.LatLng incident.Lat - size, incident.Lng + size * 2
+		new google.maps.LatLng incident.Lat + size, incident.Lng + size * 2
+		new google.maps.LatLng incident.Lat + size, incident.Lng - size * 2
+		new google.maps.LatLng incident.Lat - size, incident.Lng - size * 2
+	]
+	
+	border = new google.maps.Polyline {
+			path: borderCoordinates,
+			strokeColor: "000000",
+			strokeOpacity: 1,
+			strokeWeight: 1
+	}
+		
+	border.setMap googleMap
+
