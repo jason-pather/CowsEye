@@ -34,7 +34,7 @@
 
   <body>
 
-    <div class="navbar navbar-fixed-top">
+<div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
           <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -46,8 +46,8 @@
           <div class="nav-collapse">
             <ul class="nav">
               <li><a href="Index.html">Index</a></li>
-              <li class = "active"><a href="GridView.html">Grid</a></li>
-              <li><a href="MapView.html">Map</a></li>
+              <li><a href="GridView.html">Grid</a></li>
+              <li class = "active"><a href="MapView.html">Map</a></li>
 			  <li><a href="ApproveView.html">Approve</a></li>
             </ul>
           </div><!--/.nav-collapse -->
@@ -56,17 +56,43 @@
     </div>
 
     <div class="container">
-      <h1>Gird View</h1>
-      <p>A test Picure Viewer<br> Randomly displayed pictures in a very pretty grid, with modal popups</p>
+      <h1>Admin Approve Panel</h1>
+      <p>This view is where an admin will approve incidents to be displayed to the public</p>
 		<ul class="thumbnails" id = "picgrid">
+		
+			<li class="span12">
+				<div class="thumbnail">
+					<ul class = "thumbnails">
+						<li class = "span4">
+							<img src="../assets//img/540x320.gif" alt="">
+						</li>
+						<li class = "span3">
+							<div class = "caption">
+								<h5>Picture</h5>
+								<p>This is a sample picture to be used as a place holder when testing for content or something and another line for good measure, anlala and some more writing alalala and some more writing alalala and some more writing alalala</p>
+							</div>
+						</li>
+						<li class = "span4">
+													<div class = "caption">
+						<h5>Submitted Comment</h5>
+						<p> This pichture was taken by my granddaughter, i like the way the light shines off the cow... Love Mable </p>
+							
+							</div>
+						</li>
+						<li class ="span12">
+							<div class="btn-group">
+								<a href="#" class="btn btn-success btn-large">Accept</a>
+								<a href="#" class="btn btn-danger btn-large">Reject</a>
+							</div>
+						</li>
+					
+				</div>
+			</li>	
 		<!--
 			This is where the thumbnails go
 		-->
 		</ul>
 	</div>
-</div>
-
-
 
 	<!-- /container -->
 
@@ -91,10 +117,10 @@
 	<script src="../assets/js/jquery.js"></script>
 	<script src="../assets/js/bootstrap-transition.js"></script>
 	<script src="../assets/js/bootstrap-modal.js"></script>
-	<script src="../assets/js/MockData.js"></script>
-	<script src="../assets/js/IncidentModal.js"></script>
-	<script src="../assets/js/IncidentThumbnail.js"></script>
-	<script src="../assets/js/GridView.js"></script>
+	<script src="../assets/js/commentapprove.js"></script>
+	<script>
+		$('#myModal').modal({show:false})
+	</script>
 	
   </body>
 </html>
