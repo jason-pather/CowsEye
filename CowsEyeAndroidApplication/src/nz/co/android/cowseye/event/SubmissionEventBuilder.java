@@ -32,7 +32,22 @@ public class SubmissionEventBuilder {
 		return submissionEvent.getImagePath();
 	}
 	
+	public void setImageTag (String tag) {
+		submissionEvent.setImageTag(tag);
+	}
 	
+	public String getImageTag () {
+		return submissionEvent.getImageTag();
+	}
+	
+	
+	public void setImageDescription (String descr) {
+		submissionEvent.setImageDescription(descr);
+	}
+	
+	public String getImageDescription () {
+		return submissionEvent.getImageDescription();
+	}
 
 
 }
