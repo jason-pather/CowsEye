@@ -21,6 +21,11 @@
             style="@style/nextButtonStyle" />
     </FrameLayout>
 
+    <TextView
+            android:id="@+id/EnterDescriptionLabel"
+            style="@style/field_title_style"
+            android:text="@string/description_labeltitle" />
+    
     <EditText
         android:id="@+id/descriptionText"
         android:layout_width="fill_parent"
@@ -29,10 +34,16 @@
         android:gravity="top" >
         <requestFocus />
     </EditText>
-    
-    <Spinner
-    android:id="@+id/phototag_spinner"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content" />
+
+    <TextView
+            android:id="@+id/ChooseImageTag"
+            style="@style/field_title_style"
+            android:text="@string/tag_labeltitle" />
+        
+        
+         <Spinner
+            android:id="@+id/phototag_spinner"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
 
 </LinearLayout>

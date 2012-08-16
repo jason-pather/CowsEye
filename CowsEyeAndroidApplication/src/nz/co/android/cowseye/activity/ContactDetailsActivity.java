@@ -42,7 +42,7 @@ public class ContactDetailsActivity extends Activity{
 		fixitButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				//go back to the details activity by finishing this activity
-//				saveDetailsOnFinish(RESULT_CANCELED);
+				//saveDetailsOnFinish(RESULT_CANCELED);
 				Intent intent=new Intent();
 				setResult(RESULT_CANCELED, intent);
 				finish();

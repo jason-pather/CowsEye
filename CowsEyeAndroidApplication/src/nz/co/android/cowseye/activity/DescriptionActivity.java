@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 /** The activity for inputting the description for a pollution event
  * 
@@ -48,10 +49,12 @@ public class DescriptionActivity extends AbstractSubmissionActivity implements O
         spinner.setAdapter(adapter);
     
         setupUI();
-        
+        System.out.println ("Reached here");
         //starts a new submission event
         submissionEventBuilder.startNewSubmissionEvent();
-    }
+        
+       }
+    
 
     /* Sets up the UI */
     protected void setupUI() {
@@ -62,12 +65,14 @@ public class DescriptionActivity extends AbstractSubmissionActivity implements O
         if(intent.hasExtra(Constants.DESCRIPTION_KEY)){
             descriptionEditText.setText(intent.getStringExtra(Constants.DESCRIPTION_KEY));
             imageDescription = descriptionEditText.getText().toString();
-        //    submissionEventBuilder.setImageDescription(imageDescription);
-         //   System.out.println ("Sent DESCRIPTION");
+            submissionEventBuilder.setImageDescription(imageDescription);
+            System.out.println ("Sent DESCRIPTION");
 
-        }
         ((InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE))
         .showSoftInput(descriptionEditText, InputMethodManager.SHOW_FORCED);
+        }
+       
+        
     }
 
     public boolean hasDescription(){
@@ -82,8 +87,8 @@ public class DescriptionActivity extends AbstractSubmissionActivity implements O
             int pos, long id) {
         // An item was selected. You can retrieve the selected item using
        imageTag= (String) parent.getItemAtPosition(pos);
-      // submissionEventBuilder.setImageTag(imageTag);
-      // System.out.println ("MEAN REACHED HERE");
+       submissionEventBuilder.setImageTag(imageTag);
+       System.out.println ("MEAN REACHED HERE");
   
     }
 
