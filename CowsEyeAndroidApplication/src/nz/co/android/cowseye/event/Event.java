@@ -38,5 +38,9 @@ public interface Event {
 	public Uri getImagePath();
 	/** returns the time stamp of the event when it was created */
 	public String getTimeStamp();
+	/** returns the description of the image associated with this event on disk */
+	public String getImageDescription();
+	/** returns the tag of the image associated with this event on disk */
+	public String getImageTag();
 	
 }

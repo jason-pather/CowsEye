@@ -3,7 +3,9 @@
     <string name="app_name">RiverWatch</string>
     <string name="capture_image">Capture Image</string>
     <string name="select_location">Select Location</string>
-    <string name="enter_description">Enter Description</string>
+    <string name="enter_description">Describe Image</string>
+    <string name ="description_labeltitle"> \n \n Enter Description of Image </string>
+    <string name ="tag_labeltitle"> \n \n Choose Image Tag </string>
     <string name="select_pollution_event">Select Pollution Event</string>
     <string name="enter_contact_details">Enter Contact Details</string>
     <string name="submit"> Submit </string>
@@ -19,7 +21,7 @@
     <string name="back">Back</string>
     <string name="done">Done</string>
     <string name="next">Next</string>
-    <string name="description_title">Enter Description</string>
+    <string name="description_title">Describe Image </string>
     <string name="contactDetailsTitle">Contact Details</string>
     <string name="firstName">First Name</string>
     <string name="lastName">Last Name</string>
@@ -33,6 +35,7 @@
     <string name="saving_image">Saving image</string>
     <string name="saving_description">Saving description</string>
     <string name="savingContactDetails">Saving contact details</string>
+    
     <string name="savingAddress">Saving address</string>
     <string name="gps_message_submission">Submitting a pollution event uses GPS to tag your location. However your GPS seems to be disabled, do you want to
 		enable it?</string>
