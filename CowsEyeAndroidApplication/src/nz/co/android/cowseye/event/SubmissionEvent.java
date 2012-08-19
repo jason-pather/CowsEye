@@ -60,6 +60,7 @@ public class SubmissionEvent implements Event{
     
     public SubmissionEvent(){
         client = constructHttpClient();
+        httpPost = constructHttpPost();
     }
 
     /** Constructs a HttpClient */
@@ -169,9 +170,15 @@ public class SubmissionEvent implements Event{
         MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
 
         try {
-//            reqEntity.addPart(Constants.FORM_POST_JPG_IMAGE, new FileBody(new File(imageLocation)));
-            reqEntity.addPart(Constants.FORM_TEST_STRING, new StringBody("Test_String")); 
-//            reqEntity.addPart(Constants.FORM_POST_TIMESTAMP_UTC, new StringBody(timeStamp)); 
+            reqEntity.addPart(Constants.FORM_POST_IMAGE, new FileBody(new File(imageToPath.toString())));
+            reqEntity.addPart(Constants.FORM_POST_IMAGE_DESCRIPTION, new StringBody(imageDescription)); 
+            reqEntity.addPart(Constants.FORM_POST_IMAGE_TAG, new StringBody(imageTag));
+            //add geo coordinates
+            if(geoCoordinates!=null)
+            reqEntity.addPart(Constants.FORM_POST_GEO, new StringBody(""+geoCoordinates.getLatitudeE6() + geoCoordinates.getLongitudeE6()));
+            //otherwise add address
+            else
+            	reqEntity.addPart(Constants.FORM_POST_ADDRESS, new StringBody(address));
         } catch (UnsupportedEncodingException e1) {
             Log.e(toString(), "UnsupportedEncodingException : "+e1);
         }

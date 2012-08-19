@@ -81,9 +81,9 @@ public class Utils {
 			if (o.outHeight > MAX_IMAGE_SIZE || o.outWidth > MAX_IMAGE_SIZE) {
 				scale = (int)Math.pow(2, (int) Math.round(Math.log(MAX_IMAGE_SIZE / (double) Math.max(o.outHeight, o.outWidth)) / Math.log(0.5)));
 			}
-			Log.d("UTILS", "outHeight : "+o.outHeight );
-			Log.d("UTILS", "outWidth : "+o.outWidth );
-			Log.d("UTILS", "scale : "+scale );
+//			Log.d("UTILS", "outHeight : "+o.outHeight );
+//			Log.d("UTILS", "outWidth : "+o.outWidth );
+//			Log.d("UTILS", "scale : "+scale );
 
 			//Decode with inSampleSize
 			BitmapFactory.Options o2 = new BitmapFactory.Options();
@@ -93,7 +93,7 @@ public class Utils {
 			inputStream.close();
 			//re-orient
 			float rotation = rotationForImage(uri);
-			Log.d("UTILS", "rotation : "+rotation);
+//			Log.d("UTILS", "rotation : "+rotation);
 			if (rotation != 0f) {
 				Matrix matrix = new Matrix();
 				matrix.preRotate(rotation);
@@ -106,7 +106,7 @@ public class Utils {
 				int orientation = -1;
 				if (cur != null && cur.moveToFirst()) {
 					orientation = cur.getInt(cur.getColumnIndex(orientationColumn[0]));
-					Log.d("UTILS", "orientation : "+orientation);
+//					Log.d("UTILS", "orientation : "+orientation);
 					if (orientation > 0) {
 						Matrix matrix = new Matrix();
 						matrix.preRotate(orientation);

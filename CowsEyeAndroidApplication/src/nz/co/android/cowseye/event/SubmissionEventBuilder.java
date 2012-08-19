@@ -13,7 +13,7 @@ public class SubmissionEventBuilder {
 
 	private static SubmissionEvent submissionEvent;
 	private static SubmissionEventBuilder builder = null;
-	
+
 	/** Singleton */
 	public static SubmissionEventBuilder getSubmissionEventBuilder(){
 		if(builder == null )
@@ -23,32 +23,69 @@ public class SubmissionEventBuilder {
 	private SubmissionEventBuilder(){
 		submissionEvent = new SubmissionEvent();
 	}
-	
 	public void startNewSubmissionEvent(){
 		submissionEvent = new SubmissionEvent();
 	}
-	public void setImagePath(Uri uriToImage) {
+	public SubmissionEventBuilder setImagePath(Uri uriToImage) {
 		submissionEvent.setImagePath(uriToImage);
+		return this;
 	}
-	public Uri getImagePath() {
-		return submissionEvent.getImagePath();
-	}
-	public void setImageTag (String tag) {
+	public SubmissionEventBuilder setImageTag (String tag) {
 		submissionEvent.setImageTag(tag);
+		return this;
 	}
-	public String getImageTag () {
-		return submissionEvent.getImageTag();
-	}
-	public void setImageDescription (String descr) {
+	public SubmissionEventBuilder setImageDescription (String descr) {
 		submissionEvent.setImageDescription(descr);
+		return this;
 	}
-	public String getImageDescription () {
-		return submissionEvent.getImageDescription();
-	}
-	public void setGeoCoordinates(GeoPoint addressCoordinates) {
+	public SubmissionEventBuilder setGeoCoordinates(GeoPoint addressCoordinates) {
 		submissionEvent.setGeoCoordinates(addressCoordinates);
+		return this;
 	}
 	public void setAddress(String address) {
 		submissionEvent.setAddress(address);	
+	}
+
+	public Uri getImagePath(){
+		return submissionEvent.getImagePath();
+	}
+	public String getImageDescription(){
+		return submissionEvent.getImageDescription();
+	}
+	public String getImageTag(){
+		return submissionEvent.getImageTag();
+	}
+	public GeoPoint getGeoCoordinates(){
+		return submissionEvent.getGeoCoordinates();
+	}
+	public String getAddress(){
+		return submissionEvent.getAddress();
+	}
+	
+	/** Tries to return a built submissionEvent */
+	public SubmissionEvent build() throws SubmissionEventBuilderException{
+		if(hasDetails())
+			return submissionEvent;
+		else throw new SubmissionEventBuilderException("Submission Event does not contain all information needed");
+	}
+
+	/* Checks if all valid details are stored */
+	private boolean hasDetails() {
+		if(submissionEvent==null)
+			return false;
+		if(submissionEvent.getImagePath()==null)
+			return false;
+		if(submissionEvent.getImagePath().toString().equals(""))
+			return false;
+		if(submissionEvent.getImageDescription()==null)
+			return false;
+		if(submissionEvent.getImageDescription().equals(""))
+			return false;
+		if(submissionEvent.getImageTag()==null)
+			return false;
+		if(submissionEvent.getImageTag().equals(""))
+			return false;
+		//good if we have either geo coordinates or address
+		return submissionEvent.getGeoCoordinates()!=null || (submissionEvent.getAddress()!=null && !submissionEvent.getAddress().equals("")) ;
 	}
 }

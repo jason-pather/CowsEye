@@ -40,14 +40,14 @@ public interface Constants {
 
 	
 	/* Service paths */
-	public static final String SERVER_PATH = "http://";
-	public static final String SUBMISSION_PATH = SERVER_PATH + "submit";
+	public static final String SERVER_PATH = "http://saffron:4567/wainz/";
+	public static final String SUBMISSION_PATH = SERVER_PATH + "submit/";
 	
 	/* Form post entities */
-	public static final String FORM_TEST_STRING = "form_test";
-
-
-	
-
+	public static final String FORM_POST_IMAGE = "form_post_image";
+	public static final String FORM_POST_GEO = "form_post_geo";
+	public static final String FORM_POST_IMAGE_TAG = "form_post_tag";
+	public static final String FORM_POST_IMAGE_DESCRIPTION = "form_post_description";
+	public static final String FORM_POST_ADDRESS = "form_post_address";
 
 }
