@@ -1,11 +1,14 @@
 package nz.co.android.cowseye.activity;
 
+import java.io.IOException;
+
 import nz.co.android.cowseye.R;
 import nz.co.android.cowseye.common.Constants;
 import nz.co.android.cowseye.utility.AlertBuilder;
 import nz.co.android.cowseye.utility.Utils;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -56,7 +59,7 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 
 		//goes to the description activity
 		nextButton.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				if(cameraFileUri!=null){
@@ -115,7 +118,6 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		// create a file to save the image
 		cameraFileUri = Utils.getNewCameraFileUri();
-		Log.d(toString(), "cameraFileUri now : "+cameraFileUri);
 		// set the image file name
 		intent.putExtra(MediaStore.EXTRA_OUTPUT, cameraFileUri); 
 		//trigger activity
@@ -149,9 +151,26 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 		}
 	}
 
+	/** Enables the preview image, first by trying to decode the URI natively into a bitmap 
+	 * If this fails then the image will be loaded from the uri handled by the system
+	 * @param cameraFileUri - path to the image
+	 */
+	private void setPreviewImageOn(Uri cameraFileUri) {
+		try{
+			Bitmap b = Utils.getAppFriendlyBitmap(cameraFileUri, getContentResolver());
+			if(b==null)
+				throw new IOException("Bitmap returned is null");
+			setPreviewBitmapImageOn(b);
+		}
+		catch(IOException e){
+			Log.e(toString(), "bitmap failed to decode : "+e);
+			setPreviewURIImageOn(cameraFileUri);
+		}	
+	}
+
 	/** Enables the preview image 
 	 * @param uriToImage - URI to the image captured or selected*/
-	private void setPreviewImageOn(Uri uriToImage) {
+	private void setPreviewURIImageOn(Uri uriToImage) {
 		if(uriToImage!=null){
 			//sets preview text view to invisible
 			previewTextView.setVisibility(View.INVISIBLE);
@@ -159,6 +178,20 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 			previewImageView.setVisibility(View.VISIBLE);
 			//set background preview image to image taken
 			previewImageView.setImageURI(uriToImage);
+		}
+
+	}
+
+	/** Enables the preview image 
+	 * @param bitmap - the image bitmap*/
+	private void setPreviewBitmapImageOn(Bitmap bitmap) {
+		if(bitmap!=null){
+			//sets preview text view to invisible
+			previewTextView.setVisibility(View.INVISIBLE);
+			//sets image to visible
+			previewImageView.setVisibility(View.VISIBLE);
+			//set background preview image to image taken
+			previewImageView.setImageBitmap(bitmap);
 		}
 
 	}
