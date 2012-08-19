@@ -49,10 +49,6 @@ public class DescriptionActivity extends AbstractSubmissionActivity implements O
         spinner.setAdapter(adapter);
     
         setupUI();
-        System.out.println ("Reached here");
-        //starts a new submission event
-        submissionEventBuilder.startNewSubmissionEvent();
-        
        }
     
 
