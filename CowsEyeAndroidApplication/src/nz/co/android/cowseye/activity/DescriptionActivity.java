@@ -66,9 +66,7 @@ public class DescriptionActivity extends AbstractSubmissionActivity implements O
 
         ((InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE))
         .showSoftInput(descriptionEditText, InputMethodManager.SHOW_FORCED);
-        }
-       
-        
+        }    
     }
 
     public boolean hasDescription(){
