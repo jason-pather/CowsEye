@@ -31,7 +31,7 @@
     <string name="please_select_a_image">Please select an Image</string>
     <string name="pleaseEnterDescription">Please enter a description of the problem</string>
     <string name="pleaseEnterDetails">Please enter all contact details</string>
-    <string name="pleaseEnterAddress">Please enter address</string>
+    <string name="pleaseEnterAddress">Please enter an address</string>
     <string name="saving_image">Saving image</string>
     <string name="saving_description">Saving description</string>
     <string name="savingContactDetails">Saving contact details</string>
@@ -45,13 +45,13 @@
 		enable it?</string>
     <string name="positive_button_title">Yes</string>
     <string name="negative_button_title">No</string>
-    <string name="gps_no_location_message">No location found. Please enter manually</string>
+    <string name="gps_no_location_message">Cannot convert geo coordinates to a valid address. Please continue</string>
     <string name="locationTitle">Record Location</string>
     <string name="userAddress">Address</string>
     <string name="errorInReverseGeoCoding">Unable to convert location coordinates to address</string>
     <string name="thisIsTheLocationFound">This is the location found</string>
     <string name="newLocationFound">New location found...</string>
-    <string name="wouldYouLikeToUpdate">Would you like to update your address to</string>
+    <string name="wouldYouLikeToUpdate">Would you like to update your position?</string>
     <string name="noAddressFound">No address found at location:</string>
     <string name="wouldYouLikeToUpdateStill">Would you like to update your location?</string>
     <string name="errorInGeoCoding">Unable to convert address to location coordinates</string>

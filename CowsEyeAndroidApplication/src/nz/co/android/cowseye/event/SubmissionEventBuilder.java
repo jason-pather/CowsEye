@@ -1,5 +1,7 @@
 package nz.co.android.cowseye.event;
 
+import com.google.android.maps.GeoPoint;
+
 import android.net.Uri;
 
 /**
@@ -31,23 +33,22 @@ public class SubmissionEventBuilder {
 	public Uri getImagePath() {
 		return submissionEvent.getImagePath();
 	}
-	
 	public void setImageTag (String tag) {
 		submissionEvent.setImageTag(tag);
 	}
-	
 	public String getImageTag () {
 		return submissionEvent.getImageTag();
 	}
-	
-	
 	public void setImageDescription (String descr) {
 		submissionEvent.setImageDescription(descr);
 	}
-	
 	public String getImageDescription () {
 		return submissionEvent.getImageDescription();
 	}
-
-
+	public void setGeoCoordinates(GeoPoint addressCoordinates) {
+		submissionEvent.setGeoCoordinates(addressCoordinates);
+	}
+	public void setAddress(String address) {
+		submissionEvent.setAddress(address);	
+	}
 }

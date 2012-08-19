@@ -21,6 +21,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.json.JSONObject;
 
+import com.google.android.maps.GeoPoint;
+
 import android.net.Uri;
 import android.util.Log;
 
@@ -35,8 +37,10 @@ public class SubmissionEvent implements Event{
     protected Uri imageToPath; /* Stores the path to the image on local storage */
     protected String imageDescription;
     protected String imageTag;
+    protected String address;
+    protected GeoPoint geoCoordinates;
 
-    
+ 
 //    protected final String password;
 //    protected final String loginCode;
     private int failCount = 0;
@@ -185,6 +189,22 @@ public class SubmissionEvent implements Event{
     public void setImageTag (String tag) {
         imageTag=tag;
     }
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public GeoPoint getGeoCoordinates() {
+		return geoCoordinates;
+	}
+
+	public void setGeoCoordinates(GeoPoint geoCoordinates) {
+		this.geoCoordinates = geoCoordinates;
+	}
 
 	
 

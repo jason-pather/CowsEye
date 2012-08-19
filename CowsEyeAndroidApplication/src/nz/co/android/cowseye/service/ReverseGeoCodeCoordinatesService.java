@@ -56,7 +56,7 @@ public class ReverseGeoCodeCoordinatesService extends AsyncTask<Void, Void, Stri
 	protected void onPostExecute(String addr) {
 		if(addr==null){
 			Log.e(toString(), "Error in reverse geo coding");
-			gpsManager.errorReverseGeoCoding();
+			gpsManager.requestBuildAlertMessageUpdatePosition(null,oldGeoPoint);
 		}
 		else if(!addr.equals("")){
 			if(!(addr.trim()).equals(currentAddress)){
