@@ -40,14 +40,21 @@ public interface Constants {
 
 	
 	/* Service paths */
-	public static final String SERVER_PATH = "http://";
-	public static final String SUBMISSION_PATH = SERVER_PATH + "submit";
+	public static final String SERVER_PATH = "http://barretts.ecs.vuw.ac.nz:4567/wainz/";
+	public static final String SUBMISSION_PATH = SERVER_PATH + "submit/";
 	
 	/* Form post entities */
-	public static final String FORM_TEST_STRING = "form_test";
-
-
-	
+	public static final String FORM_POST_IMAGE = "image";
+	public static final String FORM_POST_DATA = "data";
+//	public static final String FORM_POST_IMAGE_TAG = "form_post_tag";
+//	public static final String FORM_POST_IMAGE_DESCRIPTION = "form_post_description";
+//	public static final String FORM_POST_ADDRESS = "form_post_address";
+	public static final String SUBMISSION_JSON_DESCRIPTION = "description";
+	public static final String SUBMISSION_JSON_TAGS = "tags";
+	public static final String SUBMISSION_JSON_GEO_LOCATION = "geolocation";
+	public static final String SUBMISSION_JSON_GEO_LAT = "lat";
+	public static final String SUBMISSION_JSON_GEO_LON = "long";
+	public static final String SUBMISSION_JSON_ADDRESS = "physical_location";
 
 
 }

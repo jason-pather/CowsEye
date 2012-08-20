@@ -58,7 +58,7 @@ public class AlertBuilder {
 	public static AlertDialog buildAlertMessageUpdatePosition(final RecordLocationActivity locationActivity, final MapManager mapHelper, final Context context, final String address, final GeoPoint userPoint) {
 		try{
 		final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-		builder.setMessage(context.getResources().getString(R.string.newLocationFound) +"\n"+context.getResources().getString(R.string.wouldYouLikeToUpdate)+ " " + address)
+		builder.setMessage(context.getResources().getString(R.string.newLocationFound) +"\n"+context.getResources().getString(R.string.wouldYouLikeToUpdate))
 		.setCancelable(false)
 		.setPositiveButton(context.getResources().getString(R.string.positive_button_title), new DialogInterface.OnClickListener() {
 			public void onClick(final DialogInterface dialog, final int id) {

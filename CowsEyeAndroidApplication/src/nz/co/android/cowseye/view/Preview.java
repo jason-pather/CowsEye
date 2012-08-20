@@ -110,28 +110,35 @@ public class Preview extends SurfaceView implements SurfaceHolder.Callback {
         
         if(display.getRotation() == Surface.ROTATION_0)
         {
-            parameters.setPreviewSize(h, w);                           
+//            parameters.setPreviewSize(h, w);  
+            setPreviewSize(h, w, parameters);
             camera.setDisplayOrientation(90);
-            
         }
 
         if(display.getRotation() == Surface.ROTATION_90)
         {
-            parameters.setPreviewSize(w, h);                           
+//            parameters.setPreviewSize(w, h);  
+            setPreviewSize(w, h, parameters);
+
         }
 
         if(display.getRotation() == Surface.ROTATION_180)
         {
-            parameters.setPreviewSize(h, w);               
+//            parameters.setPreviewSize(h, w);  
+            setPreviewSize(h, w, parameters);
+
         }
 
         if(display.getRotation() == Surface.ROTATION_270)
         {
-            parameters.setPreviewSize(w, h);
+//            parameters.setPreviewSize(w, h);
+            setPreviewSize(w, h, parameters);
+
             camera.setDisplayOrientation(180);
         }
 
-        camera.setParameters(parameters);
+//        parameters.getP
+//        camera.setParameters(parameters);
         previewCamera();   
 
 //		Camera.Parameters parameters = camera.getParameters();

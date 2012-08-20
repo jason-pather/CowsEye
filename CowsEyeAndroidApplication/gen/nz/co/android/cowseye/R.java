@@ -57,6 +57,7 @@ public final class R {
         public static final int addressEditText=0x7f08000f;
         public static final int backButton=0x7f080001;
         public static final int button_submit=0x7f080011;
+        public static final int button_test_post=0x7f08001e;
         public static final int capture_image_button=0x7f08001c;
         public static final int contactDetailsScreenTitle=0x7f080000;
         public static final int contactEmailEditText=0x7f080006;
@@ -71,7 +72,7 @@ public final class R {
         public static final int mapview=0x7f08000e;
         public static final int nextButton=0x7f080008;
         public static final int phototag_spinner=0x7f08000c;
-        public static final int previewFrameLayout=0x7f08001e;
+        public static final int previewFrameLayout=0x7f08001f;
         public static final int preview_image=0x7f08001a;
         public static final int preview_text=0x7f08001b;
         public static final int preview_title=0x7f080012;

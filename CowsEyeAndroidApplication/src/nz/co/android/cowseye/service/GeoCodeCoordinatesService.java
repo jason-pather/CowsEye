@@ -44,8 +44,8 @@ public class GeoCodeCoordinatesService extends AsyncTask<Void, Void, Address> {
 	protected void onPostExecute(Address location) {
 		if(location==null)
 			locationActivity.errorGeoCodeAddress();
-		else
-			locationActivity.buildLocationDataIntent(locationActivity.RESULT_OK);//, location);
+//		else
+//			locationActivity.buildLocationDataIntent(locationActivity.RESULT_OK);//, location);
 		
 	}
 }

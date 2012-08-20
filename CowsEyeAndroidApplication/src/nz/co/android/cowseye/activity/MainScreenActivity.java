@@ -1,12 +1,19 @@
 package nz.co.android.cowseye.activity;
 
+import org.apache.http.HttpResponse;
+import org.json.JSONObject;
+
 import nz.co.android.cowseye.R;
 import nz.co.android.cowseye.RiverWatchApplication;
 import nz.co.android.cowseye.R.id;
 import nz.co.android.cowseye.R.layout;
 import nz.co.android.cowseye.R.string;
 import nz.co.android.cowseye.common.Constants;
+import nz.co.android.cowseye.event.Event;
+import nz.co.android.cowseye.event.SubmissionEventBuilder;
+import nz.co.android.cowseye.event.SubmissionEventBuilderException;
 import nz.co.android.cowseye.utility.AlertBuilder;
+import nz.co.android.cowseye.utility.JSONHelper;
 import nz.co.android.cowseye.utility.Utils;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -40,6 +47,7 @@ public class MainScreenActivity extends Activity {
 
 	private Button buttonSubmit;
 	private RiverWatchApplication myApplication;
+
 
 	/** Called when the activity is first created. */
 	@Override
@@ -76,7 +84,7 @@ public class MainScreenActivity extends Activity {
 	public class SubmitPollutionEventOnClickListener implements OnClickListener{
 		@Override
 		public void onClick(View v) {
-			
+
 			startActivity(new Intent(MainScreenActivity.this, SelectImageActivity.class));
 		}
 
