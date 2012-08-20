@@ -77,6 +77,12 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom|center_horizontal"
                         android:text="@string/select_image_from_gallery" />
+                             <Button
+                        android:id="@+id/button_test_post"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:text="TESTING POST" />
                 </LinearLayout>
             </FrameLayout>
         </FrameLayout>
