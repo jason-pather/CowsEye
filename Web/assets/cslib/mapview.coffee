@@ -26,29 +26,67 @@ mapCanvas.css {height: "100%" }
 # mapCanvasHeight = mapCanvas.css "height"
 # mapCanvas.css {height: "#{mapCanvasHeight - 50}px"}
 
-# Get test data and populate map
-incidentList = Window.IncidentList 0, 64
-
 # Zoom listner
 # google.maps.event.addListener googleMap, "zoom_changed", ->
 # console.log "Zoom #{googleMap.getZoom()} "
 size = 0.05
+current = 0;
+range = 16;
 	
-createModal = (incident) ->
-	lat = new google.maps.LatLng incident.Lat - size, incident.Lng - size * 2
-	lng = new google.maps.LatLng incident.Lat + size, incident.Lng + size * 2
+createOverlay = (incident) ->
+
+	geo = incident.geolocation
+	
+	lat = new google.maps.LatLng geo.lat - size, geo.long - size * 2
+	lng = new google.maps.LatLng geo.lat + size, geo.long + size * 2
 
 	imageBounds = new google.maps.LatLngBounds lat, lng
-	overlay = new google.maps.GroundOverlay "#{incident.Thumbnail_URL}", imageBounds
+	overlay = new google.maps.GroundOverlay "#{incident.thumbnail_url}", imageBounds
 
 	google.maps.event.addListener overlay, 'click', () => 
-		Window.CreateIncidentModal incident.Incident_ID
+		Window.CreateIncidentModal incident.id
 
 	overlay.setMap googleMap
 
-for incident in incidentList.Incidents
-	createModal incident
+onSuccess = (data) ->
+	for incident in data.incidents
+		current++
+		createOverlay incident
 		
+onFail = (data) ->
+	console.log "Rest Call failed"
+		
+Window.RWCall onSuccess, onFail, {}, "unapproved_stub", "/start=#{current}/number=#{range}", "GET"
+
+
+# Controls
+nextButton = $ "#nextBtn"
+prevButton = $ "#prevBtn"
+d16Button = $ "#d16"
+d32Button = $ "#d32"
+d64Button = $ "#d64"
+d128Button = $ "#d128"
+d256Button = $ "#d256"
+
+nextButton.click ->
+	console.log "Clicked Next"
+	Window.RWCall onSuccess, onFail, {}, "unapproved_stub", "/start=#{current}/number=#{range}", "GET"
+
+prevButton.click ->
+	console.log "Clicked Prev"
+	current = if current - range > 0 then current - range else 0;
+	Window.RWCall onSuccess, onFail, {}, "unapproved_stub", "/start=#{current}/number=#{range}", "GET"
+	
+changeRange = (newRange) ->
+	current = if current - range > 0 then current - range else 0;
+	range = newRange;
+	Window.RWCall onSuccess, onFail, {}, "unapproved_stub", "/start=#{current}/number=#{range}", "GET"
+
+d16Button.click -> changeRange 16
+d32Button.click -> changeRange 32
+d64Button.click -> changeRange 64
+d128Button.click -> changeRange 128
+d256Button.click -> changeRange 256
 
 
 ###

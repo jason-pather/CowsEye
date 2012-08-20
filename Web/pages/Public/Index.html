@@ -143,28 +143,12 @@
 	<script src="../../assets/js/bootstrap-transition.js"></script>
 	<script src="../../assets/js/bootstrap-dropdown.js"></script>
 	<script src="../../assets/js/bootstrap-carousel.js"></script>
-	<script src="../../assets/js/AjaxCommons.js"></script>
-	<script src="../../assets/js/MockData.js"></script>
+	
+	<script src="../../assets/js/AjaxCommonsMock.js"></script>
+	
 	<script type="text/javascript">
 
 		$('.carousel').carousel();
-	
-		var call = Window.RWCall
-		
-		var testButton =  $("#textAJAXButton");
-		
-		var onSuccess = function () {
-			console.log("This call succesed")
-		}
-		
-		var onFailure = function () {
-			console.log("This call failed")
-		}
-		
-		testButton.click( function() {
-			console.log("Hello");
-			call ( onSuccess, onFailure, {}, "HelloWorld/save", {}, "POST" )
-		});	
 		
 	</script>
   </body>

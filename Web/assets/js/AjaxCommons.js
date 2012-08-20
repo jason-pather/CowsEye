@@ -7,13 +7,9 @@ Author Matthew Betts
 
 
 (function() {
-  var BASE_URL, CONTENT_TYPE, DATA_TYPE, GET_TYPE, PROCESS_DATA, PUT_TYPE, RWCall, TIMEOUT;
+  var BASE_URL, CONTENT_TYPE, DATA_TYPE, PROCESS_DATA, RWCall, TIMEOUT;
 
-  BASE_URL = "http://localhost:1469/";
-
-  PUT_TYPE = "PUT";
-
-  GET_TYPE = "GET";
+  BASE_URL = "http://barretts.ecs.vuw.ac.nz:4567/wainz/";
 
   CONTENT_TYPE = "contentType";
 
@@ -34,31 +30,13 @@ Author Matthew Betts
 
 
   RWCall = function(onSuccess, onFailure, data, path, args, callType) {
-    var ajaxLoader, allArguments, first, json, key, _i, _len;
+    var ajaxLoader, json;
     ajaxLoader = $("#ajaxLoader");
     ajaxLoader.css("display", "block");
-    first = true;
-    allArguments = "";
-    for (_i = 0, _len = args.length; _i < _len; _i++) {
-      key = args[_i];
-      if (first) {
-        first = false;
-        allArguments += "?";
-      } else {
-        allArguments += "&";
-      }
-      allArguments += "" + key + " = " + args[key];
-    }
     json = JSON.stringify(data);
-    console.log(allArguments);
     return $.ajax({
-      type: callType,
-      url: BASE_URL + path + allArguments,
-      data: json,
-      dataType: DATA_TYPE,
-      processData: PROCESS_DATA,
-      contentType: CONTENT_TYPE,
-      timeout: TIMEOUT,
+      url: BASE_URL + path + args,
+      dataType: "jsonp",
       success: function(msg) {
         onSuccess(msg);
         return ajaxLoader.css("display", "none");

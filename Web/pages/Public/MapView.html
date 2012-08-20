@@ -63,15 +63,14 @@
 			<div class="btn-group">
 				<button class="btn btn-inverse dropdown-toggle" data-toggle="dropdown">Show <i class="icon-chevron-down icon-white"></i></button>
 				<ul class="dropdown-menu">
-					<li><a href="#">16</a></li>
-					<li><a href="#">32</a></li>
-					<li><a href="#">64</a></li>
-					<li><a href="#">128</a></li>
-					<li><a href="#">256</a></li>
-					<li><a href="#">All</a></li>
+					<li><a id = "d16" href="#">16</a></li>
+					<li><a id = "d32" href="#">32</a></li>
+					<li><a id = "d64" href="#">64</a></li>
+					<li><a id = "d128" href="#">128</a></li>
+					<li><a id = "d256" href="#">256</a></li>
 				</ul>
-				<button class="btn btn-inverse" href="#"><i class="icon-arrow-left icon-white"></i> Prev</button>
-				<button class="btn btn-inverse" href="#">Next <i class="icon-arrow-right icon-white"></i></button>
+				<button class="btn btn-inverse" id="prevBtn" href="#"><i class="icon-arrow-left icon-white"></i> Prev</button>
+				<button class="btn btn-inverse" id="nextBtn" href="#">Next <i class="icon-arrow-right icon-white"></i></button>
 			</div>
 		</div>
 		<div id="map_canvas"></div>
@@ -104,7 +103,7 @@
 	<script src="../../assets/js/bootstrap.js"></script>
 	<script src="../../assets/js/bootstrap-transition.js"></script>
 	<script src="../../assets/js/bootstrap-modal.js"></script>
-	<script src="../../assets/js/MockData.js"></script>
+	
 	<script src="../../assets/js/AjaxCommons.js"></script>
 	<script src="../../assets/js/MapView.js"></script>
 	<script src="../../assets/js/IncidentModal.js"></script>

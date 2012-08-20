@@ -6,9 +6,7 @@ Author Matthew Betts
 
 
 # Globals
-BASE_URL = "http://localhost:1469/"
-PUT_TYPE = "PUT"
-GET_TYPE = "GET"
+BASE_URL = "http://barretts.ecs.vuw.ac.nz:4567/wainz/"
 CONTENT_TYPE = "contentType"
 PROCESS_DATA = false
 TIMEOUT = 5000
@@ -29,37 +27,19 @@ RWCall = (onSuccess, onFailure, data, path, args, callType) ->
 
 	ajaxLoader = $ "#ajaxLoader"
 	ajaxLoader.css "display", "block"
-	
-	# Format arguments
-	first = true
-	allArguments = "";
-	for key in args
-		
-		# Append ? to indicate the first argument
-		if first
-			first = false
-			allArguments += "?"
-		
-		# Append & to indicate another argument
-		else
-			allArguments += "&"
-		
-		# Append Key = Value
-		allArguments += "#{key} = #{args[key]}"
 
 	# Format the data
 	json = JSON.stringify data 
-
-	console.log(allArguments)
 	
 	$.ajax
-		type: callType,
-		url: BASE_URL + path + allArguments, # build path for request
-		data: json,
-		dataType: DATA_TYPE,
-		processData: PROCESS_DATA,
-		contentType: CONTENT_TYPE,
-		timeout: TIMEOUT,
+		# type: callType,
+		url: BASE_URL + path + args,
+		# data: json,
+		dataType: "jsonp",
+		# jsonp: "jsonp"
+		# processData: false ,
+		# contentType: "application/json;charset=UTF-8",
+		# timeout: TIMEOUT,
 		success: (msg) ->
 			onSuccess msg 
 			ajaxLoader.css "display", "none"
