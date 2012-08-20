@@ -58,7 +58,7 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 		location.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, RecordLocationActivity.class));
 
 		description = (TextView)findViewById(R.id.PreviewDescriptionText);
-		description.setText("");
+		description.setText(submissionEventBuilder.getImageDescription());
 		description.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, DescriptionActivity.class));
 	}
 
