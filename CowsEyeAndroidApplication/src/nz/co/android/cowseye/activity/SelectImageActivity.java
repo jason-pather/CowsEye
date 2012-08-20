@@ -2,6 +2,7 @@ package nz.co.android.cowseye.activity;
 
 import java.io.IOException;
 
+import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.json.JSONObject;
 
@@ -68,6 +69,12 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 					HttpResponse response = e.processRaw();
 					Log.d(toString(), "response : "+response);
 					try{
+						Log.d(toString(),"Status line : "+ response.getStatusLine());
+						for(Header header : response.getAllHeaders()){
+							Log.d(toString(),"header : "+ header.getName() + " - > "+header.getValue());
+						}
+
+						
 						JSONObject jsonObject = JSONHelper.parseHttpResponseAsJSON(response);
 						Log.d(toString(), "jsonObject : "+jsonObject);
 
