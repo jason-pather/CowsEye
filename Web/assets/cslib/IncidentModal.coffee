@@ -2,6 +2,28 @@
 Retreive, and create a incident modal dialog box
 ###
 
+
+getMessage = () ->
+	messageInput = $ "#messageInput"
+	messageInput.val()
+	
+	
+checkMessage = () ->
+	if getMessage() == ""
+	
+		controlGroup = $ "#messageControlGroup"
+		controlGroup.addClass "error"
+	
+		controlGroup.change ->
+			if getMessage() != ""
+				controlGroup.removeClass "error"
+	
+		# No Name
+		return false
+	
+	# Name is ok
+	return true
+
 Make = (id) ->
 
 	# Change somthing to the loading icon...
@@ -12,26 +34,34 @@ Make = (id) ->
 	# Populate modal with correct information
 	incidentModal = $ "<div class=\"modal hide fade in\" id=\"myModal\">
 		<div class=\"modal-header\">
-			<button type=\"button\" class=\"close\" data-dismiss=\"modal\">×</button>
-			<h3>Mock Incident</h3>
+			<button type=\"button\" class=\"close\" data-dismiss=\"modal\"><i class=\"icon-remove icon-red\"></i></button>
+			<h3>Incident Details</h3>
 		</div>
 		<div class=\"modal-body\">
 			<div href=\"#\" class=\"thumbnail\" id=\"testThumbnail\">
 				<img src=\"#{data.Full_URL}\" alt=\"\">	
 			</div>
-			<h2>The Title for #{data.Incident_ID}</h2>
-			<p> This is a sample picture to be used as a place holder when testing for content or something and another line for good measure, anlala and some more writing alalala and some more writing alalala and some more writing alalala </p>
-			<h2>Leave Comment</h2>
-			<textarea class=\"input-xlarge\" id=\"commentTextarea\" rows=\"3\" style=\"margin: 0px; width: 695px; height: 114px; \"></textarea>
-			<h2>Comments 2 </h2>
+			<h2>Details</h2>
+			<p> #{data.Description}</p>
+			<h2>Comments</h2>
 			<p></p>
 			<div id = \"comments\"></div>
+			
+			<h2>Post Comment</h2>
+			<div class =\"control-group\" id = \"messageControlGroup\">
+				<textarea class=\"input-xlarge\" id=\"messageInput\" rows=\"3\" style=\"margin: 0px; width: 690px; height: 114px; \"></textarea>
+			</div>
+			<p></p>
+			<a href=\"#\" id= \"commentSubmitButton\"class=\"btn btn-primary\">
+				<i class=\"icon-comment icon-white\"></i>
+				Submit
+			</a>	
 		</div>
-		<div class=\"modal-footer\">
-		<a href=\"#\" id= \"commentSubmitButton\"class=\"btn btn-success\">Submit Comment for Approval</a>
-		<a href=\"#\" class=\"btn btn-danger\" data-dismiss=\"modal\">Close Incident</a>
-		
-		
+		<div class=\"modal-footer\">	
+			<a href=\"#\" class=\"btn btn-danger\" data-dismiss=\"modal\">
+				<i class=\"icon-remove icon-white\"></i>
+				Close Incident
+			</a>
 		</div>
 		
 	</div>"
@@ -43,13 +73,34 @@ Make = (id) ->
 	submitCommentButton.click ->
 		
 		# Get comment text
-		commentTextArea  = $ "#commentTextarea"
-		commentText = commentTextArea.val();
+		if checkMessage()
+			data = {
+				indident_ID: id
+				comment: getMessage()
+			}
+			
+			path = "/Submit/Comment"
+			args = []
+			callType = "POST"
+			
+			onSuccess = (msg) ->
+				submitCommentButton.removeClass "btn-primary"
+				submitCommentButton.addClass "btn-success"
+				console.log "Success"
+				submitCommentButton.text "Comment Submitted Successfuly, Awaiting Approval"
+
+			onFailure = (msg) ->
+				submitCommentButton.removeClass "btn-primary"
+				submitCommentButton.addClass "btn-danger"
+				console.log "Fail"
+				submitCommentButton.text "Comment Submission Failed"
 		
-		# Submit
-		Window.RWCall
+			submitCommentButton.text "Submitting..."
+			submitCommentButton.click ->
 		
-		# Display success
+			# Send
+			Window.RWCall onSuccess, onFailure, data, path, args, callType
+		
 	
 	# Get comments
 	comments = Window.CommentsForIncident id

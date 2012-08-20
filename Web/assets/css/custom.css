@@ -31,3 +31,13 @@ body.modal-open {
 margin-top:160px;
 	width:150px;
 }
+
+#ajaxLoader{
+	padding:4px;
+	display:none;
+	padding:4px;
+	width:32px;
+	height:32px;
+}
+
+#over_map { position: absolute; top: 50px; left: 10px; z-index: 99; }

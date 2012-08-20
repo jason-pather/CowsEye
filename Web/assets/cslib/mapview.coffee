@@ -8,7 +8,8 @@ SetupMap = () ->
 	mapOptions = { 
 		zoom: 9,
 		center: mapCenter,
-		mapTypeId: google.maps.MapTypeId.ROADMAP
+		mapTypeId: google.maps.MapTypeId.ROADMAP,
+		disableDefaultUI: true
 	}
 
 	elem = document.getElementById 'map_canvas'
@@ -22,44 +23,35 @@ google.maps.event.addDomListener(window, "load", googleMap);
 # Fix the height of the map, twitter bootstrap fucks it up, it probbly fucks up some other map things aswell
 mapCanvas = $ "#map_canvas"
 mapCanvas.css {height: "100%" }
-
-# Test image oberlays
-newark = new google.maps.LatLng 40.740, -74.18
-newarkLat = new google.maps.LatLng 40.716216, -74.213393
-newarkLng = new google.maps.LatLng 40.765641, -74.139235
-
-imageBounds = new google.maps.LatLngBounds newarkLat, newarkLng
-
-oldmap = new google.maps.GroundOverlay "http://placehold.it/480x360", imageBounds
-
-google.maps.event.addListener oldmap, 'click', () => 
-	Window.CreateIncidentModal 2
-
-oldmap.setMap googleMap
+# mapCanvasHeight = mapCanvas.css "height"
+# mapCanvas.css {height: "#{mapCanvasHeight - 50}px"}
 
 # Get test data and populate map
-incidentList = Window.IncidentList 0, 12
+incidentList = Window.IncidentList 0, 64
 
 # Zoom listner
 # google.maps.event.addListener googleMap, "zoom_changed", ->
 # console.log "Zoom #{googleMap.getZoom()} "
 size = 0.05
 	
+createModal = (incident) ->
+	lat = new google.maps.LatLng incident.Lat - size, incident.Lng - size * 2
+	lng = new google.maps.LatLng incident.Lat + size, incident.Lng + size * 2
 
-for incident in incidentList.Incidents
-		
-	newarkLat = new google.maps.LatLng incident.Lat - size, incident.Lng - size * 2
-	newarkLng = new google.maps.LatLng incident.Lat + size, incident.Lng + size * 2
+	imageBounds = new google.maps.LatLngBounds lat, lng
+	overlay = new google.maps.GroundOverlay "#{incident.Thumbnail_URL}", imageBounds
 
-	imageBounds = new google.maps.LatLngBounds newarkLat, newarkLng
-	oldmap = new google.maps.GroundOverlay "http://placehold.it/480x360", imageBounds
-
-	google.maps.event.addListener oldmap, 'click', () => 
+	google.maps.event.addListener overlay, 'click', () => 
 		Window.CreateIncidentModal incident.Incident_ID
 
-	oldmap.setMap googleMap
+	overlay.setMap googleMap
+
+for incident in incidentList.Incidents
+	createModal incident
+		
 
 
+###
 for incident in incidentList.Incidents
 
 	newarkLat = new google.maps.LatLng incident.Lat - size, incident.Lng - size * 2
@@ -79,6 +71,7 @@ for incident in incidentList.Incidents
 			strokeOpacity: 1,
 			strokeWeight: 1
 	}
+
 		
 	border.setMap googleMap
-
+###	

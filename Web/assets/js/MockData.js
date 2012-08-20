@@ -81,11 +81,11 @@ This is a class for producing mock data, returns from methods in this class shou
       gps = Math.floor(Math.random() * 12);
       incidents[i] = {
         Incident_ID: start + i,
-        Thumbnail_URL: "http://placehold.it/480x360",
+        Thumbnail_URL: "../../assets/img/540x320.gif",
         Short_Description: "Description for " + (start + i),
         Tags: ["Cow", "Poo", "River", "Pond"],
-        Lat: GPSCoordinatesNZ[gps].lat,
-        Lng: GPSCoordinatesNZ[gps].lng
+        Lat: GPSCoordinatesNZ[gps].lat + (Math.floor(Math.random() * 100) - 50) / 50,
+        Lng: GPSCoordinatesNZ[gps].lng + (Math.floor(Math.random() * 100) - 50) / 50
       };
       console.log(GPSCoordinatesNZ[gps].lat);
     }
