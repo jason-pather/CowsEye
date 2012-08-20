@@ -49,10 +49,6 @@ public class DescriptionActivity extends AbstractSubmissionActivity implements O
         spinner.setAdapter(adapter);
     
         setupUI();
-        System.out.println ("Reached here");
-        //starts a new submission event
-        submissionEventBuilder.startNewSubmissionEvent();
-        
        }
     
 
@@ -70,9 +66,7 @@ public class DescriptionActivity extends AbstractSubmissionActivity implements O
 
         ((InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE))
         .showSoftInput(descriptionEditText, InputMethodManager.SHOW_FORCED);
-        }
-       
-        
+        }    
     }
 
     public boolean hasDescription(){

@@ -62,6 +62,9 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 				if(cameraFileUri!=null){
 					//save the image URI to the submissionEventBuilder
 					submissionEventBuilder.setImagePath(cameraFileUri);
+					System.out.println("Here WE GO");
+					System.out.println(cameraFileUri);
+					System.out.println(submissionEventBuilder.getImagePath());
 					//start description activity
 					startActivity(new Intent(SelectImageActivity.this,DescriptionActivity.class));
 					Toast.makeText(SelectImageActivity.this, getString(R.string.saving_image), Toast.LENGTH_LONG).show();

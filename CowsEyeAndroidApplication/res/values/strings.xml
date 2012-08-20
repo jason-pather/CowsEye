@@ -59,6 +59,9 @@
 		report</string>
     <string name="select_image_title">Select Image</string>
     <string name="preview_title">Preview</string>
+    <string name="preview_image">Picture</string>
+    <string name="preview_location">Location</string>
+    <string name="preview_description">Description</string>
     <string name="no_preview_available">No Preview Available</string>
     <string name="select_image_from_gallery">Select Image From Gallery</string>
     <string name="take_picture_title">Capture Image</string>

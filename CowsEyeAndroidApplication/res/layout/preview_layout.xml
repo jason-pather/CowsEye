@@ -19,6 +19,46 @@
             style="@style/backButtonStyle" />
     </FrameLayout>
 
+    <TextView
+        android:id="@+id/PreviewImageTag"
+        style="@style/field_title_style"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/preview_image" />
+
+    <ImageView
+        android:id="@+id/PreviewImageImage"
+        android:contentDescription="@string/preview_image"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/done_button" />
+
+    <TextView
+        android:id="@+id/PreviewLocationTag"
+        style="@style/field_title_style"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="5dp"
+        android:text="@string/preview_location" />
+    
+    <TextView
+        android:id="@+id/PreviewLocationText"
+        style="@style/lots_text_style"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/preview_location" />
+
+    <TextView
+        android:id="@+id/PreviewDescriptionTag"
+        style="@style/field_title_style"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="5dp"
+        android:text="@string/preview_description" />
+    
+    <TextView
+        android:id="@+id/PreviewDescriptionText"
+        style="@style/lots_text_style"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/preview_description" />
+
     <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -30,7 +70,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|bottom"
             android:text="@string/submit" />
-
     </FrameLayout>
 
 </LinearLayout>

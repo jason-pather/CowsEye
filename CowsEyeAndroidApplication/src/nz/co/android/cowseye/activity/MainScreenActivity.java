@@ -46,10 +46,9 @@ public class MainScreenActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_screen_layout);
+		myApplication = (RiverWatchApplication)getApplication();
 		setupUI();
 		Log.d(toString(), "onCreate");
-		myApplication = (RiverWatchApplication)getApplication();
-
 	}
 
 	/** This gets called after a successfull submission event as the activity is already open and

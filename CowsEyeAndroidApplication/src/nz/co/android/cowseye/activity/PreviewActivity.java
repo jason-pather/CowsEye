@@ -1,10 +1,17 @@
 package nz.co.android.cowseye.activity;
 
 import nz.co.android.cowseye.R;
+import nz.co.android.cowseye.common.Constants;
+import nz.co.android.cowseye.event.SubmissionEventBuilder;
+import nz.co.android.cowseye.utility.Utils;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /** The activity for showing a preview of the pollution event
@@ -15,9 +22,12 @@ import android.widget.Toast;
  *
  */
 public class PreviewActivity extends AbstractSubmissionActivity {
-	
+
 	private Button submitButton;
-	
+	private ImageView image;
+	private TextView location;
+	private TextView description;
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -38,6 +48,18 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 				submitPollutionEvent();
 			}
 		});
+
+		image = (ImageView)findViewById(R.id.PreviewImageImage);
+		image.setImageURI(submissionEventBuilder.getImagePath());
+		image.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, SelectImageActivity.class));
+
+		location = (TextView)findViewById(R.id.PreviewLocationText);
+		location.setText("16 Kepler Way");
+		location.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, RecordLocationActivity.class));
+
+		description = (TextView)findViewById(R.id.PreviewDescriptionText);
+		description.setText("");
+		description.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, DescriptionActivity.class));
 	}
 
 	/** Submits a pollution event to the server
@@ -60,4 +82,5 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 			Toast.makeText(this, "BuildException error message ", Toast.LENGTH_LONG).show();
 		}
 	}
+
 }
