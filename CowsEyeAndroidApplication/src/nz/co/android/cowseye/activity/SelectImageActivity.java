@@ -2,9 +2,18 @@ package nz.co.android.cowseye.activity;
 
 import java.io.IOException;
 
+import org.apache.http.HttpResponse;
+import org.json.JSONObject;
+
+import com.google.android.maps.GeoPoint;
+
 import nz.co.android.cowseye.R;
 import nz.co.android.cowseye.common.Constants;
+import nz.co.android.cowseye.event.Event;
+import nz.co.android.cowseye.event.SubmissionEventBuilder;
+import nz.co.android.cowseye.event.SubmissionEventBuilderException;
 import nz.co.android.cowseye.utility.AlertBuilder;
+import nz.co.android.cowseye.utility.JSONHelper;
 import nz.co.android.cowseye.utility.Utils;
 import android.app.Activity;
 import android.content.Intent;
@@ -33,6 +42,8 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 	private ImageView previewImageView;
 	private TextView previewTextView;
 	private Button selectImageFromGalleryButton;
+	private Button buttonTESTPOST;
+
 
 	/** Called when the activity is first created. */
 	@Override
@@ -43,6 +54,36 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 		loadState(savedInstanceState);
 		//starts a new submission event
 		submissionEventBuilder.startNewSubmissionEvent();
+		buttonTESTPOST = (Button)findViewById(R.id.button_test_post);
+		buttonTESTPOST.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				submissionEventBuilder.setImagePath(cameraFileUri)
+				.setImageDescription("This is an Image Description")
+				.setImageTag("Test image tag")
+				.setGeoCoordinates(new GeoPoint(12141414, 493124312))
+				.setAddress("2 adventure drive");
+				try {
+					Event e = submissionEventBuilder.build();
+					HttpResponse response = e.processRaw();
+					Log.d(toString(), "response : "+response);
+					try{
+						JSONObject jsonObject = JSONHelper.parseHttpResponseAsJSON(response);
+						Log.d(toString(), "jsonObject : "+jsonObject);
+
+						//				            if(jsonObject.has(Utils.RESPONSE_CODE))
+						//				                return ResponseCodeState.stringToResponseCode((String)jsonObject.getString(Utils.RESPONSE_CODE))==ResponseCodeState.SUCCESS;
+					}
+					catch(Exception f){ 
+						Log.e(toString(), "Exception in JsonParsing : "+f);
+					}
+
+				} catch (SubmissionEventBuilderException e) {
+					Log.e(toString(), e.toString());
+				}
+
+			}
+		});
 	}
 
 	/* Sets up the User Interface */

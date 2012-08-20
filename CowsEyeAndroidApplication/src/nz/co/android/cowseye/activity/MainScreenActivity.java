@@ -1,5 +1,8 @@
 package nz.co.android.cowseye.activity;
 
+import org.apache.http.HttpResponse;
+import org.json.JSONObject;
+
 import nz.co.android.cowseye.R;
 import nz.co.android.cowseye.RiverWatchApplication;
 import nz.co.android.cowseye.R.id;
@@ -10,6 +13,7 @@ import nz.co.android.cowseye.event.Event;
 import nz.co.android.cowseye.event.SubmissionEventBuilder;
 import nz.co.android.cowseye.event.SubmissionEventBuilderException;
 import nz.co.android.cowseye.utility.AlertBuilder;
+import nz.co.android.cowseye.utility.JSONHelper;
 import nz.co.android.cowseye.utility.Utils;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -43,8 +47,7 @@ public class MainScreenActivity extends Activity {
 
 	private Button buttonSubmit;
 	private RiverWatchApplication myApplication;
-	
-	private Button buttonTESTPOST;
+
 
 	/** Called when the activity is first created. */
 	@Override
@@ -54,26 +57,6 @@ public class MainScreenActivity extends Activity {
 		myApplication = (RiverWatchApplication)getApplication();
 		setupUI();
 		Log.d(toString(), "onCreate");
-		buttonTESTPOST = (Button)findViewById(R.id.button_test_post);
-		buttonTESTPOST.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				SubmissionEventBuilder builder = SubmissionEventBuilder.getSubmissionEventBuilder();
-				builder.setImagePath(Uri.parse("content://media/external/images/media/45193"))
-				.setImageDescription("This is an Image Description")
-				.setImageTag("Test image tag")
-				.setGeoCoordinates(new GeoPoint(12141414, 493124312))
-				.setAddress("2 adventure drive");
-				try {
-					Event e = builder.build();
-					boolean success = e.processForSuccess();
-
-				} catch (SubmissionEventBuilderException e) {
-					Log.e(toString(), e.toString());
-				}
-				
-			}
-		});
 	}
 
 	/** This gets called after a successfull submission event as the activity is already open and
@@ -101,7 +84,7 @@ public class MainScreenActivity extends Activity {
 	public class SubmitPollutionEventOnClickListener implements OnClickListener{
 		@Override
 		public void onClick(View v) {
-			
+
 			startActivity(new Intent(MainScreenActivity.this, SelectImageActivity.class));
 		}
 

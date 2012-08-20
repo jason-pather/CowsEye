@@ -6,7 +6,6 @@ import java.io.UnsupportedEncodingException;
 
 import nz.co.android.cowseye.common.Constants;
 import nz.co.android.cowseye.utility.JSONHelper;
-import nz.co.android.cowseye.utility.Utils;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -23,10 +22,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.google.android.maps.GeoPoint;
-
 import android.net.Uri;
 import android.util.Log;
+
+import com.google.android.maps.GeoPoint;
 
 /**
  * Models a standard event to send to the web server

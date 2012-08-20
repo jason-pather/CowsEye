@@ -40,7 +40,7 @@ public interface Constants {
 
 	
 	/* Service paths */
-	public static final String SERVER_PATH = "http://saffron:4567/wainz/";
+	public static final String SERVER_PATH = "http://barretts.ecs.vuw.ac.nz:4567/wainz/";
 	public static final String SUBMISSION_PATH = SERVER_PATH + "submit/";
 	
 	/* Form post entities */
