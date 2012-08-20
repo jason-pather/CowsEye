@@ -18,6 +18,8 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.net.Uri;
@@ -29,171 +31,199 @@ import com.google.android.maps.GeoPoint;
  * Models a standard event to send to the web server
  */
 public class SubmissionEvent implements Event{
-    
-    protected HttpPost httpPost;
-    protected HttpClient client;
 
-    protected Uri imageToPath; /* Stores the path to the image on local storage */
-    protected String imageDescription;
-    protected String imageTag;
-    protected String address;
-    protected GeoPoint geoCoordinates;
+	protected HttpPost httpPost;
+	protected HttpClient client;
 
- 
-//    protected final String password;
-//    protected final String loginCode;
-    private int failCount = 0;
-    protected String timeStamp;
-
-//    public StandardEvent(String loginCode, String password, boolean authorize){
-//        this.loginCode = loginCode;
-//        this.password = password;
-//        //create new HttpClient
-//        client = constructHttpClient();
-//        //Create and authorize HttpPost
-//        if(authorize)
-//            httpPost = setAuthorization(constructHttpPost());
-//        else
-//            httpPost = constructHttpPost();
-//    }
-    
-    public SubmissionEvent(){
-        client = constructHttpClient();
-        httpPost = constructHttpPost();
-    }
-
-    /** Constructs a HttpClient */
-    public HttpClient constructHttpClient(){
-        HttpClient client = new DefaultHttpClient();
-        //set timeout to 20 seconds
-        HttpConnectionParams.setConnectionTimeout(client.getParams(), TIMEOUT_MS);
-        HttpConnectionParams.setSoTimeout(client.getParams(), TIMEOUT_MS);
-        return client;
-    }
-
-//    /**  Authorizes the HTTP Post method */
-//    public HttpPost setAuthorization(HttpPost httpPost) {
-//        String auth =  loginCode+":"+password;
-//        httpPost.addHeader("Authorization", "Basic " + Base64Coder.encodeString(auth).toString());
-//        return httpPost;
-//    }
+	protected Uri imageToPath; /* Stores the path to the image on local storage */
+	protected String imageDescription;
+	protected String imageTag;
+	protected String address;
+	protected GeoPoint geoCoordinates;
 
 
-    /** Processes the event and returns the response of the event */
-    public HttpResponse processRaw() {
-        //add the created method body to the post request
-        httpPost.setEntity(makeEntity());
-        HttpResponse response = null;
-        try {
-            response = client.execute(httpPost);
-        } 
-        catch (HttpResponseException e) {
-            Log.e(toString(), "HttpResponseException : "+e);
-        } catch (ClientProtocolException e) {
-            Log.e(toString(), "ClientProtocolException : "+e);
-        } catch (IOException e) {
-            Log.e(toString(), "IOException : "+e);
-        }
-        if(response ==null)
-            Log.e(toString(), "response is null: ");
-        return response;
-    }
-    
-    /** Processes the event and returns true if successfull, otherwise false */
-    public boolean processForSuccess() {
-        //add the created method body to the post request
-        httpPost.setEntity(makeEntity());
-        HttpResponse response = null;
-        try {
-            response = client.execute(httpPost);
-        } 
-        catch (HttpResponseException e) {
-            Log.e(toString(), "HttpResponseException : "+e);
-        } catch (ClientProtocolException e) {
-            Log.e(toString(), "ClientProtocolException : "+e);
-        } catch (IOException e) {
-            Log.e(toString(), "IOException : "+e);
-        }
-        if(response ==null){
-            Log.e(toString(), "response is null: ");
-            return false;
-        }
-        try{
-            JSONObject jsonObject = JSONHelper.parseHttpResponseAsJSON(response);
-            return true;
-//            if(jsonObject.has(Utils.RESPONSE_CODE))
-//                return ResponseCodeState.stringToResponseCode((String)jsonObject.getString(Utils.RESPONSE_CODE))==ResponseCodeState.SUCCESS;
-        }
-        catch(Exception e){ 
-            Log.e(toString(), "Exception in JsonParsing : "+e);
-        }
-        return false;
-    }
-    
-    public void incrementFailCount(){
-        failCount++;
-    }
+	//    protected final String password;
+	//    protected final String loginCode;
+	private int failCount = 0;
+	protected String timeStamp;
 
-    public int getFailCount(){
-        return failCount;
-    }
-    public Uri getImagePath(){
-        return imageToPath;
-    }
-    
-    public String getImageDescription () {
-    	return imageDescription;
-    }
-    
-    public String getImageTag () {
-    	return imageTag;
-    }
-    
-    public String getTimeStamp(){
-        return timeStamp;
-    }
+	//    public StandardEvent(String loginCode, String password, boolean authorize){
+	//        this.loginCode = loginCode;
+	//        this.password = password;
+	//        //create new HttpClient
+	//        client = constructHttpClient();
+	//        //Create and authorize HttpPost
+	//        if(authorize)
+	//            httpPost = setAuthorization(constructHttpPost());
+	//        else
+	//            httpPost = constructHttpPost();
+	//    }
+
+	public SubmissionEvent(){
+		client = constructHttpClient();
+		httpPost = constructHttpPost();
+	}
+
+	/** Constructs a HttpClient */
+	public HttpClient constructHttpClient(){
+		HttpClient client = new DefaultHttpClient();
+		//set timeout to 20 seconds
+		HttpConnectionParams.setConnectionTimeout(client.getParams(), TIMEOUT_MS);
+		HttpConnectionParams.setSoTimeout(client.getParams(), TIMEOUT_MS);
+		return client;
+	}
+
+	//    /**  Authorizes the HTTP Post method */
+	//    public HttpPost setAuthorization(HttpPost httpPost) {
+	//        String auth =  loginCode+":"+password;
+	//        httpPost.addHeader("Authorization", "Basic " + Base64Coder.encodeString(auth).toString());
+	//        return httpPost;
+	//    }
 
 
-    public HttpPost setAuthorization(HttpPost httpPost) {
-        return null;
-    }
+	/** Processes the event and returns the response of the event */
+	public HttpResponse processRaw() {
+		//add the created method body to the post request
+		httpPost.setEntity(makeEntity());
+		HttpResponse response = null;
+		try {
+			response = client.execute(httpPost);
+		} 
+		catch (HttpResponseException e) {
+			Log.e(toString(), "HttpResponseException : "+e);
+		} catch (ClientProtocolException e) {
+			Log.e(toString(), "ClientProtocolException : "+e);
+		} catch (IOException e) {
+			Log.e(toString(), "IOException : "+e);
+		}
+		if(response ==null)
+			Log.e(toString(), "response is null: ");
+		return response;
+	}
 
-    /** construct path to web service */
-    public HttpPost constructHttpPost(){
-        return new HttpPost(Constants.SUBMISSION_PATH);
-    }
+	/** Processes the event and returns true if successfull, otherwise false */
+	public boolean processForSuccess() {
+		//add the created method body to the post request
+		httpPost.setEntity(makeEntity());
+		HttpResponse response = null;
+		try {
+			response = client.execute(httpPost);
+		} 
+		catch (HttpResponseException e) {
+			Log.e(toString(), "HttpResponseException : "+e);
+		} catch (ClientProtocolException e) {
+			Log.e(toString(), "ClientProtocolException : "+e);
+		} catch (IOException e) {
+			Log.e(toString(), "IOException : "+e);
+		}
+		if(response ==null){
+			Log.e(toString(), "response is null: ");
+			return false;
+		}
+		try{
+			JSONObject jsonObject = JSONHelper.parseHttpResponseAsJSON(response);
+			return true;
+			//            if(jsonObject.has(Utils.RESPONSE_CODE))
+			//                return ResponseCodeState.stringToResponseCode((String)jsonObject.getString(Utils.RESPONSE_CODE))==ResponseCodeState.SUCCESS;
+		}
+		catch(Exception e){ 
+			Log.e(toString(), "Exception in JsonParsing : "+e);
+		}
+		return false;
+	}
 
-    
-    public MultipartEntity makeEntity() {
-        MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+	public void incrementFailCount(){
+		failCount++;
+	}
 
-        try {
-            reqEntity.addPart(Constants.FORM_POST_IMAGE, new FileBody(new File(imageToPath.toString())));
-            reqEntity.addPart(Constants.FORM_POST_IMAGE_DESCRIPTION, new StringBody(imageDescription)); 
-            reqEntity.addPart(Constants.FORM_POST_IMAGE_TAG, new StringBody(imageTag));
-            //add geo coordinates
-            if(geoCoordinates!=null)
-            reqEntity.addPart(Constants.FORM_POST_GEO, new StringBody(""+geoCoordinates.getLatitudeE6() + geoCoordinates.getLongitudeE6()));
-            //otherwise add address
-            else
-            	reqEntity.addPart(Constants.FORM_POST_ADDRESS, new StringBody(address));
-        } catch (UnsupportedEncodingException e1) {
-            Log.e(toString(), "UnsupportedEncodingException : "+e1);
-        }
-        return reqEntity;
-    }
+	public int getFailCount(){
+		return failCount;
+	}
+	public Uri getImagePath(){
+		return imageToPath;
+	}
 
-    public void setImagePath(Uri uriToImage) {
-        imageToPath = uriToImage;        
-    }
-    
-    public void setImageDescription (String description) {
-        imageDescription = description;
-    }
-    
-    public void setImageTag (String tag) {
-        imageTag=tag;
-    }
+	public String getImageDescription () {
+		return imageDescription;
+	}
+
+	public String getImageTag () {
+		return imageTag;
+	}
+
+	public String getTimeStamp(){
+		return timeStamp;
+	}
+
+
+	public HttpPost setAuthorization(HttpPost httpPost) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/** construct path to web service */
+	public HttpPost constructHttpPost(){
+		return new HttpPost(Constants.SUBMISSION_PATH);
+	}
+
+
+	public MultipartEntity makeEntity() {
+		MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+		JSONObject jsonObject;
+		try {
+			//convert data to JSON
+			jsonObject = makeJSONFromSubmissionData();
+			Log.d(toString(), "json thaang : "+jsonObject.toString());
+		} 
+		catch (JSONException e) {
+			Log.e(toString(), "JSONException: "+e);
+			return null;
+		}
+		try{
+			//add image data
+			reqEntity.addPart(Constants.FORM_POST_IMAGE, new FileBody(new File(imageToPath.toString())));
+			//add Data in JSON format
+			reqEntity.addPart(Constants.FORM_POST_DATA, new StringBody(jsonObject.toString()));
+		}catch (UnsupportedEncodingException e1) {
+			Log.e(toString(), "UnsupportedEncodingException : "+e1);
+		}
+		return reqEntity;
+	}
+
+	/* Returns a JSON object representing the submission data */
+	private JSONObject makeJSONFromSubmissionData() throws JSONException {
+		JSONObject jsonObject = new JSONObject();
+		JSONObject jsonObjectGeoCoordinates = null; 
+		JSONArray jsonObjectTags = new JSONArray();
+		//try and put geo coordinates in
+		if(geoCoordinates!=null){
+			jsonObjectGeoCoordinates = new JSONObject();
+			jsonObjectGeoCoordinates.put(Constants.SUBMISSION_JSON_GEO_LAT, geoCoordinates.getLatitudeE6());
+			jsonObjectGeoCoordinates.put(Constants.SUBMISSION_JSON_GEO_LON, geoCoordinates.getLongitudeE6());
+			jsonObject.put(Constants.SUBMISSION_JSON_GEO_LOCATION, jsonObjectGeoCoordinates);
+		}
+		//otherwise put in address
+		else{
+			jsonObject.put(Constants.SUBMISSION_JSON_ADDRESS, address);
+		}
+
+		jsonObject.put(Constants.SUBMISSION_JSON_DESCRIPTION, imageDescription);
+		jsonObjectTags.put(imageTag);
+		jsonObject.put(Constants.SUBMISSION_JSON_TAGS, jsonObjectTags);
+		return jsonObject;
+	}
+
+	public void setImagePath(Uri uriToImage) {
+		imageToPath = uriToImage;        
+	}
+
+	public void setImageDescription (String description) {
+		imageDescription = description;
+	}
+
+	public void setImageTag (String tag) {
+		imageTag=tag;
+	}
 
 	public String getAddress() {
 		return address;
@@ -211,6 +241,6 @@ public class SubmissionEvent implements Event{
 		this.geoCoordinates = geoCoordinates;
 	}
 
-	
+
 
 }
