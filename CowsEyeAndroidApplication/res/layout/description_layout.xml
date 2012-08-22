@@ -9,6 +9,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
 
+               
+        
         <TextView
             android:id="@+id/descriptionScreenTitle"
             style="@style/titleHeading"
@@ -21,12 +23,17 @@
             style="@style/nextButtonStyle" />
     </FrameLayout>
 
+        <View
+        android:layout_width="fill_parent"
+        android:layout_height="10dp">
+    </View>
+    
     <TextView
             android:id="@+id/EnterDescriptionLabel"
             style="@style/field_title_style"
             android:text="@string/description_labeltitle" />
-    
-    <EditText
+            
+      <EditText
         android:id="@+id/descriptionText"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -35,6 +42,11 @@
         <requestFocus />
     </EditText>
 
+     <View
+        android:layout_width="fill_parent"
+        android:layout_height="10dp">
+    </View>
+    
     <TextView
             android:id="@+id/ChooseImageTag"
             style="@style/field_title_style"
