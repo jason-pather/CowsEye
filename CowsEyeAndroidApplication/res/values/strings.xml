@@ -4,8 +4,8 @@
     <string name="capture_image">Capture Image</string>
     <string name="select_location">Select Location</string>
     <string name="enter_description">Describe Image</string>
-    <string name ="description_labeltitle"> \n \n Enter Description of Image </string>
-    <string name ="tag_labeltitle"> \n \n Choose Image Tag </string>
+    <string name ="description_labeltitle"> Enter Description of Image </string>
+    <string name ="tag_labeltitle"> Choose Image Tag </string>
     <string name="select_pollution_event">Select Pollution Event</string>
     <string name="enter_contact_details">Enter Contact Details</string>
     <string name="submit"> Submit </string>
