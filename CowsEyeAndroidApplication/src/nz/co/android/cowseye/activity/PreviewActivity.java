@@ -27,6 +27,7 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 	private ImageView image;
 	private TextView location;
 	private TextView description;
+	private TextView tag;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -60,6 +61,10 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 		description = (TextView)findViewById(R.id.PreviewDescriptionText);
 		description.setText(submissionEventBuilder.getImageDescription());
 		description.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, DescriptionActivity.class));
+		
+		tag = (TextView)findViewById(R.id.PreviewDescriptionTag);
+		tag.setText(submissionEventBuilder.getImageTag());
+		tag.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, DescriptionActivity.class));
 	}
 
 	/** Submits a pollution event to the server

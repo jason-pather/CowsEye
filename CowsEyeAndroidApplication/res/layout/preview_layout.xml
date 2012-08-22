@@ -60,6 +60,20 @@
         android:layout_gravity="center_horizontal"
         android:text="@string/preview_description" />
 
+        <TextView
+        android:id="@+id/PreviewImageTagTitle"
+        style="@style/field_title_style"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="5dp"
+        android:text="@string/preview_imagetagtitle" />
+    
+    <TextView
+        android:id="@+id/PreviewImageTag"
+        style="@style/lots_text_style"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/preview_imagetag" />
+    
+    
     <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
