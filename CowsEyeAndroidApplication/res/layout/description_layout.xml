@@ -9,53 +9,45 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
 
-               
-        
         <TextView
             android:id="@+id/descriptionScreenTitle"
             style="@style/titleHeading"
             android:text="@string/description_title" />
+
         <Button
             android:id="@+id/backButton"
-            style="@style/backButtonStyle"/>
+            style="@style/backButtonStyle" />
+
         <Button
             android:id="@+id/nextButton"
             style="@style/nextButtonStyle" />
     </FrameLayout>
 
-        <View
-        android:layout_width="fill_parent"
-        android:layout_height="10dp">
-    </View>
-    
     <TextView
-            android:id="@+id/EnterDescriptionLabel"
-            style="@style/field_title_style"
-            android:text="@string/description_labeltitle" />
-            
-      <EditText
+        android:id="@+id/EnterDescriptionLabel"
+        style="@style/field_title_style"
+        android:paddingTop="10dp"
+        android:text="@string/description_labeltitle" />
+
+    <EditText
         android:id="@+id/descriptionText"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:inputType="text"
-        android:gravity="top" >
+        android:gravity="top"
+        android:inputType="text" >
+
         <requestFocus />
     </EditText>
 
-     <View
-        android:layout_width="fill_parent"
-        android:layout_height="10dp">
-    </View>
-    
     <TextView
-            android:id="@+id/ChooseImageTag"
-            style="@style/field_title_style"
-            android:text="@string/tag_labeltitle" />
-        
-        
-         <Spinner
-            android:id="@+id/phototag_spinner"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+        android:paddingTop="10dp"
+        android:id="@+id/ChooseImageTag"
+        style="@style/field_title_style"
+        android:text="@string/tag_labeltitle" />
+
+    <Spinner
+        android:id="@+id/phototag_spinner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

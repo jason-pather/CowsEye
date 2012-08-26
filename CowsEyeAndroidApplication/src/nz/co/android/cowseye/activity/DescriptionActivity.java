@@ -59,6 +59,7 @@ public class DescriptionActivity extends AbstractSubmissionActivity implements
 	protected void setupUI() {
 		super.setupUI();
 		descriptionEditText = (EditText) findViewById(R.id.descriptionText);
+		
 		// Set text of description if we have it
 		Intent intent = getIntent();
 		if (intent.hasExtra(Constants.DESCRIPTION_KEY)) {
