@@ -11,8 +11,8 @@
     <string name="noDescriptionAdded">No description added</string>
     <string name="noContactDetailsAdded">No contact details added</string>
     <string name="contactDetailsAdded">Contact details added</string>
-    <string name="submit_pollution_event">Submit a river pollution incident</string>
-    <string name="view_submission_gallery">View river pollution incidents</string>
+    <string name="submit_pollution_event">Submit A River Pollution Incident</string>
+    <string name="view_submission_gallery">View River Pollution Incidents</string>
     <string name="back">Back</string>
     <string name="done">Done</string>
     <string name="next">Next</string>

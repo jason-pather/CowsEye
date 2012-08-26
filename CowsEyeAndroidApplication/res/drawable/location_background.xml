@@ -3,10 +3,8 @@
 
     <stroke
         android:width="2dp"
-	        
-        android:color="@color/riverWatch_outline_color" />
-	<solid 
-	    android:color="@color/background_start"
-	    />
+        android:color="#B5B5B5" />
+
+    <solid android:color="@android:color/white"></solid>
 
 </shape>

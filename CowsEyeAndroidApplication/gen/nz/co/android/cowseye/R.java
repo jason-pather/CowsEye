@@ -16,8 +16,9 @@ public final class R {
     public static final class color {
         public static final int back_button_end_colour=0x7f040001;
         public static final int back_button_start_colour=0x7f040000;
-        public static final int details_background_end=0x7f040005;
-        public static final int details_background_start=0x7f040004;
+        public static final int background_end=0x7f040005;
+        public static final int background_start=0x7f040004;
+        public static final int button_option_color=0x7f040010;
         public static final int details_main_text=0x7f040006;
         public static final int divider_gray=0x7f04000c;
         public static final int done_button_end_colour=0x7f040003;
@@ -33,34 +34,36 @@ public final class R {
     }
     public static final class drawable {
         public static final int back_button=0x7f020000;
-        public static final int contact_details_background=0x7f020001;
+        public static final int button_option_background=0x7f020001;
         public static final int details_background=0x7f020002;
         public static final int done_button=0x7f020003;
         public static final int header_style=0x7f020004;
         public static final int icon=0x7f020005;
-        public static final int preview_image_background=0x7f020006;
-        public static final int right_arrow=0x7f020007;
-        public static final int screen1=0x7f020008;
-        public static final int submit_button=0x7f020009;
-        public static final int submit_button_selected=0x7f02000a;
-        public static final int you_are_here_45x45=0x7f02000b;
+        public static final int location_background=0x7f020006;
+        public static final int preview_image_background=0x7f020007;
+        public static final int right_arrow=0x7f020008;
+        public static final int screen1=0x7f020009;
+        public static final int submit_button=0x7f02000a;
+        public static final int submit_button_selected=0x7f02000b;
+        public static final int you_are_here_45x45=0x7f02000c;
     }
     public static final class id {
         public static final int ChooseImageTag=0x7f080005;
         public static final int EnterDescriptionLabel=0x7f080003;
-        public static final int PreviewDescriptionTag=0x7f080012;
-        public static final int PreviewDescriptionText=0x7f080013;
-        public static final int PreviewImageImage=0x7f08000f;
-        public static final int PreviewImageTag=0x7f08000e;
-        public static final int PreviewImageTagTitle=0x7f080014;
-        public static final int PreviewLocationTag=0x7f080010;
-        public static final int PreviewLocationText=0x7f080011;
+        public static final int PreviewDescriptionTag=0x7f080013;
+        public static final int PreviewDescriptionText=0x7f080014;
+        public static final int PreviewImageImage=0x7f080010;
+        public static final int PreviewImageTag=0x7f08000f;
+        public static final int PreviewImageTagTitle=0x7f080015;
+        public static final int PreviewLocationTag=0x7f080011;
+        public static final int PreviewLocationText=0x7f080012;
         public static final int addressEditText=0x7f08000a;
         public static final int backButton=0x7f080001;
         public static final int button_submit=0x7f08000c;
-        public static final int button_test_post=0x7f08001b;
-        public static final int capture_image_button=0x7f080019;
-        public static final int contactDetailsScreenTitle=0x7f080016;
+        public static final int button_test_post=0x7f08001c;
+        public static final int button_view_gallery=0x7f08000d;
+        public static final int capture_image_button=0x7f08001a;
+        public static final int contactDetailsScreenTitle=0x7f080017;
         public static final int descriptionScreenTitle=0x7f080000;
         public static final int descriptionText=0x7f080004;
         public static final int detailsScreenTitle=0x7f08000b;
@@ -69,21 +72,20 @@ public final class R {
         public static final int mapview=0x7f080009;
         public static final int nextButton=0x7f080002;
         public static final int phototag_spinner=0x7f080006;
-        public static final int previewFrameLayout=0x7f08001c;
-        public static final int preview_image=0x7f080017;
-        public static final int preview_text=0x7f080018;
-        public static final int preview_title=0x7f08000d;
-        public static final int select_image_from_gallery_button=0x7f08001a;
-        public static final int submit_button=0x7f080015;
+        public static final int previewFrameLayout=0x7f08001d;
+        public static final int preview_image=0x7f080018;
+        public static final int preview_text=0x7f080019;
+        public static final int preview_title=0x7f08000e;
+        public static final int select_image_from_gallery_button=0x7f08001b;
+        public static final int submit_button=0x7f080016;
     }
     public static final class layout {
-        public static final int contact_details_border=0x7f030000;
-        public static final int description_layout=0x7f030001;
-        public static final int location_layout=0x7f030002;
-        public static final int main_screen_layout=0x7f030003;
-        public static final int preview_layout=0x7f030004;
-        public static final int select_image_layout=0x7f030005;
-        public static final int take_picture=0x7f030006;
+        public static final int description_layout=0x7f030000;
+        public static final int location_layout=0x7f030001;
+        public static final int main_screen_layout=0x7f030002;
+        public static final int preview_layout=0x7f030003;
+        public static final int select_image_layout=0x7f030004;
+        public static final int take_picture=0x7f030005;
     }
     public static final class string {
         public static final int app_name=0x7f050000;
@@ -137,17 +139,18 @@ public final class R {
         public static final int wouldYouLikeToUpdateStill=0x7f050022;
     }
     public static final class style {
-        public static final int backButtonStyle=0x7f070004;
-        public static final int buttonStyle=0x7f070003;
-        public static final int contactLayoutStyle=0x7f070006;
-        public static final int contactTextFieldStyle=0x7f070007;
+        public static final int backButtonStyle=0x7f070005;
+        public static final int buttonStyle=0x7f070004;
+        public static final int button_option=0x7f070003;
         public static final int detailsArrow=0x7f070002;
         public static final int detailsMainText=0x7f070001;
-        public static final int field_title_style=0x7f07000b;
-        public static final int lots_text_style=0x7f07000a;
-        public static final int nextButtonStyle=0x7f070005;
-        public static final int preview_image_framelayout_style=0x7f070008;
-        public static final int text_style=0x7f070009;
+        public static final int field_title_style=0x7f07000c;
+        public static final int location_layout_style=0x7f070007;
+        public static final int lots_text_style=0x7f07000b;
+        public static final int nextButtonStyle=0x7f070006;
+        public static final int preview_image_framelayout_style=0x7f070009;
+        public static final int text_field_style=0x7f070008;
+        public static final int text_style=0x7f07000a;
         public static final int titleHeading=0x7f070000;
     }
 }

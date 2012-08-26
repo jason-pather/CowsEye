@@ -18,14 +18,12 @@
 
         <Button
             android:id="@+id/button_submit"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+             style = "@style/button_option"
             android:text="@string/submit_pollution_event" />
         <Button
-            android:id="@+id/button_submit"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/submit_pollution_event" />
+            android:id="@+id/button_view_gallery"
+            style = "@style/button_option"
+            android:text="@string/view_submission_gallery" />
     </LinearLayout>
 
 </LinearLayout>

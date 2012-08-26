@@ -4,8 +4,8 @@
     <color name="back_button_end_colour">#68A46F</color>
     <color name="done_button_start_colour">#50D49E</color>
     <color name="done_button_end_colour">#28A46F</color>
-    <color name="details_background_start">#DADADA</color>
-    <color name="details_background_end">#E0E0E0</color>
+    <color name="background_start">#EEF0FF</color>
+    <color name="background_end">#CCB9FF</color>
     <color name="details_main_text">#4C566C</color>
     <color name="submit_report_button_text">#CCCCCC</color>
     <color name="header_end"> #7A9DE9</color>

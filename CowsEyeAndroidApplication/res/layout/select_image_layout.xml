@@ -66,22 +66,17 @@
 
                     <Button
                         android:id="@+id/capture_image_button"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom|center_horizontal"
+                        style="@style/button_option"
                         android:text="@string/capture_image" />
 
                     <Button
                         android:id="@+id/select_image_from_gallery_button"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom|center_horizontal"
+                        style="@style/button_option"
                         android:text="@string/select_image_from_gallery" />
-                             <Button
+
+                    <Button
                         android:id="@+id/button_test_post"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom|center_horizontal"
+                        style="@style/button_option"
                         android:text="TESTING POST" />
                 </LinearLayout>
             </FrameLayout>
