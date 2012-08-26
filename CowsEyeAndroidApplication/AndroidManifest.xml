@@ -46,13 +46,6 @@
             android:windowSoftInputMode="stateAlwaysVisible" >
         </activity>
         <activity
-            android:label="@string/contactDetailsTitle"
-            android:name=".activity.ContactDetailsActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Black.NoTitleBar"
-            android:windowSoftInputMode="stateAlwaysVisible" >
-        </activity>
-        <activity
             android:label="@string/select_image_title"
             android:name=".activity.SelectImageActivity"
             android:screenOrientation="portrait"
