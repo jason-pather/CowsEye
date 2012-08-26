@@ -25,8 +25,7 @@ import android.widget.Toast;
  * @author lanemitc
  * 
  */
-public class DescriptionActivity extends AbstractSubmissionActivity implements
-		OnItemSelectedListener {
+public class DescriptionActivity extends AbstractSubmissionActivity implements OnItemSelectedListener {
 
 	private EditText descriptionEditText;
 	private String imageDescription;

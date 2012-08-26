@@ -62,6 +62,12 @@
             android:name=".activity.TakePictureActivity"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
+          <activity
+            android:label="@string/incident_view_gallery_title"
+            android:name=".activity.IncidentGalleryActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+        </activity>
     </application>
 
 </manifest>

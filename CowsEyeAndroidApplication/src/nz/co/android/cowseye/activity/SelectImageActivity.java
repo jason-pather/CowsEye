@@ -194,6 +194,7 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 				setPreviewImageOn(cameraFileUri);
 			}
 		}
+		Log.d(toString(), "cameraFileUri : "+cameraFileUri);
 	}
 
 	/** Enables the preview image, first by trying to decode the URI natively into a bitmap 
