@@ -27,6 +27,8 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 	private ImageView image;
 	private TextView location;
 	private TextView description;
+	private TextView tag;
+	private int maxLength = 100;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -54,12 +56,20 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 		image.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, SelectImageActivity.class));
 
 		location = (TextView)findViewById(R.id.PreviewLocationText);
-		location.setText("16 Kepler Way");
+		location.setText(submissionEventBuilder.getAddress());
+		//location.setText("16 Kepler Way");
 		location.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, RecordLocationActivity.class));
 
 		description = (TextView)findViewById(R.id.PreviewDescriptionText);
+		String descriptionText = submissionEventBuilder.getImageDescription();
+		if (descriptionText.length() > maxLength) descriptionText = descriptionText.substring(0, maxLength);
 		description.setText(submissionEventBuilder.getImageDescription());
+		
 		description.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, DescriptionActivity.class));
+		
+		tag = (TextView)findViewById(R.id.PreviewImageTag);
+		tag.setText(submissionEventBuilder.getImageTag());
+		tag.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, DescriptionActivity.class));
 	}
 
 	/** Submits a pollution event to the server

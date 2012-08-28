@@ -24,7 +24,9 @@ import android.view.View.OnClickListener;
 public class Utils {
 
 	//
-	public static final int MAX_IMAGE_SIZE = 800;
+	public static final int MAX_PREVIEW_IMAGE_SIZE = 800;
+	public static final int MAX_GALLERY_IMAGE_SIZE = 1200;
+
 
 	//Camera Constants
 	public static final File DIR_MEDIA_STORAGE = new File(Environment.getExternalStoragePublicDirectory(
@@ -78,8 +80,8 @@ public class Utils {
 
 			int scale = 1;
 			//resize
-			if (o.outHeight > MAX_IMAGE_SIZE || o.outWidth > MAX_IMAGE_SIZE) {
-				scale = (int)Math.pow(2, (int) Math.round(Math.log(MAX_IMAGE_SIZE / (double) Math.max(o.outHeight, o.outWidth)) / Math.log(0.5)));
+			if (o.outHeight > MAX_PREVIEW_IMAGE_SIZE || o.outWidth > MAX_PREVIEW_IMAGE_SIZE) {
+				scale = (int)Math.pow(2, (int) Math.round(Math.log(MAX_PREVIEW_IMAGE_SIZE / (double) Math.max(o.outHeight, o.outWidth)) / Math.log(0.5)));
 			}
 //			Log.d("UTILS", "outHeight : "+o.outHeight );
 //			Log.d("UTILS", "outWidth : "+o.outWidth );

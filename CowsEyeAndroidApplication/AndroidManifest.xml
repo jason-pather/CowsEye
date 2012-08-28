@@ -46,13 +46,6 @@
             android:windowSoftInputMode="stateAlwaysVisible" >
         </activity>
         <activity
-            android:label="@string/contactDetailsTitle"
-            android:name=".activity.ContactDetailsActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Black.NoTitleBar"
-            android:windowSoftInputMode="stateAlwaysVisible" >
-        </activity>
-        <activity
             android:label="@string/select_image_title"
             android:name=".activity.SelectImageActivity"
             android:screenOrientation="portrait"
@@ -67,6 +60,12 @@
         <activity
             android:label="@string/take_picture_title"
             android:name=".activity.TakePictureActivity"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+        </activity>
+          <activity
+            android:label="@string/incident_view_gallery_title"
+            android:name=".activity.IncidentGalleryActivity"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
     </application>

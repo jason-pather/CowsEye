@@ -46,6 +46,7 @@ import com.google.android.maps.GeoPoint;
 public class MainScreenActivity extends Activity {
 
 	private Button buttonSubmit;
+	private Button buttonGallery;
 	private RiverWatchApplication myApplication;
 
 
@@ -78,6 +79,13 @@ public class MainScreenActivity extends Activity {
 	private void setupUI(){
 		buttonSubmit = (Button)findViewById(R.id.button_submit);
 		buttonSubmit.setOnClickListener(new SubmitPollutionEventOnClickListener());
+		buttonGallery = (Button)findViewById(R.id.button_view_gallery);
+		buttonGallery.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(MainScreenActivity.this, IncidentGalleryActivity.class));
+			}
+		});
 	}
 
 	/** Starts a submission of a pollution event */

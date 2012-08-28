@@ -32,16 +32,16 @@
         android:apiKey="0W_gYkxqIw4R9y2cU_9u9T5qOpCXwJBnqnf8Flw"
         android:clickable="true" />
 
-    <LinearLayout style="@style/contactLayoutStyle" >
+    <LinearLayout style="@style/location_layout_style" >
 
         <TextView
-            style="@style/contactTextFieldStyle"
+            style="@style/text_field_style"
             android:layout_weight="0.3"
             android:text="@string/userAddress" />
 
         <EditText
             android:id="@+id/addressEditText"
-            style="@style/contactTextFieldStyle"
+                  style="@style/text_field_style"
             android:layout_weight="0.7" />
     </LinearLayout>
 

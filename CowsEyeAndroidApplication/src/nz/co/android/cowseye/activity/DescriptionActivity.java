@@ -25,8 +25,7 @@ import android.widget.Toast;
  * @author lanemitc
  * 
  */
-public class DescriptionActivity extends AbstractSubmissionActivity implements
-		OnItemSelectedListener {
+public class DescriptionActivity extends AbstractSubmissionActivity implements OnItemSelectedListener {
 
 	private EditText descriptionEditText;
 	private String imageDescription;
@@ -50,6 +49,7 @@ public class DescriptionActivity extends AbstractSubmissionActivity implements
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		// Apply the adapter to the spinner
 		spinner.setAdapter(adapter);
+		spinner.setOnItemSelectedListener(this);
 
 		setupUI();
 		pressNextButton();
@@ -59,6 +59,7 @@ public class DescriptionActivity extends AbstractSubmissionActivity implements
 	protected void setupUI() {
 		super.setupUI();
 		descriptionEditText = (EditText) findViewById(R.id.descriptionText);
+		
 		// Set text of description if we have it
 		Intent intent = getIntent();
 		if (intent.hasExtra(Constants.DESCRIPTION_KEY)) {
@@ -83,11 +84,11 @@ public class DescriptionActivity extends AbstractSubmissionActivity implements
 	public void onItemSelected(AdapterView<?> parent, View view, int pos,
 			long id) {
 
+		System.out.println ("Item was selected");
 		// An item was selected. You can retrieve the selected item using
 		imageTag = (String) parent.getItemAtPosition(pos);
 		submissionEventBuilder.setImageTag(imageTag);
-		System.out.println("MEAN REACHED HERE");
-
+		Log.e("image tag is", imageTag);
 	}
 
 	public void onNothingSelected(AdapterView<?> parent) {
