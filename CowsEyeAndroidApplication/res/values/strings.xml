@@ -44,7 +44,8 @@
     <string name="preview_title">Preview</string>
     <string name="preview_image">Picture</string>
     <string name="preview_location">Location</string>
-    <string name="preview_description">Description</string>
+    <string name="preview_descriptiontitle"> Description</string>
+    <string name="preview_description"> Description</string>
     <string name="preview_imagetag"> Image Tag </string>
     <string name="preview_imagetagtitle"> Image Tag </string>
     <string name="no_preview_available">No Preview Available</string>

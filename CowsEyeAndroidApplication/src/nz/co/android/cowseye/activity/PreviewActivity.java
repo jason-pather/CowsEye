@@ -67,7 +67,7 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 		
 		description.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, DescriptionActivity.class));
 		
-		tag = (TextView)findViewById(R.id.PreviewDescriptionTag);
+		tag = (TextView)findViewById(R.id.PreviewImageTag);
 		tag.setText(submissionEventBuilder.getImageTag());
 		tag.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, DescriptionActivity.class));
 	}

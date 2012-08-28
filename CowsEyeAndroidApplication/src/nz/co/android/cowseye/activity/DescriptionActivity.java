@@ -49,6 +49,7 @@ public class DescriptionActivity extends AbstractSubmissionActivity implements O
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		// Apply the adapter to the spinner
 		spinner.setAdapter(adapter);
+		spinner.setOnItemSelectedListener(this);
 
 		setupUI();
 		pressNextButton();
@@ -83,11 +84,11 @@ public class DescriptionActivity extends AbstractSubmissionActivity implements O
 	public void onItemSelected(AdapterView<?> parent, View view, int pos,
 			long id) {
 
+		System.out.println ("Item was selected");
 		// An item was selected. You can retrieve the selected item using
 		imageTag = (String) parent.getItemAtPosition(pos);
 		submissionEventBuilder.setImageTag(imageTag);
-		System.out.println("MEAN REACHED HERE");
-
+		Log.e("image tag is", imageTag);
 	}
 
 	public void onNothingSelected(AdapterView<?> parent) {
