@@ -1,12 +1,19 @@
 package nz.co.android.cowseye.activity;
 
+import org.apache.http.HttpResponse;
+import org.json.JSONObject;
+
 import nz.co.android.cowseye.R;
 import nz.co.android.cowseye.RiverWatchApplication;
 import nz.co.android.cowseye.R.id;
 import nz.co.android.cowseye.R.layout;
 import nz.co.android.cowseye.R.string;
 import nz.co.android.cowseye.common.Constants;
+import nz.co.android.cowseye.event.Event;
+import nz.co.android.cowseye.event.SubmissionEventBuilder;
+import nz.co.android.cowseye.event.SubmissionEventBuilderException;
 import nz.co.android.cowseye.utility.AlertBuilder;
+import nz.co.android.cowseye.utility.JSONHelper;
 import nz.co.android.cowseye.utility.Utils;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -39,7 +46,9 @@ import com.google.android.maps.GeoPoint;
 public class MainScreenActivity extends Activity {
 
 	private Button buttonSubmit;
+	private Button buttonGallery;
 	private RiverWatchApplication myApplication;
+
 
 	/** Called when the activity is first created. */
 	@Override
@@ -70,13 +79,20 @@ public class MainScreenActivity extends Activity {
 	private void setupUI(){
 		buttonSubmit = (Button)findViewById(R.id.button_submit);
 		buttonSubmit.setOnClickListener(new SubmitPollutionEventOnClickListener());
+		buttonGallery = (Button)findViewById(R.id.button_view_gallery);
+		buttonGallery.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(MainScreenActivity.this, IncidentGalleryActivity.class));
+			}
+		});
 	}
 
 	/** Starts a submission of a pollution event */
 	public class SubmitPollutionEventOnClickListener implements OnClickListener{
 		@Override
 		public void onClick(View v) {
-			
+
 			startActivity(new Intent(MainScreenActivity.this, SelectImageActivity.class));
 		}
 

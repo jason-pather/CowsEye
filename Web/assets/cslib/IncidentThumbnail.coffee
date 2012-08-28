@@ -5,19 +5,21 @@ Create a Thumbnail For an Incident
 Make = ( incident ) ->	
 	
 	# Create Cell
+	console.log "Creating thumbmail for #{incident.id}, with url #{incident.thumbnail_url}"
+	
 	cell =  $ "<li class=\"span3\">
 				<div href=\"\" data-toggle=\"modal\" class=\"thumbnail\" id=\"testThumbnail\">
-					<img src=\"#{incident.Thumbnail_URL}\" alt=\"\">
+					<img src=\"#{incident.thumbnail_url}\" alt=\"\">
 					<div class = \"caption\">
-						<h5>Incident #{incident.Incident_ID}</h5>
-						<p>#{incident.Short_Description}</p>
+						<h5>Incident #{incident.id}</h5>
+						<p>#{incident.description}</p>
 					</div>
 				</div>
 			</li>"	
 		
 	# Show Modal on Click
 	cell.click ->
-		Window.CreateIncidentModal incident.Incident_ID
+		Window.CreateIncidentModal incident.id
 	
 	# Return Completed JQuery Element
 	return cell

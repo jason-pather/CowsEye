@@ -8,7 +8,8 @@ SetupMap = () ->
 	mapOptions = { 
 		zoom: 9,
 		center: mapCenter,
-		mapTypeId: google.maps.MapTypeId.ROADMAP
+		mapTypeId: google.maps.MapTypeId.ROADMAP,
+		disableDefaultUI: true
 	}
 
 	elem = document.getElementById 'map_canvas'
@@ -22,44 +23,73 @@ google.maps.event.addDomListener(window, "load", googleMap);
 # Fix the height of the map, twitter bootstrap fucks it up, it probbly fucks up some other map things aswell
 mapCanvas = $ "#map_canvas"
 mapCanvas.css {height: "100%" }
-
-# Test image oberlays
-newark = new google.maps.LatLng 40.740, -74.18
-newarkLat = new google.maps.LatLng 40.716216, -74.213393
-newarkLng = new google.maps.LatLng 40.765641, -74.139235
-
-imageBounds = new google.maps.LatLngBounds newarkLat, newarkLng
-
-oldmap = new google.maps.GroundOverlay "http://placehold.it/480x360", imageBounds
-
-google.maps.event.addListener oldmap, 'click', () => 
-	Window.CreateIncidentModal 2
-
-oldmap.setMap googleMap
-
-# Get test data and populate map
-incidentList = Window.IncidentList 0, 12
+# mapCanvasHeight = mapCanvas.css "height"
+# mapCanvas.css {height: "#{mapCanvasHeight - 50}px"}
 
 # Zoom listner
 # google.maps.event.addListener googleMap, "zoom_changed", ->
 # console.log "Zoom #{googleMap.getZoom()} "
 size = 0.05
+current = 0;
+range = 16;
 	
+createOverlay = (incident) ->
 
-for incident in incidentList.Incidents
+	geo = incident.geolocation
+	
+	lat = new google.maps.LatLng geo.lat - size, geo.long - size * 2
+	lng = new google.maps.LatLng geo.lat + size, geo.long + size * 2
+
+	imageBounds = new google.maps.LatLngBounds lat, lng
+	overlay = new google.maps.GroundOverlay "#{incident.thumbnail_url}", imageBounds
+
+	google.maps.event.addListener overlay, 'click', () => 
+		Window.CreateIncidentModal incident.id
+
+	overlay.setMap googleMap
+
+onSuccess = (data) ->
+	for incident in data.incidents
+		current++
+		createOverlay incident
 		
-	newarkLat = new google.maps.LatLng incident.Lat - size, incident.Lng - size * 2
-	newarkLng = new google.maps.LatLng incident.Lat + size, incident.Lng + size * 2
-
-	imageBounds = new google.maps.LatLngBounds newarkLat, newarkLng
-	oldmap = new google.maps.GroundOverlay "http://placehold.it/480x360", imageBounds
-
-	google.maps.event.addListener oldmap, 'click', () => 
-		Window.CreateIncidentModal incident.Incident_ID
-
-	oldmap.setMap googleMap
+onFail = (data) ->
+	console.log "Rest Call failed"
+		
+Window.RWCall onSuccess, onFail, {}, "unapproved_stub", "/start=#{current}/number=#{range}", "GET"
 
 
+# Controls
+nextButton = $ "#nextBtn"
+prevButton = $ "#prevBtn"
+d16Button = $ "#d16"
+d32Button = $ "#d32"
+d64Button = $ "#d64"
+d128Button = $ "#d128"
+d256Button = $ "#d256"
+
+nextButton.click ->
+	console.log "Clicked Next"
+	Window.RWCall onSuccess, onFail, {}, "unapproved_stub", "/start=#{current}/number=#{range}", "GET"
+
+prevButton.click ->
+	console.log "Clicked Prev"
+	current = if current - range > 0 then current - range else 0;
+	Window.RWCall onSuccess, onFail, {}, "unapproved_stub", "/start=#{current}/number=#{range}", "GET"
+	
+changeRange = (newRange) ->
+	current = if current - range > 0 then current - range else 0;
+	range = newRange;
+	Window.RWCall onSuccess, onFail, {}, "unapproved_stub", "/start=#{current}/number=#{range}", "GET"
+
+d16Button.click -> changeRange 16
+d32Button.click -> changeRange 32
+d64Button.click -> changeRange 64
+d128Button.click -> changeRange 128
+d256Button.click -> changeRange 256
+
+
+###
 for incident in incidentList.Incidents
 
 	newarkLat = new google.maps.LatLng incident.Lat - size, incident.Lng - size * 2
@@ -79,6 +109,7 @@ for incident in incidentList.Incidents
 			strokeOpacity: 1,
 			strokeWeight: 1
 	}
+
 		
 	border.setMap googleMap
-
+###	

@@ -1,3 +1,9 @@
+
+###
+A Wrapper around any Ajax Calls made by River Watch, Mocks calls to a web service
+Author Matthew Betts
+###
+
 ###
 This is a class for producing mock data, returns from methods in this class should be formatted as json, as specified by the API
 ###
@@ -27,7 +33,7 @@ IncidentDetail = ( id ) ->
 	
 	data = {
 		Incident_ID : id
-		Full_URL :  "http://placehold.it/960x540"
+		Full_URL :  "http://placehold.it/1600x900"
 		Description: "Description for #{id}"
 		Tags: [ "Cow", "Poo", "River", "Pond" ]
 		Lat: GPSCoordinatesNZ[0].lat
@@ -53,11 +59,11 @@ IncidentList = ( start, range ) ->
 	
 		incidents[i] = {
 			Incident_ID : start + i
-			Thumbnail_URL :  "http://placehold.it/480x360"
+			Thumbnail_URL :  "http://placehold.it/320x180"
 			Short_Description: "Description for #{ start + i}"
 			Tags: [ "Cow", "Poo", "River", "Pond" ]
-			Lat: GPSCoordinatesNZ[gps].lat
-			Lng: GPSCoordinatesNZ[gps].lng
+			Lat: GPSCoordinatesNZ[gps].lat + (Math.floor((Math.random()*100)) - 50) / 50
+			Lng: GPSCoordinatesNZ[gps].lng + (Math.floor((Math.random()*100)) - 50) / 50
 			
 			
 		}
@@ -102,3 +108,41 @@ CommentsForIncident = (id, start, range) ->
 Window.IncidentList = IncidentList
 Window.IncidentDetail = IncidentDetail
 Window.CommentsForIncident = CommentsForIncident
+
+RWCall = (onSuccess, onFailure, data, path, args, callType) ->
+
+	# Display Ajax Loader
+	ajaxLoader = $ "#ajaxLoader"
+	ajaxLoader.css "display", "block"
+	
+	if path == "IncidentDetail"
+		result = IncidentDetail args[0]
+
+	if path == "IncidentList"
+		result = IncidentList args[0], args[1]
+	
+	if path == "CommentsForIncident"
+		console.log "Making comments for incident"
+		result = CommentsForIncident args[0], args[1], args[2]
+		
+	if callType == "success"
+		onSuccess result
+	else
+		onFailure result
+	
+	ajaxLoader.css "display", "none"	
+	
+###
+Make an AJAX Gete request to the River Watch Server
+
+	onSuccess (data) - function to execute on a successfull get, data is the responce from the server
+	onFailure (data) - function to execute on a failed get, data is the resonce from the server
+	args - Arguments to send to the server, this should be a map of keys to string values
+	path - The path to add onto the url for the requested service
+
+###
+
+###
+Save calls, so that can be accessed globaly across the website.
+###
+Window.RWCall = RWCall

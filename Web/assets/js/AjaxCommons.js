@@ -7,13 +7,9 @@ Author Matthew Betts
 
 
 (function() {
-  var BASE_URL, CONTENT_TYPE, DATA_TYPE, GET_TYPE, PROCESS_DATA, PUT_TYPE, RWCall, RWGet, RWPut, TIMEOUT;
+  var BASE_URL, CONTENT_TYPE, DATA_TYPE, PROCESS_DATA, RWCall, TIMEOUT;
 
-  BASE_URL = "http://localhost:1469/";
-
-  PUT_TYPE = "PUT";
-
-  GET_TYPE = "GET";
+  BASE_URL = "http://barretts.ecs.vuw.ac.nz:4567/wainz/";
 
   CONTENT_TYPE = "contentType";
 
@@ -33,58 +29,22 @@ Author Matthew Betts
   */
 
 
-  RWPut = function(onSuccess, onFailure, data, path) {
-    var json;
-    json = JSON.stringify(data);
-    return $.ajax({
-      type: PUT_TYPE,
-      url: BASE_URL + path,
-      data: json,
-      dataType: DATA_TYPE,
-      processData: PROCESS_DATA,
-      contentType: CONTENT_TYPE,
-      timeout: TIMEOUT,
-      success: onSuccess,
-      error: onFailure
-    });
-  };
-
-  /*
-  Make an AJAX Put request to the River Watch Server
-  
-  	onSuccess (data) - function to execute on a successfull put, data is the responce from the server
-  	onFailure (data) - function to execute on a failed put, data is the resonce from the server
-  	data - Data the send to the server, this should be a map of maps\objects\primitives
-  	path - the path to add onto the url for the requested service
-  */
-
-
   RWCall = function(onSuccess, onFailure, data, path, args, callType) {
-    var allArguments, first, json, key, _i, _len;
-    first = true;
-    allArguments = "";
-    for (_i = 0, _len = args.length; _i < _len; _i++) {
-      key = args[_i];
-      if (first) {
-        first = false;
-        allArguments += "?";
-      } else {
-        allArguments += "&";
-      }
-      allArguments += "" + key + " = " + args[key];
-    }
+    var ajaxLoader, json;
+    ajaxLoader = $("#ajaxLoader");
+    ajaxLoader.css("display", "block");
     json = JSON.stringify(data);
-    console.log(allArguments);
     return $.ajax({
-      type: callType,
-      url: BASE_URL + path + allArguments,
-      data: json,
-      dataType: DATA_TYPE,
-      processData: PROCESS_DATA,
-      contentType: CONTENT_TYPE,
-      timeout: TIMEOUT,
-      success: onSuccess,
-      error: onFailure
+      url: BASE_URL + path + args,
+      dataType: "jsonp",
+      success: function(msg) {
+        onSuccess(msg);
+        return ajaxLoader.css("display", "none");
+      },
+      error: function(msg) {
+        onFailure(msg);
+        return ajaxLoader.css("display", "none");
+      }
     });
   };
 
@@ -98,40 +58,10 @@ Author Matthew Betts
   */
 
 
-  RWGet = function(onSuccess, onFailure, args, path) {
-    var allArguments, first, key, _i, _len;
-    first = true;
-    allArguments = "";
-    for (_i = 0, _len = args.length; _i < _len; _i++) {
-      key = args[_i];
-      if (first) {
-        first = false;
-        allArguments += "?";
-      } else {
-        allArguments += "&";
-      }
-      allArguments += "" + key + " = " + args[key];
-    }
-    return $.ajax({
-      type: GET_TYPE,
-      url: BASE_URL + path,
-      dataType: DATA_TYPE,
-      processData: PROCESS_DATA,
-      contentType: CONTENT_TYPE,
-      timeout: TIMEOUT,
-      success: onSuccess,
-      error: onFailure
-    });
-  };
-
   /*
   Save calls, so that can be accessed globaly across the website.
   */
 
-
-  Window.RWGet = RWGet;
-
-  Window.RWPut = RWPut;
 
   Window.RWCall = RWCall;
 

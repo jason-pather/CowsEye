@@ -41,16 +41,10 @@ public class RecordLocationActivity extends MapActivity {
 	private GPSManager gpsManager;
 	private MapManager mapManager;
 	private ProgressDialog dialog;
-	
-	//Only show link and coordinates if
-	//1. The App has been able to use location services and;
-	//2. The Reverse Geo-Coder has worked and;
-	//3. The user hasn't overridden the location with their own text.
-	private boolean link = false;
+
 	//address got from reverse geo coding
 	private String geoAddress;
 	private GeoPoint addressCoordinates;
-	
 	private SubmissionEventBuilder submissionEventBuilder;
 
 	/** Called when the activity is first created. */
@@ -69,15 +63,23 @@ public class RecordLocationActivity extends MapActivity {
 			@Override
 			public void onClick(View v) {
 				if(hasAllDetails()){
-					Intent intent = buildLocationDataIntent(RESULT_OK);
-					startActivity(intent);
+//					Intent intent = buildLocationDataIntent(RESULT_OK);
+//					startActivity(intent);
+					if(dialog!=null)
+						dialog.dismiss();
+					if(addressCoordinates!=null)
+						submissionEventBuilder.setGeoCoordinates(addressCoordinates);
+					if(!getAddress().equals(""))
+						submissionEventBuilder.setAddress(getAddress());
+					startActivity(new Intent(RecordLocationActivity.this, PreviewActivity.class));
+					
 					// get coordinates from address location
-//					dialog = ProgressDialog.show(LocationActivity.this, "Acquiring coordinates from address", "Please wait...");
+					//					dialog = ProgressDialog.show(LocationActivity.this, "Acquiring coordinates from address", "Please wait...");
 					//TODO DO NOT 
-//					new GeoCodeCoordinatesService(LocationActivity.this, gpsManager.getGeoCoder(), addressEditText.getText().toString().trim()).execute();
+					//					new GeoCodeCoordinatesService(LocationActivity.this, gpsManager.getGeoCoder(), addressEditText.getText().toString().trim()).execute();
 				}
 				else
-					Toast.makeText(RecordLocationActivity.this, getResources().getString(R.string.pleaseEnterDetails), Toast.LENGTH_SHORT).show();
+					Toast.makeText(RecordLocationActivity.this, getResources().getString(R.string.pleaseEnterAddress), Toast.LENGTH_SHORT).show();
 			}
 		});
 
@@ -89,7 +91,6 @@ public class RecordLocationActivity extends MapActivity {
 		else
 			setupManagers(savedInstanceState);
 		submissionEventBuilder = SubmissionEventBuilder.getSubmissionEventBuilder();
-
 	}
 
 	private void buildAlertMessageNoGps(final Bundle savedInstanceState) {
@@ -106,7 +107,6 @@ public class RecordLocationActivity extends MapActivity {
 			public void onClick(final DialogInterface dialog, final int id) {
 				dialog.cancel();
 				setupManagers(savedInstanceState);
-
 			}
 		});
 		final AlertDialog alert = builder.create();
@@ -141,7 +141,6 @@ public class RecordLocationActivity extends MapActivity {
 		// killed and restarted.
 		if(gpsManager!=null)
 			gpsManager.saveStateOnDestroy(savedInstanceState);
-
 	}
 
 	@Override
@@ -151,11 +150,10 @@ public class RecordLocationActivity extends MapActivity {
 
 	public void setAddress(String addr, GeoPoint addressCoordinates) {
 		addressEditText.setText(addr);
-		link = true;
-		//address got from reverse geo coding
 		geoAddress = addr;
 		this.addressCoordinates = addressCoordinates;
-		
+		Log.d(toString(), "setting addr : " +addr);
+		Log.d(toString(), "setting geo : "+ addressCoordinates);
 	}
 
 	public String getAddress() {
@@ -169,29 +167,26 @@ public class RecordLocationActivity extends MapActivity {
 		finish();
 	}
 
-	public Intent buildLocationDataIntent(int RESULT_TYPE) {
-		if(dialog!=null)
-			dialog.dismiss();
-		Intent intent=new Intent(this, PreviewActivity.class);
-		intent.putExtra(Constants.LOCATION_KEY, getLocation());
-		//if reverse geo coded the address
-		if(link){
-			//if user has not changed the address ( then we can make a link and coordinates)
-			if(getLocation().equals(geoAddress)){
-				double lat = addressCoordinates.getLatitudeE6(); //addrCoord.getLatitude()*1E6;//gpsManager.getUserLocationGeoPoint().getLatitudeE6() / 1E6;
-				double lon = addressCoordinates.getLongitudeE6();//addrCoord.getLongitude()*1E6;//gpsManager.getUserLocationGeoPoint().getLongitudeE6()  / 1E6;
-				String link = Constants.GOOGLE_MAP_LINK + (lat/1E6)+","+(lon/1E6);
-				intent.putExtra(Constants.LOCATION_LATITUDE_KEY,(int)lat);//gpsManager.getUserLocationGeoPoint().getLatitudeE6());
-				intent.putExtra(Constants.LOCATION_LONGITUDE_KEY,(int)lon);// gpsManager.getUserLocationGeoPoint().getLongitudeE6());
-				intent.putExtra(Constants.LOCATION_GOOGLE_LINK, link);
-				Log.e(toString(), "Putting in link!");
-			}
-		}
-		Log.e(toString(), "Not putting in link :(");
-		setResult(RESULT_TYPE, intent);
-		Toast.makeText(RecordLocationActivity.this, getResources().getString(R.string.savingAddress), Toast.LENGTH_SHORT).show();
-		return intent;
-	}
+//	public Intent buildLocationDataIntent(int RESULT_TYPE) {
+//		if(dialog!=null)
+//			dialog.dismiss();
+//		Intent intent=new Intent(this, PreviewActivity.class);
+//		intent.putExtra(Constants.LOCATION_KEY, getLocation());
+//		//if reverse geo coded the address
+//		//if user has not changed the address ( then we can make a link and coordinates)
+//		if(getLocation().equals(geoAddress)){
+//			double lat = addressCoordinates.getLatitudeE6(); //addrCoord.getLatitude()*1E6;//gpsManager.getUserLocationGeoPoint().getLatitudeE6() / 1E6;
+//			double lon = addressCoordinates.getLongitudeE6();//addrCoord.getLongitude()*1E6;//gpsManager.getUserLocationGeoPoint().getLongitudeE6()  / 1E6;
+//			String link = Constants.GOOGLE_MAP_LINK + (lat/1E6)+","+(lon/1E6);
+//			intent.putExtra(Constants.LOCATION_LATITUDE_KEY,(int)lat);//gpsManager.getUserLocationGeoPoint().getLatitudeE6());
+//			intent.putExtra(Constants.LOCATION_LONGITUDE_KEY,(int)lon);// gpsManager.getUserLocationGeoPoint().getLongitudeE6());
+//			intent.putExtra(Constants.LOCATION_GOOGLE_LINK, link);
+//			Log.e(toString(), "Putting in link!");
+//		}
+//		setResult(RESULT_TYPE, intent);
+////		Toast.makeText(RecordLocationActivity.this, getResources().getString(R.string.savingAddress), Toast.LENGTH_SHORT).show();
+//		return intent;
+//	}
 	public void errorGeoCodeAddress(){
 		dialog.dismiss();
 		Toast.makeText(this, getResources().getString(R.string.errorInGeoCoding), Toast.LENGTH_SHORT).show();
@@ -203,7 +198,9 @@ public class RecordLocationActivity extends MapActivity {
 	}
 
 	protected boolean hasAllDetails() {
-		return !getLocation().equals("");
+		Log.d(toString(), "coord : "+ addressCoordinates);
+		Log.d(toString(), "address : "+ getLocation());
+		return addressCoordinates!=null || !getLocation().equals("");
 	}
 
 }

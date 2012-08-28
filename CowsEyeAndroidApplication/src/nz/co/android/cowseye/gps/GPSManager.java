@@ -19,6 +19,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Window;
 import android.view.WindowManager.BadTokenException;
 import android.widget.Toast;
 
@@ -80,7 +81,7 @@ public class GPSManager implements LocationListener{
 //					mapHelper.setMapViewToLocation(userLocationGeoPoint);
 				}
 			}catch(NoLocationFoundException e){
-				Toast.makeText(context, context.getResources().getString(R.string.gps_no_location_message), Toast.LENGTH_SHORT).show();
+//				Toast.makeText(context, context.getResources().getString(R.string.gps_no_location_message), Toast.LENGTH_SHORT).show();
 				Log.e(toString(), "Cannot get a fix on user location: "+e.toString());
 			}
 		}
@@ -95,8 +96,9 @@ public class GPSManager implements LocationListener{
 		Criteria criteria = new Criteria();
 		criteria.setAccuracy(Criteria.ACCURACY_FINE);
 		criteria.setAltitudeRequired(false);
-		Log.d(toString(), "locMan: "+ locationManager);
-		Log.d(toString(), "provid: "+ locationManager.getBestProvider(criteria, true));
+//		Log.d(toString(), "locMan: "+ locationManager);
+//		Log.d(toString(), "provid: "+ locationManager.getBestProvider(criteria, true));
+		
 		String provider = locationManager.getBestProvider(criteria, true);
 		if(provider==null)
 			throw new NoLocationFoundException("No provider - LocationManager");
@@ -111,13 +113,13 @@ public class GPSManager implements LocationListener{
 
 	/** removes the gps update listeners*/
 	public void removeUpdates() {
-//		locationManager.removeUpdates(this);
+		locationManager.removeUpdates(this);
 	}
 
 	/** Adds the gps update listeneres */
 	public void requestUpdateListeners() {
-//		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,  20000, 15, this);
-//		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 20000, 15, this);
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,  12000, 10, this);
+		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 12000, 10, this);
 	}
 
 	/** Returns the location of the user as a geo point containing latitude and longitutude */
@@ -157,6 +159,7 @@ public class GPSManager implements LocationListener{
 		// update last known position
 		lastKnownLocation = location;
 		userLocationGeoPoint =new GeoPoint((int) ( location.getLatitude() * 1E6), (int) ( location.getLongitude() * 1E6));
+//		locationActivity.setGeoCoordinates(userLocationGeoPoint);
 		// add new user position
 		updateLocationActivity(location);
 		Log.i(toString(), "User location changed : "+(int) ( location.getLatitude() * 1E6)+" , "+ (int) ( location.getLongitude() * 1E6));
@@ -197,8 +200,11 @@ public class GPSManager implements LocationListener{
 		if(alert!=null)
 			alert.dismiss();
 		AlertDialog alert = AlertBuilder.buildAlertMessageUpdatePosition(locationActivity, mapHelper, locationActivity, addr, userPoint);
+		try{
 		if(alert!=null)
 			alert.show();
+		}
+		catch(BadTokenException e){};
 	}
 	public Geocoder getGeoCoder() {
 		return geocoder;

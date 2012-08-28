@@ -6,26 +6,88 @@ Retreive, and create a incident modal dialog box
 
 
 (function() {
-  var Make;
+  var Make, checkMessage, getMessage;
+
+  getMessage = function() {
+    var messageInput;
+    messageInput = $("#messageInput");
+    return messageInput.val();
+  };
+
+  checkMessage = function() {
+    var controlGroup;
+    if (getMessage() === "") {
+      controlGroup = $("#messageControlGroup");
+      controlGroup.addClass("error");
+      controlGroup.change(function() {
+        if (getMessage() !== "") {
+          return controlGroup.removeClass("error");
+        }
+      });
+      return false;
+    }
+    return true;
+  };
 
   Make = function(id) {
-    var c, comments, commentsSection, data, incidentModal, _i, _len, _ref, _results;
-    data = Window.IncidentDetail(id);
-    incidentModal = $("<div class=\"modal hide fade in\" id=\"myModal\">		<div class=\"modal-header\">			<button type=\"button\" class=\"close\" data-dismiss=\"modal\">�</button>			<h3>Mock Incident</h3>		</div>		<div class=\"modal-body\">			<div href=\"#\" class=\"thumbnail\" id=\"testThumbnail\">				<img src=\"" + data.Full_URL + "\" alt=\"\">				</div>			<h2>The Title for " + data.Incident_ID + "</h2>			<p> This is a sample picture to be used as a place holder when testing for content or something and another line for good measure, anlala and some more writing alalala and some more writing alalala and some more writing alalala </p>			<h2>Leave Comment</h2>			<textarea class=\"input-xlarge\" id=\"textarea\" rows=\"3\" style=\"margin: 0px; width: 695px; height: 114px; \"></textarea>			<h2>Comments 2 </h2>			<p></p>			<div id = \"comments\"></div>		</div>		<div class=\"modal-footer\">		<a href=\"#\" class=\"btn btn-success\">Submit Comment for Approval</a>		<a href=\"#\" class=\"btn btn-danger\" data-dismiss=\"modal\">Close Incident</a>						</div>			</div>");
-    incidentModal.modal({
-      show: true
-    });
-    comments = Window.CommentsForIncident(id);
-    commentsSection = incidentModal.find("#comments");
-    console.log("Found comments section");
-    _ref = comments["Comments"];
-    _results = [];
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      c = _ref[_i];
-      console.log("adding coment " + c);
-      _results.push(commentsSection.append($("<p>" + c.Comment_Text + "</p>")));
-    }
-    return _results;
+    var args, calltype, onFail, onSuccess, path;
+    onFail = function(data) {
+      return console.log("Rest Call has failed");
+    };
+    path = "IncidentDetail";
+    args = [id];
+    calltype = "success";
+    onSuccess = function(data) {
+      var commentFailure, commentSuccess, incidentModal, submitCommentButton;
+      incidentModal = $("<div class=\"modal hide fade in\" id=\"myModal\">			<div class=\"modal-header\">				<button type=\"button\" class=\"close\" data-dismiss=\"modal\"><i class=\"icon-remove icon-red\"></i></button>				<h3>Incident Details</h3>			</div>			<div class=\"modal-body\">				<div href=\"#\" class=\"thumbnail\" id=\"testThumbnail\">					<img src=\"" + data.Full_URL + "\" alt=\"\">					</div>				<h2>Details</h2>				<p> " + data.Description + "</p>				<h2>Comments</h2>				<p></p>				<div id = \"comments\"></div>								<h2>Post Comment</h2>				<div class =\"control-group\" id = \"messageControlGroup\">					<textarea class=\"input-xlarge\" id=\"messageInput\" rows=\"3\" style=\"margin: 0px; width: 690px; height: 114px; \"></textarea>				</div>				<p></p>				<a href=\"#\" id= \"commentSubmitButton\"class=\"btn btn-primary\">					<i class=\"icon-comment icon-white\"></i>					Submit				</a>				</div>			<div class=\"modal-footer\">					<a href=\"#\" class=\"btn btn-danger\" data-dismiss=\"modal\">					<i class=\"icon-remove icon-white\"></i>					Close Incident				</a>			</div>					</div>");
+      incidentModal.modal({
+        show: true
+      });
+      submitCommentButton = incidentModal.find("#commentSubmitButton");
+      submitCommentButton.click(function() {
+        var callType, onFailure;
+        if (checkMessage()) {
+          data = {
+            comment: getMessage()
+          };
+          path = "/Submit/Comment";
+          args = [id];
+          callType = "success";
+          onSuccess = function(msg) {
+            submitCommentButton.removeClass("btn-primary");
+            submitCommentButton.addClass("btn-success");
+            console.log("Success");
+            return submitCommentButton.text("Comment Submitted Successfuly, Awaiting Approval");
+          };
+          onFailure = function(msg) {
+            submitCommentButton.removeClass("btn-primary");
+            submitCommentButton.addClass("btn-danger");
+            console.log("Fail");
+            return submitCommentButton.text("Comment Submission Failed");
+          };
+          submitCommentButton.text("Submitting...");
+          submitCommentButton.click(function() {});
+          return Window.RWCall(onSuccess, onFailure, data, path, args, callType);
+        }
+      });
+      commentFailure = function(data) {
+        return console.log("problem for loaing comments");
+      };
+      commentSuccess = function(data) {
+        var c, commentsSection, _i, _len, _ref, _results;
+        commentsSection = incidentModal.find("#comments");
+        _ref = data["Comments"];
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          c = _ref[_i];
+          console.log("adding coment " + c);
+          _results.push(commentsSection.append($("<p>" + c.Comment_Text + "</p>")));
+        }
+        return _results;
+      };
+      return Window.RWCall(commentSuccess, commentFailure, {}, "CommentsForIncident", [id, 0, 24], "success");
+    };
+    return Window.RWCall(onSuccess, onFail, {}, path, args, calltype);
   };
 
   Window.CreateIncidentModal = Make;

@@ -1,11 +1,24 @@
 package nz.co.android.cowseye.activity;
 
+import java.io.IOException;
+
+import org.apache.http.Header;
+import org.apache.http.HttpResponse;
+import org.json.JSONObject;
+
+import com.google.android.maps.GeoPoint;
+
 import nz.co.android.cowseye.R;
 import nz.co.android.cowseye.common.Constants;
+import nz.co.android.cowseye.event.Event;
+import nz.co.android.cowseye.event.SubmissionEventBuilder;
+import nz.co.android.cowseye.event.SubmissionEventBuilderException;
 import nz.co.android.cowseye.utility.AlertBuilder;
+import nz.co.android.cowseye.utility.JSONHelper;
 import nz.co.android.cowseye.utility.Utils;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -30,6 +43,8 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 	private ImageView previewImageView;
 	private TextView previewTextView;
 	private Button selectImageFromGalleryButton;
+	private Button buttonTESTPOST;
+
 
 	/** Called when the activity is first created. */
 	@Override
@@ -40,6 +55,42 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 		loadState(savedInstanceState);
 		//starts a new submission event
 		submissionEventBuilder.startNewSubmissionEvent();
+		buttonTESTPOST = (Button)findViewById(R.id.button_test_post);
+		buttonTESTPOST.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				submissionEventBuilder.setImagePath(cameraFileUri)
+				.setImageDescription("This is an Image Description")
+				.setImageTag("Test image tag")
+				.setGeoCoordinates(new GeoPoint(12141414, 493124312))
+				.setAddress("2 adventure drive");
+				try {
+					Event e = submissionEventBuilder.build();
+					HttpResponse response = e.processRaw();
+					Log.d(toString(), "response : "+response);
+					try{
+						Log.d(toString(),"Status line : "+ response.getStatusLine());
+						for(Header header : response.getAllHeaders()){
+							Log.d(toString(),"header : "+ header.getName() + " - > "+header.getValue());
+						}
+
+						
+						JSONObject jsonObject = JSONHelper.parseHttpResponseAsJSON(response);
+						Log.d(toString(), "jsonObject : "+jsonObject);
+
+						//				            if(jsonObject.has(Utils.RESPONSE_CODE))
+						//				                return ResponseCodeState.stringToResponseCode((String)jsonObject.getString(Utils.RESPONSE_CODE))==ResponseCodeState.SUCCESS;
+					}
+					catch(Exception f){ 
+						Log.e(toString(), "Exception in JsonParsing : "+f);
+					}
+
+				} catch (SubmissionEventBuilderException e) {
+					Log.e(toString(), e.toString());
+				}
+
+			}
+		});
 	}
 
 	/* Sets up the User Interface */
@@ -56,18 +107,15 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 
 		//goes to the description activity
 		nextButton.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				if(cameraFileUri!=null){
 					//save the image URI to the submissionEventBuilder
 					submissionEventBuilder.setImagePath(cameraFileUri);
-					System.out.println("Here WE GO");
-					System.out.println(cameraFileUri);
-					System.out.println(submissionEventBuilder.getImagePath());
 					//start description activity
 					startActivity(new Intent(SelectImageActivity.this,DescriptionActivity.class));
-					Toast.makeText(SelectImageActivity.this, getString(R.string.saving_image), Toast.LENGTH_LONG).show();
+//					Toast.makeText(SelectImageActivity.this, getString(R.string.saving_image), Toast.LENGTH_LONG).show();
 				}
 				else
 					Toast.makeText(SelectImageActivity.this, getString(R.string.please_select_a_image), Toast.LENGTH_LONG).show();
@@ -115,7 +163,6 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		// create a file to save the image
 		cameraFileUri = Utils.getNewCameraFileUri();
-		Log.d(toString(), "cameraFileUri now : "+cameraFileUri);
 		// set the image file name
 		intent.putExtra(MediaStore.EXTRA_OUTPUT, cameraFileUri); 
 		//trigger activity
@@ -147,11 +194,29 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 				setPreviewImageOn(cameraFileUri);
 			}
 		}
+		Log.d(toString(), "cameraFileUri : "+cameraFileUri);
+	}
+
+	/** Enables the preview image, first by trying to decode the URI natively into a bitmap 
+	 * If this fails then the image will be loaded from the uri handled by the system
+	 * @param cameraFileUri - path to the image
+	 */
+	private void setPreviewImageOn(Uri cameraFileUri) {
+		try{
+			Bitmap b = Utils.getAppFriendlyBitmap(cameraFileUri, getContentResolver());
+			if(b==null)
+				throw new IOException("Bitmap returned is null");
+			setPreviewBitmapImageOn(b);
+		}
+		catch(IOException e){
+			Log.e(toString(), "bitmap failed to decode : "+e);
+			setPreviewURIImageOn(cameraFileUri);
+		}	
 	}
 
 	/** Enables the preview image 
 	 * @param uriToImage - URI to the image captured or selected*/
-	private void setPreviewImageOn(Uri uriToImage) {
+	private void setPreviewURIImageOn(Uri uriToImage) {
 		if(uriToImage!=null){
 			//sets preview text view to invisible
 			previewTextView.setVisibility(View.INVISIBLE);
@@ -159,6 +224,20 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 			previewImageView.setVisibility(View.VISIBLE);
 			//set background preview image to image taken
 			previewImageView.setImageURI(uriToImage);
+		}
+
+	}
+
+	/** Enables the preview image 
+	 * @param bitmap - the image bitmap*/
+	private void setPreviewBitmapImageOn(Bitmap bitmap) {
+		if(bitmap!=null){
+			//sets preview text view to invisible
+			previewTextView.setVisibility(View.INVISIBLE);
+			//sets image to visible
+			previewImageView.setVisibility(View.VISIBLE);
+			//set background preview image to image taken
+			previewImageView.setImageBitmap(bitmap);
 		}
 
 	}

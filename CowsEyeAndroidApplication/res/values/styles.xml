@@ -32,6 +32,12 @@
         <item name="android:src">@drawable/right_arrow</item>
     </style>
 
+ 	<style name="button_option" parent="android:Widget.Button">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+    
     <style name="buttonStyle" parent="android:Widget.Button">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -52,7 +58,7 @@
         <item name="android:background">@drawable/done_button</item>
     </style>
 
-    <style name="contactLayoutStyle">
+    <style name="location_layout_style">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">horizontal</item>
@@ -61,11 +67,11 @@
         <item name="android:paddingRight">12dp</item>
         <item name="android:paddingBottom">0dp</item>
         <item name="android:weightSum">1</item>
-        <item name="android:background">@drawable/contact_details_background</item>
+        <item name="android:background">@drawable/location_background</item>
         <item name="android:layout_marginTop">-2dip</item>
     </style>
 
-    <style name="contactTextFieldStyle">
+    <style name="text_field_style">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">0.5</item>

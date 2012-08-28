@@ -10,9 +10,10 @@ Create a Thumbnail For an Incident
 
   Make = function(incident) {
     var cell;
-    cell = $("<li class=\"span3\">				<div href=\"\" data-toggle=\"modal\" class=\"thumbnail\" id=\"testThumbnail\">					<img src=\"" + incident.Thumbnail_URL + "\" alt=\"\">					<div class = \"caption\">						<h5>Incident " + incident.Incident_ID + "</h5>						<p>" + incident.Short_Description + "</p>					</div>				</div>			</li>");
+    console.log("Creating thumbmail for " + incident.id + ", with url " + incident.thumbnail_url);
+    cell = $("<li class=\"span3\">				<div href=\"\" data-toggle=\"modal\" class=\"thumbnail\" id=\"testThumbnail\">					<img src=\"" + incident.thumbnail_url + "\" alt=\"\">					<div class = \"caption\">						<h5>Incident " + incident.id + "</h5>						<p>" + incident.description + "</p>					</div>				</div>			</li>");
     cell.click(function() {
-      return Window.CreateIncidentModal(incident.Incident_ID);
+      return Window.CreateIncidentModal(incident.id);
     });
     return cell;
   };
