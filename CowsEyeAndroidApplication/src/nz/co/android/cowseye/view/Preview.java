@@ -184,7 +184,7 @@ public class Preview extends SurfaceView implements SurfaceHolder.Callback {
 		}
 //		Log.d(toString(), "resizing frame b4");
 		//if measured then don't resize frame
-		if(!resizedFrame && horizontal){
+		if(!resizedFrame){
 //			Log.d(toString(), "resizing frame after");
 			resizedFrame = true;
 			//set parents dimensions to keep aspect ratio of 4:4
