@@ -36,6 +36,7 @@
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@android:color/black</item>
+        
     </style>
     
     <style name="buttonStyle" parent="android:Widget.Button">
@@ -56,6 +57,12 @@
         <item name="android:layout_gravity">right|center_vertical</item>
         <item name="android:text">@string/next</item>
         <item name="android:background">@drawable/done_button</item>
+    </style>
+    
+    <style name="riverWatchButtonStyle" parent="@style/buttonStyle">
+        <item name="android:layout_gravity">center</item>
+         <item name="android:background">@drawable/riverwatch_button</item>
+         <item name="android:layout_width">fill_parent</item>
     </style>
 
     <style name="location_layout_style">

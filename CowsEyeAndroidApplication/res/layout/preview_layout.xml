@@ -24,7 +24,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.6"
+        android:layout_weight="0.55"
         android:orientation="vertical" >
 
         <TextView
@@ -45,7 +45,7 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.1"
+        android:layout_weight="0.15"
         android:orientation="vertical" >
 
         <TextView
@@ -65,7 +65,7 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.1"
+        android:layout_weight="0.15"
         android:orientation="vertical" >
 
         <TextView
@@ -85,7 +85,7 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.2"
+        android:layout_weight="0.15"
         android:orientation="vertical" >
 
         <TextView
@@ -95,6 +95,7 @@
             android:layout_marginTop="5dp"
             android:text="@string/preview_descriptiontitle" />
 
+        <!-- scrollable view for this -->
         <TextView
             android:id="@+id/PreviewDescriptionText"
             style="@style/lots_text_style"
@@ -104,7 +105,7 @@
 
     <Button
         android:id="@+id/submit_button"
-        style="@style/button_option"
+        style="@style/riverWatchButtonStyle"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|bottom"
         android:text="@string/submit" />

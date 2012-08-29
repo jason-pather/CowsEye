@@ -18,11 +18,11 @@
 
         <Button
             android:id="@+id/button_submit"
-             style = "@style/button_option"
+             style = "@style/riverWatchButtonStyle"
             android:text="@string/submit_pollution_event" />
         <Button
             android:id="@+id/button_view_gallery"
-            style = "@style/button_option"
+            style = "@style/riverWatchButtonStyle"
             android:text="@string/view_submission_gallery" />
     </LinearLayout>
 
