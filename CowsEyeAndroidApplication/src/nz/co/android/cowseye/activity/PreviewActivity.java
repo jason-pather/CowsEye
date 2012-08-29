@@ -1,9 +1,14 @@
 package nz.co.android.cowseye.activity;
 
+import java.io.IOException;
+
 import nz.co.android.cowseye.R;
 import nz.co.android.cowseye.utility.Utils;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -50,7 +55,7 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 		});
 
 		image = (ImageView)findViewById(R.id.PreviewImageImage);
-		image.setImageURI(submissionEventBuilder.getImagePath());
+		setPreviewImageOn(submissionEventBuilder.getImagePath());
 //		image.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, SelectImageActivity.class));
 
 		location = (TextView)findViewById(R.id.PreviewLocationText);
@@ -77,6 +82,24 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 		tag.setText(submissionEventBuilder.getImageTag());
 //		tag.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, DescriptionActivity.class));
 	}
+	
+	/** Enables the preview image, first by trying to decode the URI natively into a bitmap 
+	 * If this fails then the image will be loaded from the uri handled by the system
+	 * @param cameraFileUri - path to the image
+	 */
+	private void setPreviewImageOn(Uri cameraFileUri) {
+		try{
+			Bitmap b = Utils.getAppFriendlyBitmap(cameraFileUri, getContentResolver());
+			if(b==null)
+				throw new IOException("Bitmap returned is null");
+			image.setImageBitmap(b);
+		}
+		catch(IOException e){
+			Log.e(toString(), "bitmap failed to decode : "+e);
+			image.setImageURI(cameraFileUri);
+		}	
+	}
+	
 
 	/** Submits a pollution event to the server
 	 * 

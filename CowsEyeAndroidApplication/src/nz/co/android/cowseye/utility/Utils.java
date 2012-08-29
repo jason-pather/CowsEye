@@ -83,10 +83,6 @@ public class Utils {
 			if (o.outHeight > MAX_PREVIEW_IMAGE_SIZE || o.outWidth > MAX_PREVIEW_IMAGE_SIZE) {
 				scale = (int)Math.pow(2, (int) Math.round(Math.log(MAX_PREVIEW_IMAGE_SIZE / (double) Math.max(o.outHeight, o.outWidth)) / Math.log(0.5)));
 			}
-//			Log.d("UTILS", "outHeight : "+o.outHeight );
-//			Log.d("UTILS", "outWidth : "+o.outWidth );
-//			Log.d("UTILS", "scale : "+scale );
-
 			//Decode with inSampleSize
 			BitmapFactory.Options o2 = new BitmapFactory.Options();
 			o2.inSampleSize = scale;
