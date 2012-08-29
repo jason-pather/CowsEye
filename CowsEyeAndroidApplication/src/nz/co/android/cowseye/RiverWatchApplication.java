@@ -7,7 +7,13 @@ import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.apache.http.Header;
+import org.apache.http.HttpResponse;
+import org.json.JSONObject;
+
+import nz.co.android.cowseye.event.Event;
 import nz.co.android.cowseye.event.EventHandler;
+import nz.co.android.cowseye.utility.JSONHelper;
 
 import android.app.Application;
 import android.content.Context;
@@ -19,11 +25,11 @@ import android.util.Log;
 
 public class RiverWatchApplication extends Application  {
 
-	private static final long timerDateAndTimeDelay = 0;
-	private static final long timerDateAndTimePeriod = 500; // half a second
 	private static final long timerZeroDelay = 0;
-	private static final long timerEventsProcessingPeriod = 10000; // 10 seconds
-	private static final long timerEventsProcessingLargeDelay = 120000; // 2 minutes
+	private static final long timerEventsProcessingPeriod = 300000; // 5 minutes
+	private static final long timerEventsProcessingLargeDelay = 6000000; // 30 minutes
+	private static final double MAX_TIMER_DELAYED_MULTIPLIER = 30; // 24 * 30 min = 720 min = 12 hours
+	private double timerDelayedMultiplier = 1; // multiplier for the delay between event processing in the case of consecutive event fails or internet loss
 
 	private static boolean eventProcessingSetup = false;
 
@@ -113,8 +119,15 @@ public class RiverWatchApplication extends Application  {
 	 * Called when the network is down, for a longer delay between trying again */
 	public void requestDelayedEventsTimer(){
 		stopTimerEventHandling();
+		if(timerDelayedMultiplier<1)
+			timerDelayedMultiplier=1;
+		else if(timerDelayedMultiplier>MAX_TIMER_DELAYED_MULTIPLIER)
+			timerDelayedMultiplier = MAX_TIMER_DELAYED_MULTIPLIER;
 		//start event handling with the large delay
-		startEventProcessingTimer(timerEventsProcessingLargeDelay);
+		startEventProcessingTimer((long)(timerEventsProcessingLargeDelay*timerDelayedMultiplier));
+		//Next time an event has failed the delay will be twice as long
+		if(timerDelayedMultiplier<MAX_TIMER_DELAYED_MULTIPLIER)
+			timerDelayedMultiplier*=2;
 	}
 
 	/** Forces the event processing to start*/

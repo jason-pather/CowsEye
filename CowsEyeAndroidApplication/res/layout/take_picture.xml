@@ -5,8 +5,24 @@
     android:orientation="vertical" >
 
     <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/descriptionScreenTitle"
+            style="@style/titleHeading"
+            android:text="@string/take_picture_title" />
+
+        <Button
+            android:id="@+id/backButton"
+            style="@style/backButtonStyle" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"  >
 
         <FrameLayout
             android:id="@+id/previewFrameLayout"
@@ -14,27 +30,13 @@
             android:layout_height="match_parent"
             android:layout_gravity="center" >
         </FrameLayout>
-
-        <FrameLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                android:id="@+id/descriptionScreenTitle"
-                style="@style/titleHeading"
-                android:text="@string/take_picture_title" />
-
-            <Button
-                android:id="@+id/backButton"
-                style="@style/backButtonStyle" />
-        </FrameLayout>
-
-        <Button
-            android:id="@+id/capture_image_button"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center_horizontal"
-            android:text="@string/capture_image" />
     </FrameLayout>
+
+    <Button
+        android:id="@+id/capture_image_button"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:text="@string/capture_image" />
 
 </LinearLayout>

@@ -3,8 +3,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@drawable/details_background"
-    android:orientation="vertical" 
-    android:weightSum="1">
+    android:orientation="vertical"
+    android:weightSum="1" >
 
     <FrameLayout
         android:layout_width="fill_parent"
@@ -20,69 +20,94 @@
             style="@style/backButtonStyle" />
     </FrameLayout>
 
-    <TextView
-        android:id="@+id/PreviewImageTitle"
-        style="@style/field_title_style"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/preview_image" />
-    <ImageView
-        android:id="@+id/PreviewImageImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/preview_image"
-        android:layout_weight="0.5"
-        android:src="@drawable/done_button" />
-
-    <TextView
-        android:id="@+id/PreviewLocationTag"
-        style="@style/field_title_style"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="5dp"
-        android:text="@string/preview_location" />
-    
-    <TextView
-        android:id="@+id/PreviewLocationText"
-        style="@style/lots_text_style"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/preview_location" />
-
-    <TextView
-        android:id="@+id/PreviewDescriptionTitle"
-        style="@style/field_title_style"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="5dp"
-        android:text="@string/preview_descriptiontitle" />
-    
-    <TextView
-        android:id="@+id/PreviewDescriptionText"
-        style="@style/lots_text_style"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/preview_description" />
-
-        <TextView
-        android:id="@+id/PreviewImageTagTitle"
-        style="@style/field_title_style"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="5dp"
-        android:text="@string/preview_imagetagtitle" />
-    
-    <TextView
-        android:id="@+id/PreviewImageTag"
-        style="@style/lots_text_style"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/preview_imagetag" />
-    
-    
-    <FrameLayout
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.55"
         android:orientation="vertical" >
 
-        <Button
-            android:id="@+id/submit_button"
-            style="@style/button_option"
-            android:layout_gravity="center_horizontal|bottom"
-            android:text="@string/submit" />
-    </FrameLayout>
+        <TextView
+            android:id="@+id/PreviewImageTitle"
+            style="@style/field_title_style"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/preview_image" />
+
+        <ImageView
+            android:id="@+id/PreviewImageImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="@string/preview_image"
+            android:src="@drawable/done_button" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.125"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/PreviewLocationTag"
+            style="@style/field_title_style"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp"
+            android:text="@string/preview_location" />
+
+        <TextView
+            android:id="@+id/PreviewLocationText"
+            style="@style/lots_text_style"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/preview_location" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.125"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/PreviewImageTagTitle"
+            style="@style/field_title_style"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp"
+            android:text="@string/preview_imagetagtitle" />
+
+        <TextView
+            android:id="@+id/PreviewImageTag"
+            style="@style/lots_text_style"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/preview_imagetag" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/PreviewDescriptionTitle"
+            style="@style/field_title_style"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp"
+            android:text="@string/preview_descriptiontitle" />
+
+        <!-- scrollable view for this -->
+        <TextView
+            android:id="@+id/PreviewDescriptionText"
+            style="@style/lots_text_style"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/preview_description" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/submit_button"
+        style="@style/riverWatchButtonStyle"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        android:text="@string/submit" />
 
 </LinearLayout>

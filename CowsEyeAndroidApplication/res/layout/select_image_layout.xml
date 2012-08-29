@@ -66,12 +66,12 @@
 
                     <Button
                         android:id="@+id/capture_image_button"
-                        style="@style/button_option"
+                        style="@style/riverWatchButtonStyle"
                         android:text="@string/capture_image" />
 
                     <Button
                         android:id="@+id/select_image_from_gallery_button"
-                        style="@style/button_option"
+                        style="@style/riverWatchButtonStyle"
                         android:text="@string/select_image_from_gallery" />
 
                     <Button

@@ -4,7 +4,12 @@ import java.io.File;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import org.apache.http.Header;
+import org.apache.http.HttpResponse;
+import org.json.JSONObject;
+
 import nz.co.android.cowseye.RiverWatchApplication;
+import nz.co.android.cowseye.utility.JSONHelper;
 
 import android.util.Log;
 
@@ -33,7 +38,7 @@ public class EventHandler {
 			while(!eventQueue.isEmpty()){
 				Event currentEvent = eventQueue.peek();
 				Log.i(toString(), "processing : " + currentEvent.toString());
-				boolean success = currentEvent.processForSuccess();
+				boolean success = processSubmissionEventResponse(currentEvent.processRaw());
 				Log.i(toString(), "successfully processed event? : "+ success);
 				//only actually remove event if successful
 				if(success){
@@ -72,10 +77,44 @@ public class EventHandler {
 	private void deleteImage(Event currentEvent) {
 		String filename = currentEvent.getImagePath().toString();
 		File imageFile = new File(filename);
+		Log.d(toString(), "deleteImage image exists before ? "+imageFile.exists());
 		//delete image
 		if(imageFile.exists())
 			imageFile.delete();
+		Log.d(toString(), "deleteImage image exists after ? "+imageFile.exists());
+
 	}
+	
+
+	/**
+	 * Deals with the response from a submission event return
+	 * @param response from a submission event
+	 * @return true if succesfull submission, otherwise false
+	 */
+	public boolean processSubmissionEventResponse(HttpResponse response){
+		Log.d(toString(), "response : "+response);
+		boolean success = false;
+		try{
+			Log.d(toString(),"Status line : "+ response.getStatusLine());
+			for(Header header : response.getAllHeaders()){
+				Log.d(toString(),"header : "+ header.getName() + " - > "+header.getValue());
+			}
+
+
+			JSONObject jsonObject = JSONHelper.parseHttpResponseAsJSON(response);
+			Log.d(toString(), "jsonObject : "+jsonObject);
+
+			//				            if(jsonObject.has(Utils.RESPONSE_CODE))
+			//				                return ResponseCodeState.stringToResponseCode((String)jsonObject.getString(Utils.RESPONSE_CODE))==ResponseCodeState.SUCCESS;
+		}
+		catch(Exception f){ 
+			Log.e(toString(), "Exception in JsonParsing : "+f);
+		}
+		Log.d(toString(), "returning success? : "+success);
+		return success;
+
+	}
+	
 
 	/** Returns the amount of events awaiting upload */
 	public int getNumberEventsAwaitingUpload() {
