@@ -18,6 +18,8 @@ public final class R {
         public static final int back_button_start_colour=0x7f040000;
         public static final int background_end=0x7f040005;
         public static final int background_start=0x7f040004;
+        public static final int captureimage_button_end_colour=0x7f040011;
+        public static final int captureimage_button_start_colour=0x7f040010;
         public static final int details_main_text=0x7f040006;
         public static final int divider_gray=0x7f04000c;
         public static final int done_button_end_colour=0x7f040003;
@@ -158,6 +160,7 @@ public final class R {
         public static final int preview_image_framelayout_style=0x7f070009;
         public static final int text_field_style=0x7f070008;
         public static final int text_style=0x7f07000a;
+        public static final int text_view_style=0x7f07000d;
         public static final int titleHeading=0x7f070000;
     }
 }
