@@ -57,18 +57,18 @@ public class Preview extends SurfaceView implements SurfaceHolder.Callback {
 		Log.e(toString(), " surfaceCreated :"+holder);
 		// The Surface has been created, acquire the camera and tell it where
 		// to draw.
-		 try {
-	            // This case can actually happen if the user opens and closes the camera too frequently.
-	            // The problem is that we cannot really prevent this from happening as the user can easily
-	            // get into a chain of activities and tries to escape using the back button.
-	            // The most sensible solution would be to quit the entire EPostcard flow once the picture is sent.
-	            camera = Camera.open();
-	        } catch(Exception e) {
-	        	Log.e(toString(), "Failed to open camera : "+e);
-	        	Toast.makeText(parentActivity, parentActivity.getString(R.string.failed_to_connect_to_camera_message), Toast.LENGTH_LONG).show();
-	        	parentActivity.finish();
-	            return;
-	        }
+		try {
+			// This case can actually happen if the user opens and closes the camera too frequently.
+			// The problem is that we cannot really prevent this from happening as the user can easily
+			// get into a chain of activities and tries to escape using the back button.
+			// The most sensible solution would be to quit the entire EPostcard flow once the picture is sent.
+			camera = Camera.open();
+		} catch(Exception e) {
+			Log.e(toString(), "Failed to open camera : "+e);
+			Toast.makeText(parentActivity, parentActivity.getString(R.string.failed_to_connect_to_camera_message), Toast.LENGTH_LONG).show();
+			parentActivity.finish();
+			return;
+		}
 
 		try {
 			camera.setPreviewDisplay(holder);
@@ -99,65 +99,65 @@ public class Preview extends SurfaceView implements SurfaceHolder.Callback {
 		// the preview.
 		if(camera==null)
 			return;
-		
+
 		if (isPreviewRunning)
-        {
+		{
 			camera.stopPreview();
 			isPreviewRunning = false;
-        }
+		}
 
-        Parameters parameters = camera.getParameters();
-        
-        if(display.getRotation() == Surface.ROTATION_0)
-        {
-//            parameters.setPreviewSize(h, w);  
-            setPreviewSize(h, w, parameters, false);
-            camera.setDisplayOrientation(90);
-        }
+		Parameters parameters = camera.getParameters();
 
-        if(display.getRotation() == Surface.ROTATION_90)
-        {
-//            parameters.setPreviewSize(w, h);  
-            setPreviewSize(w, h, parameters, true);
+		if(display.getRotation() == Surface.ROTATION_0)
+		{
+			//            parameters.setPreviewSize(h, w);  
+			setPreviewSize(h, w, parameters, false);
+			camera.setDisplayOrientation(90);
+		}
 
-        }
+		if(display.getRotation() == Surface.ROTATION_90)
+		{
+			//            parameters.setPreviewSize(w, h);  
+			setPreviewSize(w, h, parameters, true);
 
-        if(display.getRotation() == Surface.ROTATION_180)
-        {
-//            parameters.setPreviewSize(h, w);  
-            setPreviewSize(h, w, parameters, false);
+		}
 
-        }
+		if(display.getRotation() == Surface.ROTATION_180)
+		{
+			//            parameters.setPreviewSize(h, w);  
+			setPreviewSize(h, w, parameters, false);
 
-        if(display.getRotation() == Surface.ROTATION_270)
-        {
-//            parameters.setPreviewSize(w, h);
-            setPreviewSize(w, h, parameters, true);
+		}
 
-            camera.setDisplayOrientation(180);
-        }
+		if(display.getRotation() == Surface.ROTATION_270)
+		{
+			//            parameters.setPreviewSize(w, h);
+			setPreviewSize(w, h, parameters, true);
 
-//        parameters.getP
-//        camera.setParameters(parameters);
-        previewCamera();   
+			camera.setDisplayOrientation(180);
+		}
 
-//		Camera.Parameters parameters = camera.getParameters();
-//		setPreviewSize(w, h, parameters);
+		//        parameters.getP
+		//        camera.setParameters(parameters);
+		previewCamera();   
+
+		//		Camera.Parameters parameters = camera.getParameters();
+		//		setPreviewSize(w, h, parameters);
 		setPictureSize(w, h, parameters);
-//		camera.startPreview();
+		//		camera.startPreview();
 	}
-	
+
 	public void previewCamera()
 	{        
-	    try 
-	    {           
-	        camera.startPreview();
-	        isPreviewRunning = true;
-	    }
-	    catch(Exception e)
-	    {
-	        Log.d(toString(), "Cannot start preview", e);    
-	    }
+		try 
+		{           
+			camera.startPreview();
+			isPreviewRunning = true;
+		}
+		catch(Exception e)
+		{
+			Log.d(toString(), "Cannot start preview", e);    
+		}
 	}
 
 
@@ -171,10 +171,11 @@ public class Preview extends SurfaceView implements SurfaceHolder.Callback {
 			Log.e(toString(), "Setting preview size initialy failed, trying alternative");
 			Size s = findBestPreviewSize(h, w);
 			try{
-//				if(horizontal)
+				if(horizontal)
 					parameters.setPreviewSize(s.width, s.height);
-//				else
-//					parameters.setPreviewSize(s.height, s.width);
+				else
+					parameters.setPreviewSize(s.height, s.width);
+
 
 			}
 			catch(RuntimeException f){
@@ -182,10 +183,10 @@ public class Preview extends SurfaceView implements SurfaceHolder.Callback {
 			}
 
 		}
-//		Log.d(toString(), "resizing frame b4");
+		//		Log.d(toString(), "resizing frame b4");
 		//if measured then don't resize frame
-		if(!resizedFrame && horizontal){
-//			Log.d(toString(), "resizing frame after");
+		if(!resizedFrame){
+			//			Log.d(toString(), "resizing frame after");
 			resizedFrame = true;
 			//set parents dimensions to keep aspect ratio of 4:4
 			ViewParent vp = getParent();
@@ -202,7 +203,7 @@ public class Preview extends SurfaceView implements SurfaceHolder.Callback {
 			else{
 				newWd = (int)(frameHt*4/3);
 			}
-//			Log.d(toString(), "newWd : "+ newWd + ", newht : " +newHt);
+			Log.d(toString(), "newWd : "+ newWd + ", newht : " +newHt);
 			if(horizontal)
 				f.setLayoutParams(new FrameLayout.LayoutParams(newWd, newHt,Gravity.CENTER));
 			else
@@ -240,6 +241,7 @@ public class Preview extends SurfaceView implements SurfaceHolder.Callback {
 		int newWidth = Integer.MAX_VALUE;
 		int newHeight = Integer.MAX_VALUE;
 		int bestError = Integer.MAX_VALUE;
+		boolean bestHasRatio = false;
 		Camera.Parameters parameters = camera.getParameters();
 		List<Size> previewSizes = parameters.getSupportedPreviewSizes();
 		if(previewSizes!=null && previewSizes.size()>0){
@@ -250,6 +252,10 @@ public class Preview extends SurfaceView implements SurfaceHolder.Callback {
 			bestError+= Math.abs(s.width - desiredWidth);
 			bestError+= Math.abs(s.height - desiredHeight);
 			Log.d(toString(), "Size i "+0 + ", s :"+s.width + ", "+s.height);
+			if((newWidth+0.00)/(newHeight+0.00) > 0.749 && (newWidth+0.00)/(newHeight+0.00) < 0.751 ||
+					(newHeight+0.00)/(newWidth+0.00) > 0.749 && (newHeight+0.00)/(newWidth+0.00) < 0.751	)
+				bestHasRatio = true;
+			Log.d(toString(), "bestHasRatio : "+ bestHasRatio + ", 1: " + ((newWidth+0.00)/(newHeight+0.00)) + ", 2: "+((newHeight+0.00)/(newWidth+0.00)));
 
 
 		}
@@ -258,10 +264,27 @@ public class Preview extends SurfaceView implements SurfaceHolder.Callback {
 			int error = 0;
 			error+= Math.abs(s.width - desiredWidth);
 			error+= Math.abs(s.height - desiredHeight);
-			if(error<bestError){
-				bestError = error;
-				newWidth = s.width;
-				newHeight = s.height;
+			if(!bestHasRatio){
+				if(error<bestError){
+					bestError = error;
+					newWidth = s.width;
+					newHeight = s.height;
+					bestHasRatio  = ((newWidth+0.00)/(newHeight+0.00) > 0.749 && (newWidth+0.00)/(newHeight+0.00) < 0.751 ||
+							(newHeight+0.00)/(newWidth+0.00) > 0.749 && (newHeight+0.00)/(newWidth+0.00) < 0.751	);
+					Log.d(toString(), "Setting new Size before i "+i + ", s :"+s.width + ", "+s.height);
+				}
+			}
+			else if(error<bestError){
+				boolean localRatio = false;
+				if((s.width+0.00)/(s.height+0.00) > 0.749 && (s.width+0.00)/(s.height+0.00) < 0.751 ||
+						(s.height+0.00)/(s.width+0.00) > 0.749 && (s.height+0.00)/(s.width+0.00) < 0.751	)
+					localRatio = true;
+				if(localRatio){
+					bestError = error;
+					newWidth = s.width;
+					newHeight = s.height;
+					Log.d(toString(), "Setting new Size after i "+i + ", s :"+s.width + ", "+s.height);
+				}
 			}
 			Log.d(toString(), "Size i "+i + ", s :"+s.width + ", "+s.height);
 
