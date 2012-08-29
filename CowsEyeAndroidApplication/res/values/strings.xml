@@ -59,4 +59,5 @@
         <item>Run off</item>
         <item>Pollution</item>
     </string-array>
+    <string name="geocoordinates_text">Geocoordinate location:</string>
 </resources>

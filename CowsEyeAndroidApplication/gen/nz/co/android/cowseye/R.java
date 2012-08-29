@@ -33,27 +33,26 @@ public final class R {
     }
     public static final class drawable {
         public static final int back_button=0x7f020000;
-        public static final int contact_details_background=0x7f020001;
-        public static final int details_background=0x7f020002;
-        public static final int done_button=0x7f020003;
-        public static final int header_style=0x7f020004;
-        public static final int icon=0x7f020005;
-        public static final int location_background=0x7f020006;
-        public static final int preview_image_background=0x7f020007;
-        public static final int right_arrow=0x7f020008;
-        public static final int screen1=0x7f020009;
-        public static final int submit_button=0x7f02000a;
-        public static final int submit_button_selected=0x7f02000b;
-        public static final int you_are_here_45x45=0x7f02000c;
+        public static final int details_background=0x7f020001;
+        public static final int done_button=0x7f020002;
+        public static final int header_style=0x7f020003;
+        public static final int icon=0x7f020004;
+        public static final int location_background=0x7f020005;
+        public static final int preview_image_background=0x7f020006;
+        public static final int right_arrow=0x7f020007;
+        public static final int screen1=0x7f020008;
+        public static final int submit_button=0x7f020009;
+        public static final int submit_button_selected=0x7f02000a;
+        public static final int you_are_here_45x45=0x7f02000b;
     }
     public static final class id {
         public static final int ChooseImageTag=0x7f080005;
         public static final int EnterDescriptionLabel=0x7f080003;
-        public static final int PreviewDescriptionText=0x7f080017;
-        public static final int PreviewDescriptionTitle=0x7f080016;
+        public static final int PreviewDescriptionText=0x7f080019;
+        public static final int PreviewDescriptionTitle=0x7f080018;
         public static final int PreviewImageImage=0x7f080013;
-        public static final int PreviewImageTag=0x7f080019;
-        public static final int PreviewImageTagTitle=0x7f080018;
+        public static final int PreviewImageTag=0x7f080017;
+        public static final int PreviewImageTagTitle=0x7f080016;
         public static final int PreviewImageTitle=0x7f080012;
         public static final int PreviewLocationTag=0x7f080014;
         public static final int PreviewLocationText=0x7f080015;
@@ -83,15 +82,14 @@ public final class R {
         public static final int submit_button=0x7f08001a;
     }
     public static final class layout {
-        public static final int contact_details_border=0x7f030000;
-        public static final int description_layout=0x7f030001;
-        public static final int incident_gallery_layout=0x7f030002;
-        public static final int incident_gallery_layout_cell=0x7f030003;
-        public static final int location_layout=0x7f030004;
-        public static final int main_screen_layout=0x7f030005;
-        public static final int preview_layout=0x7f030006;
-        public static final int select_image_layout=0x7f030007;
-        public static final int take_picture=0x7f030008;
+        public static final int description_layout=0x7f030000;
+        public static final int incident_gallery_layout=0x7f030001;
+        public static final int incident_gallery_layout_cell=0x7f030002;
+        public static final int location_layout=0x7f030003;
+        public static final int main_screen_layout=0x7f030004;
+        public static final int preview_layout=0x7f030005;
+        public static final int select_image_layout=0x7f030006;
+        public static final int take_picture=0x7f030007;
     }
     public static final class string {
         public static final int app_name=0x7f050000;
@@ -105,6 +103,7 @@ public final class R {
         public static final int errorInReverseGeoCoding=0x7f05001d;
         public static final int failed_camera_please_try_again=0x7f050031;
         public static final int failed_to_connect_to_camera_message=0x7f050032;
+        public static final int geocoordinates_text=0x7f050033;
         public static final int gps_message=0x7f050016;
         public static final int gps_message_submission=0x7f050015;
         public static final int gps_no_location_message=0x7f05001a;

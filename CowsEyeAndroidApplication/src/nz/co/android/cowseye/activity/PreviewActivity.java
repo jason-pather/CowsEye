@@ -1,18 +1,16 @@
 package nz.co.android.cowseye.activity;
 
 import nz.co.android.cowseye.R;
-import nz.co.android.cowseye.common.Constants;
-import nz.co.android.cowseye.event.SubmissionEventBuilder;
 import nz.co.android.cowseye.utility.Utils;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.maps.GeoPoint;
 
 /** The activity for showing a preview of the pollution event
  * 
@@ -56,7 +54,12 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 		image.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, SelectImageActivity.class));
 
 		location = (TextView)findViewById(R.id.PreviewLocationText);
-		location.setText(submissionEventBuilder.getAddress());
+		GeoPoint geoPoint = submissionEventBuilder.getGeoCoordinates();
+//		if(geoPoint!=null) //try and set geo coordinate location first
+//			location.setText(String.format("", getString(R.string.geocoordinates_text) + " "+geoPoint);
+			
+//		else //otherwise set address
+			location.setText(submissionEventBuilder.getAddress());
 		//location.setText("16 Kepler Way");
 		location.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, RecordLocationActivity.class));
 
