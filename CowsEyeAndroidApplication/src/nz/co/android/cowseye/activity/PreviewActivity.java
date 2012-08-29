@@ -51,28 +51,31 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 
 		image = (ImageView)findViewById(R.id.PreviewImageImage);
 		image.setImageURI(submissionEventBuilder.getImagePath());
-		image.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, SelectImageActivity.class));
+//		image.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, SelectImageActivity.class));
 
 		location = (TextView)findViewById(R.id.PreviewLocationText);
 		GeoPoint geoPoint = submissionEventBuilder.getGeoCoordinates();
-//		if(geoPoint!=null) //try and set geo coordinate location first
-//			location.setText(String.format("", getString(R.string.geocoordinates_text) + " "+geoPoint);
+		if(geoPoint!=null){ //try and set geo coordinate location first
+			double geoPointLat = geoPoint.getLatitudeE6()/1E6;
+			double geoPointLon = geoPoint.getLongitudeE6()/1E6;
+			location.setText(String.format("%s %.2f, %.2f", getString(R.string.geocoordinates_text), geoPointLat, geoPointLon));
+		}
 			
-//		else //otherwise set address
+		else //otherwise set address
 			location.setText(submissionEventBuilder.getAddress());
 		//location.setText("16 Kepler Way");
-		location.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, RecordLocationActivity.class));
+//		location.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, RecordLocationActivity.class));
 
 		description = (TextView)findViewById(R.id.PreviewDescriptionText);
 		String descriptionText = submissionEventBuilder.getImageDescription();
 		if (descriptionText.length() > maxLength) descriptionText = descriptionText.substring(0, maxLength);
 		description.setText(submissionEventBuilder.getImageDescription());
 		
-		description.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, DescriptionActivity.class));
+//		description.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, DescriptionActivity.class));
 		
 		tag = (TextView)findViewById(R.id.PreviewImageTag);
 		tag.setText(submissionEventBuilder.getImageTag());
-		tag.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, DescriptionActivity.class));
+//		tag.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, DescriptionActivity.class));
 	}
 
 	/** Submits a pollution event to the server
