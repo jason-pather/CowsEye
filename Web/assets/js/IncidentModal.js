@@ -34,8 +34,8 @@ Retreive, and create a incident modal dialog box
     onFail = function(data) {
       return console.log("Rest Call has failed");
     };
-    path = "IncidentDetail";
-    args = [id];
+    path = "unapproved_detail_stub";
+    args = "/id=" + id;
     calltype = "success";
     onSuccess = function(data) {
       var commentFailure, commentSuccess, incidentModal, submitCommentButton;
@@ -50,9 +50,9 @@ Retreive, and create a incident modal dialog box
           data = {
             comment: getMessage()
           };
-          path = "/Submit/Comment";
+          path = "comment_stub";
           args = [id];
-          callType = "success";
+          callType = "GET";
           onSuccess = function(msg) {
             submitCommentButton.removeClass("btn-primary");
             submitCommentButton.addClass("btn-success");
@@ -85,7 +85,7 @@ Retreive, and create a incident modal dialog box
         }
         return _results;
       };
-      return Window.RWCall(commentSuccess, commentFailure, {}, "CommentsForIncident", [id, 0, 24], "success");
+      return Window.RWCall(commentSuccess, commentFailure, {}, "comment_stub", "/id=" + id + "/start=0/range=24", "success");
     };
     return Window.RWCall(onSuccess, onFail, {}, path, args, calltype);
   };

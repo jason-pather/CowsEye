@@ -12,7 +12,7 @@ This is a class for producing mock data, returns from methods in this class shou
 
 
 (function() {
-  var CommentsForIncident, GPSCoordinatesNZ, IncidentDetail, IncidentList, RWCall;
+  var CommentsForIncident, GPSCoordinatesNZ, IncidentDetail, IncidentList, RWCall, UnapprovedComments;
 
   GPSCoordinatesNZ = [
     {
@@ -72,6 +72,27 @@ This is a class for producing mock data, returns from methods in this class shou
     };
   };
 
+  UnapprovedComments = function(start, range) {
+    var comments, data, i, _i, _ref;
+    data = {};
+    data["start"] = start;
+    data["range"] = range;
+    console.log("start " + start);
+    console.log("range " + range);
+    comments = [];
+    for (i = _i = 0, _ref = range - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
+      comments[i] = {
+        incident_id: start + i,
+        comment_id: start + i,
+        thumbnail_url: "http://placehold.it/320x180",
+        description: "Description for " + (start + i),
+        comment: "I like the way the light reflects of these cows, love mablye"
+      };
+    }
+    data.comments = comments;
+    return data;
+  };
+
   /*
   Test Stub for reteriving multiple incidents
   */
@@ -82,20 +103,24 @@ This is a class for producing mock data, returns from methods in this class shou
     data = {};
     data["start"] = start;
     data["range"] = range;
+    console.log("start " + start);
+    console.log("range " + range);
     incidents = [];
     for (i = _i = 0, _ref = range - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
       gps = Math.floor(Math.random() * 12);
       incidents[i] = {
-        Incident_ID: start + i,
-        Thumbnail_URL: "http://placehold.it/320x180",
-        Short_Description: "Description for " + (start + i),
+        id: start + i,
+        thumbnail_url: "http://placehold.it/320x180",
+        description: "Description for " + (start + i),
         Tags: ["Cow", "Poo", "River", "Pond"],
-        Lat: GPSCoordinatesNZ[gps].lat + (Math.floor(Math.random() * 100) - 50) / 50,
-        Lng: GPSCoordinatesNZ[gps].lng + (Math.floor(Math.random() * 100) - 50) / 50
+        geolocation: {
+          lat: GPSCoordinatesNZ[gps].lat + (Math.floor(Math.random() * 100) - 50) / 50,
+          long: GPSCoordinatesNZ[gps].lng + (Math.floor(Math.random() * 100) - 50) / 50
+        }
       };
       console.log(GPSCoordinatesNZ[gps].lat);
     }
-    data["Incidents"] = incidents;
+    data["incidents"] = incidents;
     return data;
   };
 
@@ -110,6 +135,9 @@ This is a class for producing mock data, returns from methods in this class shou
     data["Incident_ID"] = id;
     data["Start"] = start;
     data["Given"] = 2;
+    console.log("id " + id);
+    console.log("start " + start);
+    console.log("range " + range);
     data["Comments"] = [
       {
         Incident_ID: id,
@@ -131,25 +159,27 @@ This is a class for producing mock data, returns from methods in this class shou
   Window.CommentsForIncident = CommentsForIncident;
 
   RWCall = function(onSuccess, onFailure, data, path, args, callType) {
-    var ajaxLoader, result;
-    ajaxLoader = $("#ajaxLoader");
-    ajaxLoader.css("display", "block");
-    if (path === "IncidentDetail") {
-      result = IncidentDetail(args[0]);
+    var a, aSplit, argsSplit, parsedArgs, result, _i, _len;
+    parsedArgs = [];
+    argsSplit = args.split("/");
+    for (_i = 0, _len = argsSplit.length; _i < _len; _i++) {
+      a = argsSplit[_i];
+      aSplit = a.split("=");
+      parsedArgs.push(aSplit[1]);
     }
-    if (path === "IncidentList") {
-      result = IncidentList(args[0], args[1]);
+    if (path === "unapproved_detail_stub") {
+      result = IncidentDetail(parsedArgs[1]);
     }
-    if (path === "CommentsForIncident") {
-      console.log("Making comments for incident");
-      result = CommentsForIncident(args[0], args[1], args[2]);
+    if (path === "unapproved_stub") {
+      result = IncidentList(parsedArgs[1], parsedArgs[2]);
     }
-    if (callType === "success") {
-      onSuccess(result);
-    } else {
-      onFailure(result);
+    if (path === "comment_stub") {
+      result = CommentsForIncident(parsedArgs[1], parsedArgs[2], parsedArgs[3]);
     }
-    return ajaxLoader.css("display", "none");
+    if (path === "unapproved_comments") {
+      result = UnapprovedComments(parsedArgs[1], parsedArgs[2]);
+    }
+    return onSuccess(result);
   };
 
   /*

@@ -1,5 +1,13 @@
 # Set up the Google map 
 
+overlaysOnMap = []
+
+RemoveFromMap = () ->
+	for o in overlaysOnMap
+		o.setMap null
+		
+	overlaysOnMap = []
+
 SetupMap = () ->
 	
 	# Map set up
@@ -47,6 +55,7 @@ createOverlay = (incident) ->
 		Window.CreateIncidentModal incident.id
 
 	overlay.setMap googleMap
+	overlaysOnMap.push overlay
 
 onSuccess = (data) ->
 	for incident in data.incidents
@@ -69,15 +78,18 @@ d128Button = $ "#d128"
 d256Button = $ "#d256"
 
 nextButton.click ->
+	RemoveFromMap()
 	console.log "Clicked Next"
 	Window.RWCall onSuccess, onFail, {}, "unapproved_stub", "/start=#{current}/number=#{range}", "GET"
 
 prevButton.click ->
+	RemoveFromMap()
 	console.log "Clicked Prev"
 	current = if current - range > 0 then current - range else 0;
 	Window.RWCall onSuccess, onFail, {}, "unapproved_stub", "/start=#{current}/number=#{range}", "GET"
 	
 changeRange = (newRange) ->
+	RemoveFromMap()
 	current = if current - range > 0 then current - range else 0;
 	range = newRange;
 	Window.RWCall onSuccess, onFail, {}, "unapproved_stub", "/start=#{current}/number=#{range}", "GET"
@@ -87,7 +99,6 @@ d32Button.click -> changeRange 32
 d64Button.click -> changeRange 64
 d128Button.click -> changeRange 128
 d256Button.click -> changeRange 256
-
 
 ###
 for incident in incidentList.Incidents
