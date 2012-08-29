@@ -38,7 +38,7 @@
         style="@style/field_title_style"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="5dp"
-        android:text="@string/preview_location" />
+        android:text="@string/preview_location"/>
     
     <TextView
         android:id="@+id/PreviewLocationText"
