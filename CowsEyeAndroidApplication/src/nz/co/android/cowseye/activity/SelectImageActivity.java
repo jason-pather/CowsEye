@@ -65,25 +65,7 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 				.setGeoCoordinates(new GeoPoint(12141414, 493124312))
 				.setAddress("2 adventure drive");
 				try {
-					Event e = submissionEventBuilder.build();
-					HttpResponse response = e.processRaw();
-					Log.d(toString(), "response : "+response);
-					try{
-						Log.d(toString(),"Status line : "+ response.getStatusLine());
-						for(Header header : response.getAllHeaders()){
-							Log.d(toString(),"header : "+ header.getName() + " - > "+header.getValue());
-						}
-
-						
-						JSONObject jsonObject = JSONHelper.parseHttpResponseAsJSON(response);
-						Log.d(toString(), "jsonObject : "+jsonObject);
-
-						//				            if(jsonObject.has(Utils.RESPONSE_CODE))
-						//				                return ResponseCodeState.stringToResponseCode((String)jsonObject.getString(Utils.RESPONSE_CODE))==ResponseCodeState.SUCCESS;
-					}
-					catch(Exception f){ 
-						Log.e(toString(), "Exception in JsonParsing : "+f);
-					}
+					myApplication.getEventHandler().addEvent(submissionEventBuilder.build());
 
 				} catch (SubmissionEventBuilderException e) {
 					Log.e(toString(), e.toString());

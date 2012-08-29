@@ -111,28 +111,28 @@ public class Preview extends SurfaceView implements SurfaceHolder.Callback {
         if(display.getRotation() == Surface.ROTATION_0)
         {
 //            parameters.setPreviewSize(h, w);  
-            setPreviewSize(h, w, parameters);
+            setPreviewSize(h, w, parameters, false);
             camera.setDisplayOrientation(90);
         }
 
         if(display.getRotation() == Surface.ROTATION_90)
         {
 //            parameters.setPreviewSize(w, h);  
-            setPreviewSize(w, h, parameters);
+            setPreviewSize(w, h, parameters, true);
 
         }
 
         if(display.getRotation() == Surface.ROTATION_180)
         {
 //            parameters.setPreviewSize(h, w);  
-            setPreviewSize(h, w, parameters);
+            setPreviewSize(h, w, parameters, false);
 
         }
 
         if(display.getRotation() == Surface.ROTATION_270)
         {
 //            parameters.setPreviewSize(w, h);
-            setPreviewSize(w, h, parameters);
+            setPreviewSize(w, h, parameters, true);
 
             camera.setDisplayOrientation(180);
         }
@@ -161,25 +161,31 @@ public class Preview extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 
-	private void setPreviewSize(int w, int h, Camera.Parameters parameters) {
+	private void setPreviewSize(int w, int h, Camera.Parameters parameters, boolean horizontal) {
 		try{
 			parameters.setPreviewSize(w, h);
 			camera.setParameters(parameters);
+			Log.e(toString(), "w : "+w + " h : "+h);
 		}
 		catch(RuntimeException e){
 			Log.e(toString(), "Setting preview size initialy failed, trying alternative");
-			Size s = findBestPreviewSize(w, h);
+			Size s = findBestPreviewSize(h, w);
 			try{
-				parameters.setPreviewSize(s.width, s.height);
+//				if(horizontal)
+					parameters.setPreviewSize(s.width, s.height);
+//				else
+//					parameters.setPreviewSize(s.height, s.width);
+
 			}
 			catch(RuntimeException f){
 				Log.e(toString(), "Second setting of preview size failed: "+f);
 			}
 
 		}
-
+//		Log.d(toString(), "resizing frame b4");
 		//if measured then don't resize frame
-		if(!resizedFrame){
+		if(!resizedFrame && horizontal){
+//			Log.d(toString(), "resizing frame after");
 			resizedFrame = true;
 			//set parents dimensions to keep aspect ratio of 4:4
 			ViewParent vp = getParent();
@@ -196,7 +202,12 @@ public class Preview extends SurfaceView implements SurfaceHolder.Callback {
 			else{
 				newWd = (int)(frameHt*4/3);
 			}
-			f.setLayoutParams(new FrameLayout.LayoutParams(newWd, newHt,Gravity.CENTER));
+//			Log.d(toString(), "newWd : "+ newWd + ", newht : " +newHt);
+			if(horizontal)
+				f.setLayoutParams(new FrameLayout.LayoutParams(newWd, newHt,Gravity.CENTER));
+			else
+				f.setLayoutParams(new FrameLayout.LayoutParams(newHt, newWd,Gravity.CENTER));
+
 		}
 	}
 	private void setPictureSize(int w, int h, Camera.Parameters parameters) {
@@ -224,6 +235,7 @@ public class Preview extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	private Size findBestPreviewSize(int desiredWidth, int desiredHeight){
+		Log.d(toString(), "findBestPreviewSize wd : "+desiredWidth + ", ht : "+ desiredHeight);
 		//		Log.d(toString(), "in findBestPreviewSize");
 		int newWidth = Integer.MAX_VALUE;
 		int newHeight = Integer.MAX_VALUE;
@@ -237,6 +249,9 @@ public class Preview extends SurfaceView implements SurfaceHolder.Callback {
 			bestError = 0;
 			bestError+= Math.abs(s.width - desiredWidth);
 			bestError+= Math.abs(s.height - desiredHeight);
+			Log.d(toString(), "Size i "+0 + ", s :"+s.width + ", "+s.height);
+
+
 		}
 		for(int i = 1; i < previewSizes.size(); i++){
 			Size s = previewSizes.get(i);
@@ -248,12 +263,16 @@ public class Preview extends SurfaceView implements SurfaceHolder.Callback {
 				newWidth = s.width;
 				newHeight = s.height;
 			}
+			Log.d(toString(), "Size i "+i + ", s :"+s.width + ", "+s.height);
+
 		}
 		if(newWidth == Integer.MAX_VALUE)
 			newWidth = desiredWidth;
 		if(newHeight == Integer.MAX_VALUE)
 			newHeight = desiredHeight;
 		//		Log.d(toString(), "returning size : " +newWidth + ", " + newHeight);
+		Log.d(toString(), "return findBestPreviewSize wd : "+newWidth + ", ht : "+ newHeight);
+
 		return camera.new Size(newWidth, newHeight);
 
 	}

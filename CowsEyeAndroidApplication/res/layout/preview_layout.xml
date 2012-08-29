@@ -24,7 +24,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.5"
+        android:layout_weight="0.6"
         android:orientation="vertical" >
 
         <TextView
@@ -105,9 +105,8 @@
     <Button
         android:id="@+id/submit_button"
         style="@style/button_option"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|bottom"
-        android:layout_weight="0.1"
         android:text="@string/submit" />
 
 </LinearLayout>

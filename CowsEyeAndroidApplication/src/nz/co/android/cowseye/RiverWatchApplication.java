@@ -26,11 +26,10 @@ import android.util.Log;
 public class RiverWatchApplication extends Application  {
 
 	private static final long timerZeroDelay = 0;
-	private static final long timerEventsProcessingPeriod = 60000; // 60 seconds
-	private static final long timerEventsProcessingLargeDelay = 300000; // 5 minutes
-	private static final double MAX_TIMER_DELAYED_MULTIPLIER = 144; // 144* 5 min = 720 min = 12 hours
+	private static final long timerEventsProcessingPeriod = 300000; // 5 minutes
+	private static final long timerEventsProcessingLargeDelay = 6000000; // 30 minutes
+	private static final double MAX_TIMER_DELAYED_MULTIPLIER = 30; // 24 * 30 min = 720 min = 12 hours
 	private double timerDelayedMultiplier = 1; // multiplier for the delay between event processing in the case of consecutive event fails or internet loss
-
 
 	private static boolean eventProcessingSetup = false;
 
