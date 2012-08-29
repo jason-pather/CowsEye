@@ -165,7 +165,6 @@ public class Preview extends SurfaceView implements SurfaceHolder.Callback {
 		try{
 			parameters.setPreviewSize(w, h);
 			camera.setParameters(parameters);
-			Log.e(toString(), "w : "+w + " h : "+h);
 		}
 		catch(RuntimeException e){
 			Log.e(toString(), "Setting preview size initialy failed, trying alternative");
@@ -202,7 +201,6 @@ public class Preview extends SurfaceView implements SurfaceHolder.Callback {
 			else{
 				newWd = (int)(frameHt*4/3);
 			}
-			Log.d(toString(), "newWd : "+ newWd + ", newht : " +newHt);
 			if(horizontal)
 				f.setLayoutParams(new FrameLayout.LayoutParams(newWd, newHt,Gravity.CENTER));
 			else
@@ -215,7 +213,6 @@ public class Preview extends SurfaceView implements SurfaceHolder.Callback {
 			parameters.setPictureSize(Constants.IMAGE_WIDTH, Constants.IMAGE_HEIGHT);
 			camera.setParameters(parameters);
 			correctPictureSizeSet = true;
-			//			Log.d(toString(), "Trying to Set picture size");
 
 		}
 		catch(RuntimeException e){
@@ -230,12 +227,9 @@ public class Preview extends SurfaceView implements SurfaceHolder.Callback {
 			}
 
 		}
-		//		Log.d(toString(), " PICTURE size : "+parameters.getPictureSize().width + ", "+parameters.getPictureSize().height);
-
 	}
 
 	private Size findBestPreviewSize(int desiredWidth, int desiredHeight){
-		Log.d(toString(), "findBestPreviewSize wd : "+desiredWidth + ", ht : "+ desiredHeight);
 		//		Log.d(toString(), "in findBestPreviewSize");
 		int newWidth = Integer.MAX_VALUE;
 		int newHeight = Integer.MAX_VALUE;
@@ -250,13 +244,9 @@ public class Preview extends SurfaceView implements SurfaceHolder.Callback {
 			bestError = 0;
 			bestError+= Math.abs(s.width - desiredWidth);
 			bestError+= Math.abs(s.height - desiredHeight);
-			Log.d(toString(), "Size i "+0 + ", s :"+s.width + ", "+s.height);
 			if((newWidth+0.00)/(newHeight+0.00) > 0.749 && (newWidth+0.00)/(newHeight+0.00) < 0.751 ||
 					(newHeight+0.00)/(newWidth+0.00) > 0.749 && (newHeight+0.00)/(newWidth+0.00) < 0.751	)
 				bestHasRatio = true;
-			Log.d(toString(), "bestHasRatio : "+ bestHasRatio + ", 1: " + ((newWidth+0.00)/(newHeight+0.00)) + ", 2: "+((newHeight+0.00)/(newWidth+0.00)));
-
-
 		}
 		for(int i = 1; i < previewSizes.size(); i++){
 			Size s = previewSizes.get(i);
@@ -270,7 +260,6 @@ public class Preview extends SurfaceView implements SurfaceHolder.Callback {
 					newHeight = s.height;
 					bestHasRatio  = ((newWidth+0.00)/(newHeight+0.00) > 0.749 && (newWidth+0.00)/(newHeight+0.00) < 0.751 ||
 							(newHeight+0.00)/(newWidth+0.00) > 0.749 && (newHeight+0.00)/(newWidth+0.00) < 0.751	);
-					Log.d(toString(), "Setting new Size before i "+i + ", s :"+s.width + ", "+s.height);
 				}
 			}
 			else if(error<bestError){
@@ -282,24 +271,18 @@ public class Preview extends SurfaceView implements SurfaceHolder.Callback {
 					bestError = error;
 					newWidth = s.width;
 					newHeight = s.height;
-					Log.d(toString(), "Setting new Size after i "+i + ", s :"+s.width + ", "+s.height);
 				}
 			}
-			Log.d(toString(), "Size i "+i + ", s :"+s.width + ", "+s.height);
-
 		}
 		if(newWidth == Integer.MAX_VALUE)
 			newWidth = desiredWidth;
 		if(newHeight == Integer.MAX_VALUE)
 			newHeight = desiredHeight;
-		//		Log.d(toString(), "returning size : " +newWidth + ", " + newHeight);
-		Log.d(toString(), "return findBestPreviewSize wd : "+newWidth + ", ht : "+ newHeight);
 
 		return camera.new Size(newWidth, newHeight);
 
 	}
 	private Size findBestPictureSize(int desiredWidth, int desiredHeight){
-		//		Log.d(toString(), "in findBestPictureSize");
 		int newWidth = Integer.MAX_VALUE;
 		int newHeight = Integer.MAX_VALUE;
 		int bestError = Integer.MAX_VALUE;
@@ -332,7 +315,6 @@ public class Preview extends SurfaceView implements SurfaceHolder.Callback {
 			newHeight = desiredHeight;
 			correctPictureSizeSet = false;
 		}
-		//		Log.d(toString(), "returning size : " +newWidth + ", " + newHeight);
 		return camera.new Size(newWidth, newHeight);
 	}
 
