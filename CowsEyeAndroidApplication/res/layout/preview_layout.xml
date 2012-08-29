@@ -96,12 +96,21 @@
             android:text="@string/preview_descriptiontitle" />
 
         <!-- scrollable view for this -->
-        <TextView
-            android:id="@+id/PreviewDescriptionText"
-            style="@style/lots_text_style"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/preview_description" />
-    </LinearLayout>
+
+<!--         <ScrollView
+            android:id="@+id/scroller"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:fillViewport="true" >
+ -->
+            <TextView
+                android:id="@+id/PreviewDescriptionText"
+                style="@style/lots_text_style"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/preview_description" 
+                android:maxLines="5"
+                android:scrollbars="vertical"/>
+        </LinearLayout>
 
     <Button
         android:id="@+id/submit_button"

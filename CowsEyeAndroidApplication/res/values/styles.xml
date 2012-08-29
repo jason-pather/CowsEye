@@ -61,7 +61,7 @@
     
     <style name="riverWatchButtonStyle" parent="@style/buttonStyle">
         <item name="android:layout_gravity">center</item>
-         <item name="android:background">@drawable/riverwatch_button</item>
+         <item name="android:background">@drawable/button</item>
          <item name="android:layout_width">fill_parent</item>
     </style>
 
