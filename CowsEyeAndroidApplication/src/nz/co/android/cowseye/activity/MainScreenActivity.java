@@ -88,6 +88,21 @@ public class MainScreenActivity extends Activity {
 		});
 	}
 
+	@Override
+	protected void onStart() {
+		super.onStart();
+        myApplication.requestStartEventHandling();
+		Log.i(toString(), "MainScreen requestStartEventHandling");
+	}
+	
+	@Override
+	protected void onDestroy() {
+		Log.i(toString(), "MainScreen stopTimerEventHandling");
+		myApplication.stopTimerEventHandling();
+		super.onDestroy();
+	}
+
+	
 	/** Starts a submission of a pollution event */
 	public class SubmitPollutionEventOnClickListener implements OnClickListener{
 		@Override
