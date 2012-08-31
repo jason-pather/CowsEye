@@ -1,9 +1,15 @@
 package nz.co.android.cowseye.activity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import nz.co.android.cowseye.R;
 import nz.co.android.cowseye.common.Constants;
 import nz.co.android.cowseye.utility.Utils;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,11 +31,17 @@ import android.widget.Toast;
  * @author lanemitc
  * 
  */
-public class DescriptionActivity extends AbstractSubmissionActivity implements OnItemSelectedListener {
+public class DescriptionActivity extends AbstractSubmissionActivity {
 
 	private EditText descriptionEditText;
 	private String imageDescription;
 	private String imageTag;
+	protected CharSequence[] _options = { "Cow", "Run off", "Pollution",
+			"Cow Shit" };
+	protected boolean[] _selections = new boolean[_options.length];
+	private List <String> imageTags;
+
+	protected Button _optionsButton;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -37,20 +49,12 @@ public class DescriptionActivity extends AbstractSubmissionActivity implements O
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.description_layout);
 		nextButton = (Button) findViewById(R.id.nextButton);
+		imageTags = new ArrayList <String> ();
 
-		// setup the spinner to choose tag type
-		Spinner spinner = (Spinner) findViewById(R.id.phototag_spinner);
-		// Create an ArrayAdapter using the string array and a default spinner
-		// layout
-		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-				this, R.array.phototag_array,
-				android.R.layout.simple_spinner_item);
-		// Specify the layout to use when the list of choices appears
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		// Apply the adapter to the spinner
-		spinner.setAdapter(adapter);
-		spinner.setOnItemSelectedListener(this);
+		super.onCreate(savedInstanceState);
 
+		_optionsButton = (Button) findViewById(R.id.button);
+		_optionsButton.setOnClickListener(new ButtonClickHandler());
 		setupUI();
 		pressNextButton();
 	}
@@ -59,7 +63,7 @@ public class DescriptionActivity extends AbstractSubmissionActivity implements O
 	protected void setupUI() {
 		super.setupUI();
 		descriptionEditText = (EditText) findViewById(R.id.descriptionText);
-		
+
 		// Set text of description if we have it
 		Intent intent = getIntent();
 		if (intent.hasExtra(Constants.DESCRIPTION_KEY)) {
@@ -81,13 +85,14 @@ public class DescriptionActivity extends AbstractSubmissionActivity implements O
 		return descriptionEditText.getText().toString();
 	}
 
+	
 	public void onItemSelected(AdapterView<?> parent, View view, int pos,
 			long id) {
 
-		System.out.println ("Item was selected");
+		System.out.println("Item was selected");
 		// An item was selected. You can retrieve the selected item using
 		imageTag = (String) parent.getItemAtPosition(pos);
-		submissionEventBuilder.setImageTag(imageTag);
+		submissionEventBuilder.setImageTag(imageTags);
 		Log.e("image tag is", imageTag);
 	}
 
@@ -100,7 +105,9 @@ public class DescriptionActivity extends AbstractSubmissionActivity implements O
 	 * method checks for inputs being made by the user
 	 */
 	public void pressNextButton() {
+	
 
+		Log.d(toString(), "Sent image tags");
 		nextButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -116,20 +123,78 @@ public class DescriptionActivity extends AbstractSubmissionActivity implements O
 				// description has been entered and recognised by user and this
 				// will move the application onto the record location activity
 				else {
+	
+					
 					imageDescription = descriptionEditText.getText().toString();
 					submissionEventBuilder
 							.setImageDescription(imageDescription);
 					System.out.println("Sent DESCRIPTION");
 					Log.e("image description is", imageDescription);
+					
+			
 
 					Intent intent = new Intent(DescriptionActivity.this,
 							RecordLocationActivity.class);
+					
+	List <String> tosendtags = new ArrayList <String> ();
+					
+					for (int i = 0; i < _options.length; i++) {
+						Log.i("ME", _options[i] + " selected: " + _selections[i]);
+						if (_selections[i]){
+							tosendtags.add((String)_options[i]);
+						}
+					}
+					System.out.println ("Size of tosendtags is " + tosendtags.size());
+					submissionEventBuilder.setImageTag(tosendtags);
+					Log.d("hi","reached here tan");
+					
 					startActivity(intent);
 				}
 
 			}
 		});
 
+	}
+
+	public class ButtonClickHandler implements View.OnClickListener {
+		public void onClick(View view) {
+			showDialog(0);
+		}
+	}
+
+	@Override
+	protected Dialog onCreateDialog(int id) {
+		return new AlertDialog.Builder(this)
+				.setTitle("Image Tags")
+				.setMultiChoiceItems(_options, _selections,
+						new DialogSelectionClickHandler())
+				.setPositiveButton("OK", new DialogButtonClickHandler())
+				.create();
+	}
+
+	public class DialogSelectionClickHandler implements
+			DialogInterface.OnMultiChoiceClickListener {
+		public void onClick(DialogInterface dialog, int clicked,
+				boolean selected) {
+			Log.i("ME", _options[clicked] + " selected: " + selected);
+		}
+	}
+
+	public class DialogButtonClickHandler implements
+			DialogInterface.OnClickListener {
+		public void onClick(DialogInterface dialog, int clicked) {
+			switch (clicked) {
+			case DialogInterface.BUTTON_POSITIVE:
+				printSelectedImageTags();
+				break;
+			}
+		}
+	}
+
+	protected void printSelectedImageTags() {
+		for (int i = 0; i < _options.length; i++) {
+			Log.i("ME", _options[i] + " selected: " + _selections[i]);
+		}
 	}
 
 }

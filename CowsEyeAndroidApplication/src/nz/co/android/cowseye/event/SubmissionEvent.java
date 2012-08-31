@@ -3,6 +3,7 @@ package nz.co.android.cowseye.event;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 import nz.co.android.cowseye.common.Constants;
 import nz.co.android.cowseye.utility.JSONHelper;
@@ -37,7 +38,7 @@ public class SubmissionEvent implements Event{
 
 	protected Uri imageToPath; /* Stores the path to the image on local storage */
 	protected String imageDescription;
-	protected String imageTag;
+	protected List<String> imageTag;
 	protected String address;
 	protected GeoPoint geoCoordinates;
 
@@ -147,7 +148,7 @@ public class SubmissionEvent implements Event{
 		return imageDescription;
 	}
 
-	public String getImageTag () {
+	public List<String> getImageTag () {
 		return imageTag;
 	}
 
@@ -221,7 +222,7 @@ public class SubmissionEvent implements Event{
 		imageDescription = description;
 	}
 
-	public void setImageTag (String tag) {
+	public void setImageTag (List<String> tag) {
 		imageTag=tag;
 	}
 

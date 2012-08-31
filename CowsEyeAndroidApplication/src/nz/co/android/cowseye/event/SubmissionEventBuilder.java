@@ -1,5 +1,7 @@
 package nz.co.android.cowseye.event;
 
+import java.util.List;
+
 import com.google.android.maps.GeoPoint;
 
 import android.net.Uri;
@@ -30,7 +32,7 @@ public class SubmissionEventBuilder {
 		submissionEvent.setImagePath(uriToImage);
 		return this;
 	}
-	public SubmissionEventBuilder setImageTag (String tag) {
+	public SubmissionEventBuilder setImageTag (List <String> tag) {
 		submissionEvent.setImageTag(tag);
 		return this;
 	}
@@ -52,7 +54,7 @@ public class SubmissionEventBuilder {
 	public String getImageDescription(){
 		return submissionEvent.getImageDescription();
 	}
-	public String getImageTag(){
+	public List<String> getImageTag(){
 		return submissionEvent.getImageTag();
 	}
 	public GeoPoint getGeoCoordinates(){

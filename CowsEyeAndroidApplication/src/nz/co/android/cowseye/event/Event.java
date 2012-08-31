@@ -1,5 +1,7 @@
 package nz.co.android.cowseye.event;
 
+import java.util.List;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -40,7 +42,7 @@ public interface Event {
 	public String getTimeStamp();
 	/** returns the description of the image associated with this event on disk */
 	public String getImageDescription();
-	/** returns the tag of the image associated with this event on disk */
-	public String getImageTag();
+	/** returns the list of the tags of the image associated with this event on disk */
+	public List<String> getImageTag();
 	
 }

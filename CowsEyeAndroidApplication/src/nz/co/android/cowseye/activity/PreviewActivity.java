@@ -1,6 +1,8 @@
 package nz.co.android.cowseye.activity;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -41,6 +43,7 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 	private TextView description;
 	private TextView tag;
 	private int maxLength = 100;
+	private List <String> imageTags;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -53,6 +56,7 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 	/* Sets up the User Interface */
 	protected void setupUI() {
 		super.setupUI();
+		
 		submitButton = (Button)findViewById(R.id.submit_button);
 		//sends the event to the server
 		submitButton.setOnClickListener(new View.OnClickListener() {	
@@ -94,8 +98,29 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 		//		description.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, DescriptionActivity.class));
 
 		tag = (TextView)findViewById(R.id.PreviewImageTag);
-		tag.setText(submissionEventBuilder.getImageTag());
-		//		tag.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, DescriptionActivity.class));
+		System.out.println ("CRASHED HERE");
+		
+		System.out.println ("NULL  HERE COS OF" + submissionEventBuilder.getImageTag());
+		System.out.println ("PROCEEDS");
+		
+		
+		List<String> lol = submissionEventBuilder.getImageTag();
+		System.out.println ("Lol value is " + lol);
+		
+		imageTags = new ArrayList <String> ();
+		System.out.println ("Tania reached here");
+		
+		for (String s: submissionEventBuilder.getImageTag()){
+			System.out.println ("this is shit");
+			imageTags.add(s);
+		
+		}
+	
+		
+				tag.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, DescriptionActivity.class));
+		System.out.println ("the new the new image tag size is " + imageTags.size());
+		//tag.setText(submissionEventBuilder.getImageTag());
+
 	}
 
 	/** Enables the preview image, first by trying to decode the URI natively into a bitmap 

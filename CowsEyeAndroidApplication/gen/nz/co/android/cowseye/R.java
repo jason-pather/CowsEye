@@ -65,6 +65,7 @@ public final class R {
         public static final int PreviewLocationText=0x7f080015;
         public static final int addressEditText=0x7f08000d;
         public static final int backButton=0x7f080001;
+        public static final int button=0x7f080006;
         public static final int button_submit=0x7f08000f;
         public static final int button_test_post=0x7f080020;
         public static final int button_view_gallery=0x7f080010;
@@ -80,7 +81,6 @@ public final class R {
         public static final int main_frame_layout=0x7f080008;
         public static final int mapview=0x7f08000c;
         public static final int nextButton=0x7f080002;
-        public static final int phototag_spinner=0x7f080006;
         public static final int previewFrameLayout=0x7f080021;
         public static final int preview_image=0x7f08001c;
         public static final int preview_text=0x7f08001d;
