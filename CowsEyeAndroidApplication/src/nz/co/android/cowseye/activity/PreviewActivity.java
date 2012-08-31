@@ -21,8 +21,11 @@ import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +45,7 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 	private TextView location;
 	private TextView description;
 	private TextView tag;
+	private ListView tagslist;
 	private int maxLength = 100;
 	private List <String> imageTags;
 
@@ -98,28 +102,25 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 		//		description.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, DescriptionActivity.class));
 
 		tag = (TextView)findViewById(R.id.PreviewImageTag);
+	
+
 		System.out.println ("CRASHED HERE");
 		
 		System.out.println ("NULL  HERE COS OF" + submissionEventBuilder.getImageTag());
 		System.out.println ("PROCEEDS");
 		
-		
-		List<String> lol = submissionEventBuilder.getImageTag();
-		System.out.println ("Lol value is " + lol);
-		
-		imageTags = new ArrayList <String> ();
-		System.out.println ("Tania reached here");
+		StringBuffer st = new StringBuffer();
 		
 		for (String s: submissionEventBuilder.getImageTag()){
 			System.out.println ("this is shit");
-			imageTags.add(s);
-		
-		}
+			st.append(s);
 	
 		
+		}
+		tag.setText(st.toString());
+
 				tag.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, DescriptionActivity.class));
-		System.out.println ("the new the new image tag size is " + imageTags.size());
-		//tag.setText(submissionEventBuilder.getImageTag());
+
 
 	}
 
