@@ -31,6 +31,8 @@ public final class R {
         public static final int riverWatch_button_end_colour=0x7f040011;
         public static final int riverWatch_button_start_colour=0x7f040010;
         public static final int riverWatch_outline_color=0x7f04000f;
+        public static final int riverWatch_selectbutton_end_colour=0x7f040013;
+        public static final int riverWatch_selectbutton_start_colour=0x7f040012;
         public static final int submit_report_button_text=0x7f040007;
     }
     public static final class drawable {
