@@ -3,7 +3,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@drawable/details_background"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:weightSum="1" >
 
     <FrameLayout
         android:layout_width="fill_parent"
@@ -22,7 +23,8 @@
     <FrameLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.8"
         android:background="@drawable/details_background"
         android:orientation="horizontal" >
 
@@ -37,5 +39,29 @@
             android:unselectedAlpha="1.0" >
         </nz.co.android.cowseye.view.RiverWatchGallery>
     </FrameLayout>
+
+    <ScrollView
+        android:id="@+id/thumbnails_scrollview"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.2" >
+
+        <!-- Layout for containing thumbnails of pages -->
+
+        <LinearLayout
+            android:id="@+id/holding_thumbs_linear_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <FrameLayout
+                android:id="@+id/holding_thumbs_frame_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                android:orientation="horizontal" >
+            </FrameLayout>
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>
