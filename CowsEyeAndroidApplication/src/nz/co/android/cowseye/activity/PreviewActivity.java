@@ -112,8 +112,9 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 		StringBuffer st = new StringBuffer();
 		
 		for (String s: submissionEventBuilder.getImageTag()){
-			System.out.println ("this is shit");
 			st.append(s);
+			if (s!=null){ st.append(","); } 
+			System.out.println ("this is shit");
 	
 		
 		}

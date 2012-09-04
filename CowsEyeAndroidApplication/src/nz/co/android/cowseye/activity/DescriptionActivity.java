@@ -42,6 +42,7 @@ public class DescriptionActivity extends AbstractSubmissionActivity {
 	private List <String> imageTags;
 
 	protected Button _optionsButton;
+	private List <String> tosendtags;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -108,6 +109,19 @@ public class DescriptionActivity extends AbstractSubmissionActivity {
 	
 
 		Log.d(toString(), "Sent image tags");
+		
+		
+		tosendtags = new ArrayList <String> ();
+		
+		for (int i = 0; i < _options.length; i++) {
+			Log.i("ME", _options[i] + " selected: " + _selections[i]);
+			if (_selections[i]){
+				tosendtags.add((String)_options[i]);
+			}
+		}
+		System.out.println ("Size of tosendtags is " + tosendtags.size());
+		
+		
 		nextButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -120,6 +134,14 @@ public class DescriptionActivity extends AbstractSubmissionActivity {
 							Toast.LENGTH_LONG).show();
 				}
 
+				
+				else if (tosendtags.size()==0) {
+					Toast.makeText(DescriptionActivity.this,
+							getString(R.string.pleaseChooseTags),
+							Toast.LENGTH_LONG).show();
+				}
+				
+				
 				// description has been entered and recognised by user and this
 				// will move the application onto the record location activity
 				else {
@@ -135,16 +157,8 @@ public class DescriptionActivity extends AbstractSubmissionActivity {
 
 					Intent intent = new Intent(DescriptionActivity.this,
 							RecordLocationActivity.class);
-					
-	List <String> tosendtags = new ArrayList <String> ();
-					
-					for (int i = 0; i < _options.length; i++) {
-						Log.i("ME", _options[i] + " selected: " + _selections[i]);
-						if (_selections[i]){
-							tosendtags.add((String)_options[i]);
-						}
-					}
-					System.out.println ("Size of tosendtags is " + tosendtags.size());
+                    
+
 					submissionEventBuilder.setImageTag(tosendtags);
 					Log.d("hi","reached here tan");
 					

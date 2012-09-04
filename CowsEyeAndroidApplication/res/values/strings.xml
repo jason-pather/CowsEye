@@ -4,7 +4,7 @@
     <string name="capture_image">Capture Image</string>
     <string name="select_location">Select Location</string>
     <string name ="description_labeltitle"> Enter Description of Image </string>
-    <string name ="tag_labeltitle"> Choose Image Tag </string>
+    <string name ="tag_labeltitle"> Select Image Tags </string>
     <string name="submit"> Submit </string>
     <string name="noPhotoAdded">No photo added</string>
     <string name="noLocationRecorded">No location recorded</string>
@@ -20,6 +20,7 @@
     <string name="noDescriptionEntered">No Description Entered</string>
     <string name="please_select_a_image">Please select an Image</string>
     <string name="pleaseEnterDescription">Please enter a description of the problem</string>
+    <string name="pleaseChooseTags">Please choose image tag(s) </string>
     <string name="pleaseEnterAddress">Please enter an address</string>
     <string name="gps_message_submission">Submitting a pollution event uses GPS to tag your location. However your GPS seems to be disabled, do you want to
 		enable it?</string>
