@@ -46,16 +46,22 @@
 		  </a>
           <div class="nav-collapse">
             <ul class="nav">
-              <li class = "active"><a href="Index.html">Home</a></li>
-			  <li class="divider-vertical"></li>
-              <li><a href="GridView.html">Incident Gallary</a></li>
-			  <li class="divider-vertical"></li>
-              <li><a href="MapView.html">Incident Map</a></li>
-			  <li class="divider-vertical"></li>
-			  <li><a href="Feedback.html">Contact Us</a></li>
-            </ul>
+				<li class = "active"><a href="../Public/Index.html">Home</a></li>
+				<li><a href="../Public/GridView.html">Incident Gallary</a></li>
+				<li><a href="../Public/MapView.html">Incident Map</a></li>
+				<li><a href="../Public/Feedback.html">Contact Us</a></li>
+			</ul>
 			<ul class="nav pull-right">
 				<li><img id = "ajaxLoader" src="../../assets/img/load.gif"></li>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        Administration <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+						<li><a href="../Admin/ApproveIncident.html">Approve Incidents</a></li>
+						<li><a href="../Admin/ApproveComment.html">Approve Comments</a></li>
+                    </ul>
+                </li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -80,37 +86,8 @@
 
 		</li>
 	
-		<li class = "span7">
-		<div id="myCarousel" class="carousel slide">
-	
-		<!-- Carousel items -->
-		<div class="carousel-inner">
-				<div class="item active">
-					<img src="../../assets/img/1040x640.gif" alt="">
-					<div class="carousel-caption">
-					  <h4>Second Thumbnail label</h4>
-					  <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-					</div>
-				</div>
-				<div class="item">
-					<img src="../../assets/img/1040x640.gif" alt="">
-					<div class="carousel-caption">
-					  <h4>Third Thumbnail label</h4>
-					  <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-					</div>
-				</div>
-				<div class="item">
-					<img src="../../assets/img/1040x640.gif" alt="">
-					<div class="carousel-caption">
-					  <h4>Third Thumbnail label</h4>
-					  <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-					</div>
-				</div>
-			</div>
-			<!-- Carousel nav -->
-			<a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
-			<a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
-		</div>
+		<li class = "span7" id="carouselContainer">
+		
 			
 		</li>
 	</ul>
@@ -143,13 +120,7 @@
 	<script src="../../assets/js/bootstrap-transition.js"></script>
 	<script src="../../assets/js/bootstrap-dropdown.js"></script>
 	<script src="../../assets/js/bootstrap-carousel.js"></script>
-	
 	<script src="../../assets/js/AjaxCommonsMock.js"></script>
-	
-	<script type="text/javascript">
-
-		$('.carousel').carousel();
-		
-	</script>
+	<script src="../../assets/js/Index.js"></script>
   </body>
 </html>

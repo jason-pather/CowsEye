@@ -44,10 +44,11 @@
         android:id="@+id/ChooseImageTag"
         style="@style/text_view_style"
         android:text="@string/tag_labeltitle" />
-
-    <Spinner
-        android:id="@+id/phototag_spinner"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+    
+        <Button android:id="@+id/button"
+    		android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    		android:text="View Options"
+    		/>
 
 </LinearLayout>

@@ -1,6 +1,8 @@
 package nz.co.android.cowseye.activity;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -44,6 +46,7 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 	private TextView previewTextView;
 	private Button selectImageFromGalleryButton;
 	private Button buttonTESTPOST;
+	
 
 
 	/** Called when the activity is first created. */
@@ -61,7 +64,7 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 			public void onClick(View v) {
 				submissionEventBuilder.setImagePath(cameraFileUri)
 				.setImageDescription("This is an Image Description")
-				.setImageTag("Test image tag")
+				.setImageTag(new ArrayList <String> ())
 				.setGeoCoordinates(new GeoPoint(12141414, 493124312))
 				.setAddress("2 adventure drive");
 				try {

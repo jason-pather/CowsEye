@@ -14,7 +14,7 @@ appendThumbnails = (data) ->
 onFail = (data) ->
 	console.log "Rest Call has failed"
 
-Window.RWCall appendThumbnails, onFail, {}, "unapproved_stub", "/start=#{current}/number=#{range}", "GET"
+Window.RWCall appendThumbnails, onFail, {current,range}, "unapproved_stub", "/start=#{current}/number=#{range}", "GET"
 	
 win = $ window 
 doc = $ document
@@ -22,5 +22,5 @@ doc = $ document
 win.scroll ->
 	if win.scrollTop() + win.height() == doc.height()
 		console.log "Reached bottom of page"
-		Window.RWCall appendThumbnails, onFail, {}, "unapproved_stub", "/start=#{current}/number=#{range}", "GET"
+		Window.RWCall appendThumbnails, onFail, {current,range}, "unapproved_stub", "/start=#{current}/number=#{range}", "GET"
 	

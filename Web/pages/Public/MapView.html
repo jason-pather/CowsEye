@@ -47,21 +47,46 @@
           <a class="brand" href="#">River Watch</a>
           <div class="nav-collapse">
             <ul class="nav">
-              <li><a href="Index.html">Home</a></li>
-              <li><a href="GridView.html">Incident Gallary</a></li>
-              <li class = "active"><a href="MapView.html">Incident Map</a></li>
-			  <li><a href="Feedback.html">Contact Us</a></li>
+				<li><a href="../Public/Index.html">Home</a></li>
+				<li><a href="../Public/GridView.html">Incident Gallary</a></li>
+				<li class = "active"><a href="../Public/MapView.html">Incident Map</a></li>
+				<li><a href="../Public/Feedback.html">Contact Us</a></li>
             </ul>
 			<ul class="nav pull-right">
 				<li><img id = "ajaxLoader" src="../../assets/img/load.gif"></li>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        Administration <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+						<li><a href="../Admin/ApproveIncident.html">Approve Incidents</a></li>
+						<li><a href="../Admin/ApproveComment.html">Approve Comments</a></li>
+                    </ul>
+                </li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
       </div>
     </div>
 		<div id="over_map"> 
-			<div class="btn-group">
-				<button class="btn btn-inverse dropdown-toggle" data-toggle="dropdown">Show <i class="icon-chevron-down icon-white"></i></button>
+			<div class="well" style="max-width: 340px; padding: 8px 0;">
+				<ul class="nav nav-list">
+					<li class="nav-header">Incident Navigation</li>
+					
+					<li><a id="nextBtn" href="#"><i class="icon-arrow-right icon-black"></i> Next</a></li>
+					<li><a id="prevBtn" href="#"><i class="icon-arrow-left icon-black"></i> Prev</a></li>
+
+					<li class="nav-header">Show Incidents</li>
+					<li><a id = "d16" href="#"><i class="icon-th-large icon-black"></i> 16</a></li>
+					<li><a id = "d32" href="#"><i class="icon-th-large icon-black"></i> 32</a></li>
+					<li><a id = "d64" href="#"><i class="icon-th-large icon-black"></i> 64</a></li>
+					<li><a id = "d128" href="#"><i class="icon-th-large icon-black"></i> 128</a></li>
+					<li><a id = "d256" href="#"><i class="icon-th-large icon-black"></i> 256</a></li>
+				</ul>
+            </div>
+			  
+			  <!--
+			<button class="btn btn-inverse dropdown left" data-toggle="dropdown"><i class="icon-chevron-down icon-white"></i> Show</button>
 				<ul class="dropdown-menu">
 					<li><a id = "d16" href="#">16</a></li>
 					<li><a id = "d32" href="#">32</a></li>
@@ -69,11 +94,13 @@
 					<li><a id = "d128" href="#">128</a></li>
 					<li><a id = "d256" href="#">256</a></li>
 				</ul>
+			<div class="btn-group left">
 				<button class="btn btn-inverse" id="prevBtn" href="#"><i class="icon-arrow-left icon-white"></i> Prev</button>
-				<button class="btn btn-inverse" id="nextBtn" href="#">Next <i class="icon-arrow-right icon-white"></i></button>
+				<button class="btn btn-inverse" id="nextBtn" href="#"><i class="icon-arrow-right icon-white"></i> Next</button>
 			</div>
+			-->
 		</div>
-		<div id="map_canvas"></div>
+	<div id="map_canvas"></div>
 		<!--<iframe width="100%" height="100%" frameborder="0" src="map.html"></iframe>-->
 		
 
@@ -104,7 +131,7 @@
 	<script src="../../assets/js/bootstrap-transition.js"></script>
 	<script src="../../assets/js/bootstrap-modal.js"></script>
 	
-	<script src="../../assets/js/AjaxCommons.js"></script>
+	<script src="../../assets/js/AjaxCommonsMock.js"></script>
 	<script src="../../assets/js/MapView.js"></script>
 	<script src="../../assets/js/IncidentModal.js"></script>
 	

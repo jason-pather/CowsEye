@@ -26,12 +26,6 @@ body.modal-open {
     overflow: hidden;
 }
 
-/* Custom style for longer buttons*/
-.btn-long{
-margin-top:160px;
-	width:150px;
-}
-
 #ajaxLoader{
 	padding:4px;
 	display:none;
@@ -41,3 +35,7 @@ margin-top:160px;
 }
 
 #over_map { position: absolute; top: 50px; left: 10px; z-index: 99; }
+
+.left{
+float:left;
+}

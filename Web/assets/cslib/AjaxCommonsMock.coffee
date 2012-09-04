@@ -40,6 +40,30 @@ IncidentDetail = ( id ) ->
 		Lng: GPSCoordinatesNZ[0].lng
 	}
 
+UnapprovedComments = ( start, range) ->
+	
+	data = {}
+	data[ "start" ] = start
+	data[ "range" ] = range
+
+	console.log "start #{start}" 
+	console.log "range #{range}" 
+	
+	comments = []
+	
+	for i in [0..range - 1]
+	
+		comments[i] = {
+			incident_id: start + i
+			comment_id: start + i
+			thumbnail_url:  "http://placehold.it/320x180"
+			description: "Description for #{ start + i}"
+			comment: "I like the way the light reflects of these cows, love mablye"
+		}
+	data.comments = comments
+	
+	return data
+	
 ###
 Test Stub for reteriving multiple incidents
 ###	
@@ -48,8 +72,9 @@ IncidentList = ( start, range ) ->
 	data = {}
 	data[ "start" ] = start
 	data[ "range" ] = range
-	
-	
+
+	console.log "start #{start}" 
+	console.log "range #{range}" 
 	
 	incidents = []
 	
@@ -58,21 +83,18 @@ IncidentList = ( start, range ) ->
 		gps = Math.floor((Math.random()*12));
 	
 		incidents[i] = {
-			Incident_ID : start + i
-			Thumbnail_URL :  "http://placehold.it/320x180"
-			Short_Description: "Description for #{ start + i}"
+			id : start + i
+			thumbnail_url :  "http://placehold.it/320x180"
+			description: "Description for #{ start + i}"
 			Tags: [ "Cow", "Poo", "River", "Pond" ]
-			Lat: GPSCoordinatesNZ[gps].lat + (Math.floor((Math.random()*100)) - 50) / 50
-			Lng: GPSCoordinatesNZ[gps].lng + (Math.floor((Math.random()*100)) - 50) / 50
-			
-			
+			geolocation:
+				lat: GPSCoordinatesNZ[gps].lat + (Math.floor((Math.random()*100)) - 50) / 50
+				long: GPSCoordinatesNZ[gps].lng + (Math.floor((Math.random()*100)) - 50) / 50	
 		}
 		
 		console.log GPSCoordinatesNZ[gps].lat
 	
-	data[ "Incidents" ] = incidents
-	
-	
+	data[ "incidents" ] = incidents
 	
 	return data
 
@@ -85,7 +107,10 @@ CommentsForIncident = (id, start, range) ->
 	data[ "Incident_ID" ] = id
 	data[ "Start"] = start
 	data[ "Given"] = 2
-
+	
+	console.log "id #{id}"
+	console.log "start #{start}"
+	console.log "range #{range}"
 	data[ "Comments"] = [
 		{
 			Incident_ID: id
@@ -111,27 +136,32 @@ Window.CommentsForIncident = CommentsForIncident
 
 RWCall = (onSuccess, onFailure, data, path, args, callType) ->
 
-	# Display Ajax Loader
-	ajaxLoader = $ "#ajaxLoader"
-	ajaxLoader.css "display", "block"
-	
-	if path == "IncidentDetail"
-		result = IncidentDetail args[0]
-
-	if path == "IncidentList"
-		result = IncidentList args[0], args[1]
-	
-	if path == "CommentsForIncident"
-		console.log "Making comments for incident"
-		result = CommentsForIncident args[0], args[1], args[2]
+	# Split args
+	parsedArgs = [];
+	argsSplit = args.split "/" 
+	for a in argsSplit
+		aSplit = a.split "="
+		parsedArgs.push aSplit[1]
 		
-	if callType == "success"
-		onSuccess result
-	else
-		onFailure result
+	# Display Ajax Loader
+	# ajaxLoader = $ "#ajaxLoader"
+	# ajaxLoader.css "display", "block"
+	# ajaxLoader.css "display", "none"
 	
-	ajaxLoader.css "display", "none"	
+	if path == "unapproved_detail_stub"
+		result = IncidentDetail parsedArgs[1]
+
+	if path == "unapproved_stub"
+		result = IncidentList parsedArgs[1], parsedArgs[2]
 	
+	if path == "comment_stub"
+		result = CommentsForIncident parsedArgs[1], parsedArgs[2],parsedArgs[3]
+		
+	if path == "unapproved_comments"
+		result = UnapprovedComments parsedArgs[1], parsedArgs[2]
+	
+	onSuccess result
+
 ###
 Make an AJAX Gete request to the River Watch Server
 

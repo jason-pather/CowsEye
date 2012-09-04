@@ -31,8 +31,8 @@ Make = (id) ->
 	# Reterive Infromation
 	onFail = (data) ->
 		console.log "Rest Call has failed"
-	path = "IncidentDetail"
-	args = [id]
+	path = "unapproved_detail_stub"
+	args = "/id=#{id}"
 	calltype = "success"
 	
 	onSuccess = (data) ->
@@ -83,9 +83,9 @@ Make = (id) ->
 					comment: getMessage()
 				}
 				
-				path = "/Submit/Comment"
+				path = "comment_stub"
 				args = [id]
-				callType = "success"
+				callType = "GET"
 				
 				onSuccess = (msg) ->
 					submitCommentButton.removeClass "btn-primary"
@@ -116,7 +116,7 @@ Make = (id) ->
 				console.log "adding coment #{c}"
 				commentsSection.append $ "<p>#{c.Comment_Text}</p>"
 				
-		Window.RWCall commentSuccess, commentFailure, {}, "CommentsForIncident", [id, 0, 24], "success"
+		Window.RWCall commentSuccess, commentFailure, {}, "comment_stub", "/id=#{id}/start=0/range=24", "success"
 			
 	Window.RWCall onSuccess, onFail, {}, path, args, calltype
 	

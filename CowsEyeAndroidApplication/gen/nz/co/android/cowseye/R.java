@@ -31,12 +31,14 @@ public final class R {
         public static final int riverWatch_button_end_colour=0x7f040011;
         public static final int riverWatch_button_start_colour=0x7f040010;
         public static final int riverWatch_outline_color=0x7f04000f;
+        public static final int riverWatch_selectbutton_end_colour=0x7f040013;
+        public static final int riverWatch_selectbutton_start_colour=0x7f040012;
         public static final int submit_report_button_text=0x7f040007;
     }
     public static final class drawable {
         public static final int back_button=0x7f020000;
-        public static final int default_landscape_thumb_100x75=0x7f020001;
-        public static final int default_portrait_thumb_100x75=0x7f020002;
+        public static final int button=0x7f020001;
+        public static final int button_pressed=0x7f020002;
         public static final int default_thumb=0x7f020003;
         public static final int details_background=0x7f020004;
         public static final int done_button=0x7f020005;
@@ -64,6 +66,7 @@ public final class R {
         public static final int PreviewLocationText=0x7f080018;
         public static final int addressEditText=0x7f080010;
         public static final int backButton=0x7f080001;
+        public static final int button=0x7f080006;
         public static final int button_submit=0x7f080012;
         public static final int button_test_post=0x7f080023;
         public static final int button_view_gallery=0x7f080013;
@@ -81,7 +84,6 @@ public final class R {
         public static final int main_frame_layout=0x7f08000b;
         public static final int mapview=0x7f08000f;
         public static final int nextButton=0x7f080002;
-        public static final int phototag_spinner=0x7f080006;
         public static final int previewFrameLayout=0x7f080024;
         public static final int preview_image=0x7f08001f;
         public static final int preview_text=0x7f080020;

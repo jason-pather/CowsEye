@@ -45,13 +45,22 @@
           <a class="brand" href="#">River Watch</a>
           <div class="nav-collapse">
             <ul class="nav">
-              <li><a href="Index.html">Home</a></li>
-              <li class = "active"><a href="GridView.html">Incident Gallary</a></li>
-              <li><a href="MapView.html">Incident Map</a></li>
-			  <li><a href="Feedback.html">Contact Us</a></li>
-            </ul>
+              <li><a href="../Public/Index.html">Home</a></li>
+              <li class = "active"><a href="../Public/GridView.html">Incident Gallary</a></li>
+              <li><a href="../Public/MapView.html">Incident Map</a></li>
+			  <li><a href="../Public/Feedback.html">Contact Us</a></li>
+			</ul>
 			<ul class="nav pull-right">
 				<li><img id = "ajaxLoader" src="../../assets/img/load.gif"></li>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        Administration <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+						<li><a href="../Admin/ApproveIncident.html">Approve Incidents</a></li>
+						<li><a href="../Admin/ApproveComment.html">Approve Comments</a></li>
+                    </ul>
+                </li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -96,7 +105,7 @@
 	<script src="../../assets/js/bootstrap-transition.js"></script>
 	<script src="../../assets/js/bootstrap-modal.js"></script>
 	
-	<script src="../../assets/js/AjaxCommons.js"></script>
+	<script src="../../assets/js/AjaxCommonsMock.js"></script>
 	<script src="../../assets/js/IncidentModal.js"></script>
 	<script src="../../assets/js/IncidentThumbnail.js"></script>
 	<script src="../../assets/js/GridView.js"></script>

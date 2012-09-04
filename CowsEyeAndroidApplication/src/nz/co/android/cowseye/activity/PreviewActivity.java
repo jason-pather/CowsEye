@@ -1,6 +1,8 @@
 package nz.co.android.cowseye.activity;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -16,10 +18,14 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,7 +45,9 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 	private TextView location;
 	private TextView description;
 	private TextView tag;
+	private ListView tagslist;
 	private int maxLength = 100;
+	private List <String> imageTags;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -52,6 +60,7 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 	/* Sets up the User Interface */
 	protected void setupUI() {
 		super.setupUI();
+		
 		submitButton = (Button)findViewById(R.id.submit_button);
 		//sends the event to the server
 		submitButton.setOnClickListener(new View.OnClickListener() {	
@@ -85,6 +94,7 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 		//		location.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, RecordLocationActivity.class));
 
 		description = (TextView)findViewById(R.id.PreviewDescriptionText);
+		description.setMovementMethod(new ScrollingMovementMethod());
 		String descriptionText = submissionEventBuilder.getImageDescription();
 		if (descriptionText.length() > maxLength) descriptionText = descriptionText.substring(0, maxLength);
 		description.setText(submissionEventBuilder.getImageDescription());
@@ -92,8 +102,26 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 		//		description.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, DescriptionActivity.class));
 
 		tag = (TextView)findViewById(R.id.PreviewImageTag);
-		tag.setText(submissionEventBuilder.getImageTag());
-		//		tag.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, DescriptionActivity.class));
+	
+
+		System.out.println ("CRASHED HERE");
+		
+		System.out.println ("NULL  HERE COS OF" + submissionEventBuilder.getImageTag());
+		System.out.println ("PROCEEDS");
+		
+		StringBuffer st = new StringBuffer();
+		
+		for (String s: submissionEventBuilder.getImageTag()){
+			System.out.println ("this is shit");
+			st.append(s);
+	
+		
+		}
+		tag.setText(st.toString());
+
+				tag.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, DescriptionActivity.class));
+
+
 	}
 
 	/** Enables the preview image, first by trying to decode the URI natively into a bitmap 

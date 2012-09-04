@@ -76,7 +76,7 @@
 
                     <Button
                         android:id="@+id/button_test_post"
-                        style="@style/button_option"
+                        style="@style/riverWatchButtonStyle"
                         android:text="TESTING POST" />
                 </LinearLayout>
             </FrameLayout>
