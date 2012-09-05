@@ -135,11 +135,11 @@ public class DescriptionActivity extends AbstractSubmissionActivity {
 				}
 
 				
-				else if (tosendtags.size()==0) {
-					Toast.makeText(DescriptionActivity.this,
-							getString(R.string.pleaseChooseTags),
-							Toast.LENGTH_LONG).show();
-				}
+//				else if (tosendtags.size()==0) {
+//					Toast.makeText(DescriptionActivity.this,
+//							getString(R.string.pleaseChooseTags),
+//							Toast.LENGTH_LONG).show();
+//				}
 				
 				
 				// description has been entered and recognised by user and this
