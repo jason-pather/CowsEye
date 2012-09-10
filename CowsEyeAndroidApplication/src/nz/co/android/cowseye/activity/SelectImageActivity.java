@@ -47,8 +47,6 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 	private Button selectImageFromGalleryButton;
 	private Button buttonTESTPOST;
 	
-
-
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -62,6 +60,11 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 		buttonTESTPOST.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+//				submissionEventBuilder.setImagePath(cameraFileUri)
+//				.setImageDescription("This is an Image Description")
+//				.setImageTag(new ArrayList <String> ())
+//				.setGeoCoordinates(new GeoPoint(12141414, 493124312))
+//				.setAddress("2 adventure drive");
 				submissionEventBuilder.setImagePath(cameraFileUri)
 				.setImageDescription("This is an Image Description")
 				.setImageTag(new ArrayList <String> ())
@@ -69,6 +72,7 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 				.setAddress("2 adventure drive");
 				try {
 					myApplication.getEventHandler().addEvent(submissionEventBuilder.build());
+					myApplication.forceStartEventHandling();
 
 				} catch (SubmissionEventBuilderException e) {
 					Log.e(toString(), e.toString());
@@ -187,8 +191,12 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 	 * @param cameraFileUri - path to the image
 	 */
 	private void setPreviewImageOn(Uri cameraFileUri) {
+		Log.d(toString(), "setPreviewImageOn: ");
+
 		try{
 			Bitmap b = Utils.getAppFriendlyBitmap(cameraFileUri, getContentResolver());
+			Log.d(toString(), "bitt..  "+b);
+
 			if(b==null)
 				throw new IOException("Bitmap returned is null");
 			setPreviewBitmapImageOn(b);
@@ -203,6 +211,7 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 	 * @param uriToImage - URI to the image captured or selected*/
 	private void setPreviewURIImageOn(Uri uriToImage) {
 		if(uriToImage!=null){
+			Log.d(toString(), "setting image bitmap");
 			//sets preview text view to invisible
 			previewTextView.setVisibility(View.INVISIBLE);
 			//sets image to visible
@@ -217,6 +226,7 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 	 * @param bitmap - the image bitmap*/
 	private void setPreviewBitmapImageOn(Bitmap bitmap) {
 		if(bitmap!=null){
+			Log.d(toString(), "setting image bitmap: "+bitmap.getWidth() + " , "+bitmap.getHeight());
 			//sets preview text view to invisible
 			previewTextView.setVisibility(View.INVISIBLE);
 			//sets image to visible

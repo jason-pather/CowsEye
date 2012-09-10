@@ -45,9 +45,9 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 	private TextView location;
 	private TextView description;
 	private TextView tag;
-	private ListView tagslist;
+//	private ListView tagslist;
 	private int maxLength = 100;
-	private List <String> imageTags;
+//	private List <String> imageTags;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -113,9 +113,7 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 		
 		for (String s: submissionEventBuilder.getImageTag()){
 			st.append(s);
-			if (s!=null){ st.append(","); } 
-			System.out.println ("this is shit");
-	
+			if (s!=null){ st.append(", "); } 
 		
 		}
 		tag.setText(st.toString());

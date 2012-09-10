@@ -4,14 +4,17 @@ import java.io.File;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import org.apache.http.Header;
-import org.apache.http.HttpResponse;
-import org.json.JSONObject;
-
 import nz.co.android.cowseye.RiverWatchApplication;
 import nz.co.android.cowseye.utility.JSONHelper;
+import nz.co.android.cowseye.utility.Utils;
+
+import org.apache.http.Header;
+import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
+import org.json.JSONObject;
 
 import android.util.Log;
+import android.widget.Toast;
 
 public class EventHandler {
 
@@ -39,6 +42,7 @@ public class EventHandler {
 				Event currentEvent = eventQueue.peek();
 				Log.i(toString(), "processing : " + currentEvent.toString());
 				boolean success = processSubmissionEventResponse(currentEvent.processRaw());
+//				Toast.makeText(myApplication, "Success : "+success, Toast.LENGTH_LONG).show();
 				Log.i(toString(), "successfully processed event? : "+ success);
 				//only actually remove event if successful
 				if(success){
@@ -91,27 +95,37 @@ public class EventHandler {
 	 * @param response from a submission event
 	 * @return true if succesfull submission, otherwise false
 	 */
-	public boolean processSubmissionEventResponse(HttpResponse response){
-		Log.d(toString(), "response : "+response);
-		boolean success = false;
+	public static boolean processSubmissionEventResponse(HttpResponse response){
+		if(response==null)
+			return false;
+		StatusLine statusLine = response.getStatusLine();
+		if(statusLine == null)
+			return false;
+		int statusCode = statusLine.getStatusCode();
+		Log.d("app", "statusCode : "+statusCode);
 		try{
-			Log.d(toString(),"Status line : "+ response.getStatusLine());
-			for(Header header : response.getAllHeaders()){
-				Log.d(toString(),"header : "+ header.getName() + " - > "+header.getValue());
+			switch(statusCode){
+			case Utils.HTTP_OK:
+				Log.i("app", "Sucessful submission!");
+				return true;
+			case Utils.HTTP_LOGIC_ERROR:
+				Log.i("app", "Logic error: Unsucessful submission!");
+
+				return false;
+			case Utils.HTTP_SERVER_ERROR:
+				Log.i("app", "Server error: Unsucessful submission!");
+				return false;
+			default:
+				Log.i("app", "Uncaught error: Unsucessful submission!");
+				return false;
 			}
-
-
-			JSONObject jsonObject = JSONHelper.parseHttpResponseAsJSON(response);
-			Log.d(toString(), "jsonObject : "+jsonObject);
-
-			//				            if(jsonObject.has(Utils.RESPONSE_CODE))
-			//				                return ResponseCodeState.stringToResponseCode((String)jsonObject.getString(Utils.RESPONSE_CODE))==ResponseCodeState.SUCCESS;
+//			JSONObject jsonObject = JSONHelper.parseHttpResponseAsJSON(response);
+//			Log.d("app", "jsonObject : "+jsonObject);
 		}
 		catch(Exception f){ 
-			Log.e(toString(), "Exception in JsonParsing : "+f);
+			Log.e("app", "Exception in JsonParsing : "+f);
 		}
-		Log.d(toString(), "returning success? : "+success);
-		return success;
+		return false;
 
 	}
 	
