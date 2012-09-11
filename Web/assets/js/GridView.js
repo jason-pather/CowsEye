@@ -28,7 +28,7 @@
   Window.RWCall(appendThumbnails, onFail, {
     current: current,
     range: range
-  }, "unapproved_stub", "/start=" + current + "/number=" + range, "GET");
+  }, "unapproved", "/start=" + current + "/number=" + range, "GET");
 
   win = $(window);
 
@@ -40,7 +40,7 @@
       return Window.RWCall(appendThumbnails, onFail, {
         current: current,
         range: range
-      }, "unapproved_stub", "/start=" + current + "/number=" + range, "GET");
+      }, "unapproved", "/start=" + current + "/number=" + range, "GET");
     }
   });
 

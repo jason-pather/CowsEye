@@ -63,6 +63,7 @@
     _results = [];
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       incident = _ref[_i];
+      console.log("creating incident " + current);
       current++;
       _results.push(createOverlay(incident));
     }
@@ -73,7 +74,7 @@
     return console.log("Rest Call failed");
   };
 
-  Window.RWCall(onSuccess, onFail, {}, "unapproved_stub", "/start=" + current + "/number=" + range, "GET");
+  Window.RWCall(onSuccess, onFail, {}, "unapproved", "/start=" + current + "/number=" + range, "GET");
 
   nextButton = $("#nextBtn");
 
@@ -92,21 +93,21 @@
   nextButton.click(function() {
     RemoveFromMap();
     console.log("Clicked Next");
-    return Window.RWCall(onSuccess, onFail, {}, "unapproved_stub", "/start=" + current + "/number=" + range, "GET");
+    return Window.RWCall(onSuccess, onFail, {}, "unapproved", "/start=" + current + "/number=" + range, "GET");
   });
 
   prevButton.click(function() {
     RemoveFromMap();
     console.log("Clicked Prev");
     current = current - range > 0 ? current - range : 0;
-    return Window.RWCall(onSuccess, onFail, {}, "unapproved_stub", "/start=" + current + "/number=" + range, "GET");
+    return Window.RWCall(onSuccess, onFail, {}, "unapproved", "/start=" + current + "/number=" + range, "GET");
   });
 
   changeRange = function(newRange) {
     RemoveFromMap();
     current = current - range > 0 ? current - range : 0;
     range = newRange;
-    return Window.RWCall(onSuccess, onFail, {}, "unapproved_stub", "/start=" + current + "/number=" + range, "GET");
+    return Window.RWCall(onSuccess, onFail, {}, "unapproved", "/start=" + current + "/number=" + range, "GET");
   };
 
   d16Button.click(function() {

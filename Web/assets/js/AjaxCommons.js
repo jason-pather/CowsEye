@@ -9,7 +9,7 @@ Author Matthew Betts
 (function() {
   var BASE_URL, CONTENT_TYPE, DATA_TYPE, PROCESS_DATA, RWCall, TIMEOUT;
 
-  BASE_URL = "http://barretts.ecs.vuw.ac.nz:4567/wainz/";
+  BASE_URL = "http://greta-pt.ecs.vuw.ac.nz:4567/wainz/";
 
   CONTENT_TYPE = "contentType";
 
@@ -18,6 +18,36 @@ Author Matthew Betts
   TIMEOUT = 5000;
 
   DATA_TYPE = "jsonp";
+
+  /* REST CALLS
+  '/wainz/reset_db'
+  '/wainz/?'
+  '/wainz/submit/?'
+  '/wainz/incident/:id/comment/?'
+  '/wainz/all'
+  
+  Submit incidents
+  { "description":"Blah", "tags":["cow", "poo"], "geolocation":{"lat":"1","long":"1"}, "physical_location":"NWENLAB" }
+  '/wainz/submit/?'
+  
+  Submit comments
+  { "comment": "This is a comment With a name and email", "name": "David Tredger", "email": "tredger@gmail.com" }
+  '/wainz/incident/:id/comment/?'
+  
+  '/wainz/approved/:start/:number?'
+  '/wainz/unapproved/:start/:number'
+  '/wainz/unapproved_stub/:start?/:number'
+  '/wainz/incident/:id/comments/?'
+  '/wainz/incident/:id/?'
+  '/wainz/image/:id/full/?'
+  '/wainz/image/:id/?'
+  '/wainz/image/:id/thumb/?'
+  '/wainz/incident/:id/approve/?'
+  '/wainz/incident/:id/approve/?'
+  '/wainz/comment/:id/approve/?'
+  '/wainz/comment/:id/approve/?'
+  */
+
 
   /*
   Make an AJAX Put request to the River Watch Server

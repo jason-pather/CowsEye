@@ -31,8 +31,8 @@ Make = (id) ->
 	# Reterive Infromation
 	onFail = (data) ->
 		console.log "Rest Call has failed"
-	path = "unapproved_detail_stub"
-	args = "/id=#{id}"
+	path = "incident"
+	args = "/#{id}"
 	calltype = "success"
 	
 	onSuccess = (data) ->
@@ -45,10 +45,10 @@ Make = (id) ->
 			</div>
 			<div class=\"modal-body\">
 				<div href=\"#\" class=\"thumbnail\" id=\"testThumbnail\">
-					<img src=\"#{data.Full_URL}\" alt=\"\">	
+					<img src=\"#{data.image_url}\" alt=\"\">	
 				</div>
 				<h2>Details</h2>
-				<p> #{data.Description}</p>
+				<p> #{data.description}</p>
 				<h2>Comments</h2>
 				<p></p>
 				<div id = \"comments\"></div>
@@ -116,7 +116,7 @@ Make = (id) ->
 				console.log "adding coment #{c}"
 				commentsSection.append $ "<p>#{c.Comment_Text}</p>"
 				
-		Window.RWCall commentSuccess, commentFailure, {}, "comment_stub", "/id=#{id}/start=0/range=24", "success"
+		Window.RWCall commentSuccess, commentFailure, {}, "comment", "/id=#{id}/start=0/range=24", "success"
 			
 	Window.RWCall onSuccess, onFail, {}, path, args, calltype
 	

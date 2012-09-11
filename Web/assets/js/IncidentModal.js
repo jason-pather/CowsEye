@@ -34,12 +34,12 @@ Retreive, and create a incident modal dialog box
     onFail = function(data) {
       return console.log("Rest Call has failed");
     };
-    path = "unapproved_detail_stub";
-    args = "/id=" + id;
+    path = "incident";
+    args = "/" + id;
     calltype = "success";
     onSuccess = function(data) {
       var commentFailure, commentSuccess, incidentModal, submitCommentButton;
-      incidentModal = $("<div class=\"modal hide fade in\" id=\"myModal\">			<div class=\"modal-header\">				<button type=\"button\" class=\"close\" data-dismiss=\"modal\"><i class=\"icon-remove icon-red\"></i></button>				<h3>Incident Details</h3>			</div>			<div class=\"modal-body\">				<div href=\"#\" class=\"thumbnail\" id=\"testThumbnail\">					<img src=\"" + data.Full_URL + "\" alt=\"\">					</div>				<h2>Details</h2>				<p> " + data.Description + "</p>				<h2>Comments</h2>				<p></p>				<div id = \"comments\"></div>								<h2>Post Comment</h2>				<div class =\"control-group\" id = \"messageControlGroup\">					<textarea class=\"input-xlarge\" id=\"messageInput\" rows=\"3\" style=\"margin: 0px; width: 690px; height: 114px; \"></textarea>				</div>				<p></p>				<a href=\"#\" id= \"commentSubmitButton\"class=\"btn btn-primary\">					<i class=\"icon-comment icon-white\"></i>					Submit				</a>				</div>			<div class=\"modal-footer\">					<a href=\"#\" class=\"btn btn-danger\" data-dismiss=\"modal\">					<i class=\"icon-remove icon-white\"></i>					Close Incident				</a>			</div>					</div>");
+      incidentModal = $("<div class=\"modal hide fade in\" id=\"myModal\">			<div class=\"modal-header\">				<button type=\"button\" class=\"close\" data-dismiss=\"modal\"><i class=\"icon-remove icon-red\"></i></button>				<h3>Incident Details</h3>			</div>			<div class=\"modal-body\">				<div href=\"#\" class=\"thumbnail\" id=\"testThumbnail\">					<img src=\"" + data.image_url + "\" alt=\"\">					</div>				<h2>Details</h2>				<p> " + data.description + "</p>				<h2>Comments</h2>				<p></p>				<div id = \"comments\"></div>								<h2>Post Comment</h2>				<div class =\"control-group\" id = \"messageControlGroup\">					<textarea class=\"input-xlarge\" id=\"messageInput\" rows=\"3\" style=\"margin: 0px; width: 690px; height: 114px; \"></textarea>				</div>				<p></p>				<a href=\"#\" id= \"commentSubmitButton\"class=\"btn btn-primary\">					<i class=\"icon-comment icon-white\"></i>					Submit				</a>				</div>			<div class=\"modal-footer\">					<a href=\"#\" class=\"btn btn-danger\" data-dismiss=\"modal\">					<i class=\"icon-remove icon-white\"></i>					Close Incident				</a>			</div>					</div>");
       incidentModal.modal({
         show: true
       });
@@ -85,7 +85,7 @@ Retreive, and create a incident modal dialog box
         }
         return _results;
       };
-      return Window.RWCall(commentSuccess, commentFailure, {}, "comment_stub", "/id=" + id + "/start=0/range=24", "success");
+      return Window.RWCall(commentSuccess, commentFailure, {}, "comment", "/id=" + id + "/start=0/range=24", "success");
     };
     return Window.RWCall(onSuccess, onFail, {}, path, args, calltype);
   };
