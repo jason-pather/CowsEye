@@ -33,7 +33,7 @@ Make = (id) ->
 		console.log "Rest Call has failed"
 	path = "incident"
 	args = "/#{id}"
-	calltype = "success"
+	calltype = "GET"
 	
 	onSuccess = (data) ->
 	
@@ -80,20 +80,19 @@ Make = (id) ->
 			# Get comment text
 			if checkMessage()
 				data = {
+					
 					comment: getMessage()
+					name: "NA"
+					email: "NA"
 				}
 				
-				path = "comment_stub"
-				args = [id]
-				callType = "GET"
-				
-				onSuccess = (msg) ->
+				onSuccess = () ->
 					submitCommentButton.removeClass "btn-primary"
 					submitCommentButton.addClass "btn-success"
 					console.log "Success"
 					submitCommentButton.text "Comment Submitted Successfuly, Awaiting Approval"
 
-				onFailure = (msg) ->
+				onFailure = () ->
 					submitCommentButton.removeClass "btn-primary"
 					submitCommentButton.addClass "btn-danger"
 					console.log "Fail"
@@ -103,7 +102,7 @@ Make = (id) ->
 				submitCommentButton.click ->
 			
 				# Send
-				Window.RWCall onSuccess, onFailure, data, path, args, callType
+				Window.RWCall onSuccess, onFailure, data, "incident", "/#{id}/comment", "POST"
 			
 		
 		# Get comments
@@ -112,11 +111,11 @@ Make = (id) ->
 		
 		commentSuccess = (data) ->
 			commentsSection = incidentModal.find "#comments"
-			for c in data[ "Comments" ]
+			for c in data
+			# for c in data[ "comments" ]
 				console.log "adding coment #{c}"
-				commentsSection.append $ "<p>#{c.Comment_Text}</p>"
-				
-		Window.RWCall commentSuccess, commentFailure, {}, "comment", "/id=#{id}/start=0/range=24", "success"
+				commentsSection.append $ "<p>#{c.comment}</p>"
+		Window.RWCall commentSuccess, commentFailure, {}, "incident", "/#{id}/comments/", "success"
 			
 	Window.RWCall onSuccess, onFail, {}, path, args, calltype
 	

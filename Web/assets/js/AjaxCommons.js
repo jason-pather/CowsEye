@@ -60,22 +60,43 @@ Author Matthew Betts
 
 
   RWCall = function(onSuccess, onFailure, data, path, args, callType) {
-    var ajaxLoader, json;
+    var ajaxLoader, dataType, json;
     ajaxLoader = $("#ajaxLoader");
     ajaxLoader.css("display", "block");
     json = JSON.stringify(data);
-    return $.ajax({
-      url: BASE_URL + path + args,
-      dataType: "jsonp",
-      success: function(msg) {
-        onSuccess(msg);
-        return ajaxLoader.css("display", "none");
-      },
-      error: function(msg) {
-        onFailure(msg);
-        return ajaxLoader.css("display", "none");
-      }
-    });
+    dataType = "jsonp";
+    console.log("Call:" + path + "| callType:" + callType + "|json:" + json);
+    if (callType === "GET") {
+      return $.ajax({
+        url: BASE_URL + path + args,
+        dataType: dataType,
+        type: callType,
+        success: function(msg) {
+          onSuccess(msg);
+          return ajaxLoader.css("display", "none");
+        },
+        error: function(msg) {
+          onFailure(msg);
+          return ajaxLoader.css("display", "none");
+        }
+      });
+    } else if (callType === "POST") {
+      return $.ajax({
+        url: BASE_URL + path + args,
+        dataType: "json",
+        type: "POST",
+        data: "{ \"comment\": \"hello comment\"}",
+        contentType: "application/json;charset=UTF-8",
+        success: function() {
+          onSuccess();
+          return ajaxLoader.css("display", "none");
+        },
+        error: function() {
+          onFailure();
+          return ajaxLoader.css("display", "none");
+        }
+      });
+    }
   };
 
   /*

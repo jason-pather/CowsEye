@@ -61,21 +61,47 @@ RWCall = (onSuccess, onFailure, data, path, args, callType) ->
 	# Format the data
 	json = JSON.stringify data 
 	
-	$.ajax
-		# type: callType,
-		url: BASE_URL + path + args,
-		# data: json,
-		dataType: "jsonp",
-		# jsonp: "jsonp"
-		# processData: false ,
-		# contentType: "application/json;charset=UTF-8",
-		# timeout: TIMEOUT,
-		success: (msg) ->
-			onSuccess msg 
-			ajaxLoader.css "display", "none"
-		error: (msg) -> 
-			onFailure msg
-			ajaxLoader.css "display", "none"
+	dataType = "jsonp"
+	
+	console.log "Call:#{path}| callType:#{callType}|json:#{json}"
+	
+	if(callType == "GET")
+	
+		$.ajax
+			# type: callType,
+			url: BASE_URL + path + args,
+			# data: json,
+			dataType: dataType,
+			type: callType,
+			# jsonp: "jsonp",
+			# processData: false ,
+			# contentType: "application/json;charset=UTF-8",
+			# timeout: TIMEOUT,
+			success: (msg) ->
+				onSuccess msg 
+				ajaxLoader.css "display", "none"
+			error: (msg) -> 
+				onFailure msg
+				ajaxLoader.css "display", "none"
+				
+	else if (callType == "POST")
+		# $.post BASE_URL + path + args, "{ \"comment\": \"hello comment\"}"
+
+		$.ajax
+			url: BASE_URL + path + args,
+			# data: json,
+			dataType: "json",
+			type: "POST",
+			data: "{ \"comment\": \"hello comment\"}",
+			# processData	: false ,
+			contentType: "application/json;charset=UTF-8",
+			# timeout: TIMEOUT,
+			success: () ->
+				onSuccess() 
+				ajaxLoader.css "display", "none"
+			error: () -> 
+				onFailure()
+				ajaxLoader.css "display", "none"
 	
 ###
 Make an AJAX Gete request to the River Watch Server

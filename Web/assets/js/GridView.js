@@ -25,10 +25,7 @@
     return console.log("Rest Call has failed");
   };
 
-  Window.RWCall(appendThumbnails, onFail, {
-    current: current,
-    range: range
-  }, "unapproved", "/start=" + current + "/number=" + range, "GET");
+  Window.RWCall(appendThumbnails, onFail, {}, "unapproved", "/start=" + current + "/number=" + range, "GET");
 
   win = $(window);
 
@@ -37,10 +34,7 @@
   win.scroll(function() {
     if (win.scrollTop() + win.height() === doc.height()) {
       console.log("Reached bottom of page");
-      return Window.RWCall(appendThumbnails, onFail, {
-        current: current,
-        range: range
-      }, "unapproved", "/start=" + current + "/number=" + range, "GET");
+      return Window.RWCall(appendThumbnails, onFail, {}, "unapproved", "/start=" + current + "/number=" + range, "GET");
     }
   });
 
