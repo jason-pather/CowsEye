@@ -74,7 +74,7 @@
     return console.log("Rest Call failed");
   };
 
-  window.RWCall(onSuccess, onFail, {}, "unapproved", "/start=" + current + "/number=" + range, "GET");
+  window.RWCall(onSuccess, onFail, {}, "approved", "/start=" + current + "/number=" + range, "GET");
 
   nextButton = $("#nextBtn");
 
@@ -93,21 +93,21 @@
   nextButton.click(function() {
     RemoveFromMap();
     console.log("Clicked Next");
-    return window.RWCall(onSuccess, onFail, {}, "unapproved", "/start=" + current + "/number=" + range, "GET");
+    return window.RWCall(onSuccess, onFail, {}, "approved", "/start=" + current + "/number=" + range, "GET");
   });
 
   prevButton.click(function() {
     RemoveFromMap();
     console.log("Clicked Prev");
     current = current - range > 0 ? current - range : 0;
-    return window.RWCall(onSuccess, onFail, {}, "unapproved", "/start=" + current + "/number=" + range, "GET");
+    return window.RWCall(onSuccess, onFail, {}, "approved", "/start=" + current + "/number=" + range, "GET");
   });
 
   changeRange = function(newRange) {
     RemoveFromMap();
     current = current - range > 0 ? current - range : 0;
     range = newRange;
-    return window.RWCall(onSuccess, onFail, {}, "unapproved", "/start=" + current + "/number=" + range, "GET");
+    return window.RWCall(onSuccess, onFail, {}, "approved", "/start=" + current + "/number=" + range, "GET");
   };
 
   d16Button.click(function() {
