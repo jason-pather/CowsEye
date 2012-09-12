@@ -7,20 +7,20 @@ range = 24;
 appendThumbnails = (data) ->
 	
 	for i in data.incidents
-		incidentThumbnail = Window.CreateIncidentThumbnail i
+		incidentThumbnail = window.CreateIncidentThumbnail i
 		picgrid.append incidentThumbnail
 		current++
 		
 onFail = (data) ->
 	console.log "Rest Call has failed"
 
-Window.RWCall appendThumbnails, onFail, {}, "unapproved", "/start=#{current}/number=#{range}", "GET"
-	
+window.RWCall appendThumbnails, onFail, {}, "approved", "/start=#{current}/number=#{range}", "GET"
+# global.RWCall appendThumbnails, onFail, {}, "approved", "/start=#{current}/number=#{range}", "GET"
 win = $ window 
 doc = $ document
 
 win.scroll ->
 	if win.scrollTop() + win.height() == doc.height()
 		console.log "Reached bottom of page"
-		Window.RWCall appendThumbnails, onFail, {}, "unapproved", "/start=#{current}/number=#{range}", "GET"
+		window.RWCall appendThumbnails, onFail, {}, "approved", "/start=#{current}/number=#{range}", "GET"
 	

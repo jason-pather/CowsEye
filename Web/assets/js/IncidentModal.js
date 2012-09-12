@@ -66,28 +66,29 @@ Retreive, and create a incident modal dialog box
           };
           submitCommentButton.text("Submitting...");
           submitCommentButton.click(function() {});
-          return Window.RWCall(onSuccess, onFailure, data, "incident", "/" + id + "/comment", "POST");
+          return window.RWCall(onSuccess, onSuccess, data, "incident", "/" + id + "/comment", "POST");
         }
       });
       commentFailure = function(data) {
         return console.log("problem for loaing comments");
       };
       commentSuccess = function(data) {
-        var c, commentsSection, _i, _len, _results;
+        var c, commentsSection, _i, _len, _ref, _results;
         commentsSection = incidentModal.find("#comments");
+        _ref = data["comments"];
         _results = [];
-        for (_i = 0, _len = data.length; _i < _len; _i++) {
-          c = data[_i];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          c = _ref[_i];
           console.log("adding coment " + c);
           _results.push(commentsSection.append($("<p>" + c.comment + "</p>")));
         }
         return _results;
       };
-      return Window.RWCall(commentSuccess, commentFailure, {}, "incident", "/" + id + "/comments/", "success");
+      return window.RWCall(commentSuccess, commentFailure, {}, "incident", "/" + id + "/comments/", "GET");
     };
-    return Window.RWCall(onSuccess, onFail, {}, path, args, calltype);
+    return window.RWCall(onSuccess, onFail, {}, path, args, calltype);
   };
 
-  Window.CreateIncidentModal = Make;
+  window.CreateIncidentModal = Make;
 
 }).call(this);

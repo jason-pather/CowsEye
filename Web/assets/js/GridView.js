@@ -14,7 +14,7 @@
     _results = [];
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       i = _ref[_i];
-      incidentThumbnail = Window.CreateIncidentThumbnail(i);
+      incidentThumbnail = window.CreateIncidentThumbnail(i);
       picgrid.append(incidentThumbnail);
       _results.push(current++);
     }
@@ -25,7 +25,7 @@
     return console.log("Rest Call has failed");
   };
 
-  Window.RWCall(appendThumbnails, onFail, {}, "unapproved", "/start=" + current + "/number=" + range, "GET");
+  window.RWCall(appendThumbnails, onFail, {}, "approved", "/start=" + current + "/number=" + range, "GET");
 
   win = $(window);
 
@@ -34,7 +34,7 @@
   win.scroll(function() {
     if (win.scrollTop() + win.height() === doc.height()) {
       console.log("Reached bottom of page");
-      return Window.RWCall(appendThumbnails, onFail, {}, "unapproved", "/start=" + current + "/number=" + range, "GET");
+      return window.RWCall(appendThumbnails, onFail, {}, "approved", "/start=" + current + "/number=" + range, "GET");
     }
   });
 

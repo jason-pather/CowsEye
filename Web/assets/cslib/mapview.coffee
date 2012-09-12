@@ -52,7 +52,7 @@ createOverlay = (incident) ->
 	overlay = new google.maps.GroundOverlay "#{incident.thumbnail_url}", imageBounds
 
 	google.maps.event.addListener overlay, 'click', () => 
-		Window.CreateIncidentModal incident.id
+		window.CreateIncidentModal incident.id
 
 	overlay.setMap googleMap
 	overlaysOnMap.push overlay
@@ -66,7 +66,7 @@ onSuccess = (data) ->
 onFail = (data) ->
 	console.log "Rest Call failed"
 		
-Window.RWCall onSuccess, onFail, {}, "unapproved", "/start=#{current}/number=#{range}", "GET"
+window.RWCall onSuccess, onFail, {}, "unapproved", "/start=#{current}/number=#{range}", "GET"
 
 
 # Controls
@@ -81,19 +81,19 @@ d256Button = $ "#d256"
 nextButton.click ->
 	RemoveFromMap()
 	console.log "Clicked Next"
-	Window.RWCall onSuccess, onFail, {}, "unapproved", "/start=#{current}/number=#{range}", "GET"
+	window.RWCall onSuccess, onFail, {}, "unapproved", "/start=#{current}/number=#{range}", "GET"
 
 prevButton.click ->
 	RemoveFromMap()
 	console.log "Clicked Prev"
 	current = if current - range > 0 then current - range else 0;
-	Window.RWCall onSuccess, onFail, {}, "unapproved", "/start=#{current}/number=#{range}", "GET"
+	window.RWCall onSuccess, onFail, {}, "unapproved", "/start=#{current}/number=#{range}", "GET"
 	
 changeRange = (newRange) ->
 	RemoveFromMap()
 	current = if current - range > 0 then current - range else 0;
 	range = newRange;
-	Window.RWCall onSuccess, onFail, {}, "unapproved", "/start=#{current}/number=#{range}", "GET"
+	window.RWCall onSuccess, onFail, {}, "unapproved", "/start=#{current}/number=#{range}", "GET"
 
 d16Button.click -> changeRange 16
 d32Button.click -> changeRange 32

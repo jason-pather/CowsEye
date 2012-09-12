@@ -37,7 +37,7 @@ createCarousel = (data) ->
 onFail = (data) ->
 	console.log "Rest Call has failed"
 
-Window.RWCall createCarousel, onFail, {}, "unapproved_stub", "/start=0/number=4", "GET"
+window.RWCall createCarousel, onFail, {}, "unapproved_stub", "/start=0/number=4", "GET"
 
 
 			

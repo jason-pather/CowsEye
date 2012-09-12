@@ -40,6 +40,7 @@ Submit comments
 '/wainz/incident/:id/approve/?'
 '/wainz/comment/:id/approve/?'
 '/wainz/comment/:id/approve/?'
+'/wainz/comments/unapproved/?'
 ###
 
 		
@@ -78,11 +79,12 @@ RWCall = (onSuccess, onFailure, data, path, args, callType) ->
 			# contentType: "application/json;charset=UTF-8",
 			# timeout: TIMEOUT,
 			success: (msg) ->
+				ajaxLoader.css "display", "none"
 				onSuccess msg 
-				ajaxLoader.css "display", "none"
 			error: (msg) -> 
-				onFailure msg
 				ajaxLoader.css "display", "none"
+				onFailure msg
+				
 				
 	else if (callType == "POST")
 		# $.post BASE_URL + path + args, "{ \"comment\": \"hello comment\"}"
@@ -92,17 +94,19 @@ RWCall = (onSuccess, onFailure, data, path, args, callType) ->
 			# data: json,
 			dataType: "json",
 			type: "POST",
-			data: "{ \"comment\": \"hello comment\"}",
+			data: json,
 			# processData	: false ,
-			contentType: "application/json;charset=UTF-8",
+			# contentType: "application/json;charset=UTF-8",
 			# timeout: TIMEOUT,
 			success: () ->
+				ajaxLoader.css "display", "none"
 				onSuccess() 
-				ajaxLoader.css "display", "none"
+				
 			error: () -> 
-				onFailure()
 				ajaxLoader.css "display", "none"
-	
+				onFailure()
+				
+
 ###
 Make an AJAX Gete request to the River Watch Server
 
@@ -116,4 +120,7 @@ Make an AJAX Gete request to the River Watch Server
 ###
 Save calls, so that can be accessed globaly across the website.
 ###
-Window.RWCall = RWCall
+# `var global = {};
+# global.RWCall = RWCall`
+
+window.RWCall = RWCall

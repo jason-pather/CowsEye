@@ -46,6 +46,7 @@ Author Matthew Betts
   '/wainz/incident/:id/approve/?'
   '/wainz/comment/:id/approve/?'
   '/wainz/comment/:id/approve/?'
+  '/wainz/comments/unapproved/?'
   */
 
 
@@ -72,12 +73,12 @@ Author Matthew Betts
         dataType: dataType,
         type: callType,
         success: function(msg) {
-          onSuccess(msg);
-          return ajaxLoader.css("display", "none");
+          ajaxLoader.css("display", "none");
+          return onSuccess(msg);
         },
         error: function(msg) {
-          onFailure(msg);
-          return ajaxLoader.css("display", "none");
+          ajaxLoader.css("display", "none");
+          return onFailure(msg);
         }
       });
     } else if (callType === "POST") {
@@ -85,15 +86,14 @@ Author Matthew Betts
         url: BASE_URL + path + args,
         dataType: "json",
         type: "POST",
-        data: "{ \"comment\": \"hello comment\"}",
-        contentType: "application/json;charset=UTF-8",
+        data: json,
         success: function() {
-          onSuccess();
-          return ajaxLoader.css("display", "none");
+          ajaxLoader.css("display", "none");
+          return onSuccess();
         },
         error: function() {
-          onFailure();
-          return ajaxLoader.css("display", "none");
+          ajaxLoader.css("display", "none");
+          return onFailure();
         }
       });
     }
@@ -114,6 +114,6 @@ Author Matthew Betts
   */
 
 
-  Window.RWCall = RWCall;
+  window.RWCall = RWCall;
 
 }).call(this);

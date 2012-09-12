@@ -152,11 +152,11 @@ This is a class for producing mock data, returns from methods in this class shou
     return data;
   };
 
-  Window.IncidentList = IncidentList;
+  window.IncidentList = IncidentList;
 
-  Window.IncidentDetail = IncidentDetail;
+  window.IncidentDetail = IncidentDetail;
 
-  Window.CommentsForIncident = CommentsForIncident;
+  window.CommentsForIncident = CommentsForIncident;
 
   RWCall = function(onSuccess, onFailure, data, path, args, callType) {
     var a, aSplit, argsSplit, parsedArgs, result, _i, _len;
@@ -197,6 +197,6 @@ This is a class for producing mock data, returns from methods in this class shou
   */
 
 
-  Window.RWCall = RWCall;
+  window.RWCall = RWCall;
 
 }).call(this);

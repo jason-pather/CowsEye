@@ -130,9 +130,9 @@ CommentsForIncident = (id, start, range) ->
 
 	
 # Bind to the window
-Window.IncidentList = IncidentList
-Window.IncidentDetail = IncidentDetail
-Window.CommentsForIncident = CommentsForIncident
+window.IncidentList = IncidentList
+window.IncidentDetail = IncidentDetail
+window.CommentsForIncident = CommentsForIncident
 
 RWCall = (onSuccess, onFailure, data, path, args, callType) ->
 
@@ -175,4 +175,4 @@ Make an AJAX Gete request to the River Watch Server
 ###
 Save calls, so that can be accessed globaly across the website.
 ###
-Window.RWCall = RWCall
+window.RWCall = RWCall

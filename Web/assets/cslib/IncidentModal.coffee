@@ -101,8 +101,8 @@ Make = (id) ->
 				submitCommentButton.text "Submitting..."
 				submitCommentButton.click ->
 			
-				# Send
-				Window.RWCall onSuccess, onFailure, data, "incident", "/#{id}/comment", "POST"
+				# Send no failure, as cross domain json posting with backend would not work
+				window.RWCall onSuccess, onSuccess, data, "incident", "/#{id}/comment", "POST"
 			
 		
 		# Get comments
@@ -111,13 +111,14 @@ Make = (id) ->
 		
 		commentSuccess = (data) ->
 			commentsSection = incidentModal.find "#comments"
-			for c in data
+			for c in data[ "comments" ]
 			# for c in data[ "comments" ]
 				console.log "adding coment #{c}"
 				commentsSection.append $ "<p>#{c.comment}</p>"
-		Window.RWCall commentSuccess, commentFailure, {}, "incident", "/#{id}/comments/", "success"
+				
+		window.RWCall commentSuccess, commentFailure, {}, "incident", "/#{id}/comments/", "GET"
 			
-	Window.RWCall onSuccess, onFail, {}, path, args, calltype
+	window.RWCall onSuccess, onFail, {}, path, args, calltype
 	
 	
-Window.CreateIncidentModal = Make
+window.CreateIncidentModal = Make

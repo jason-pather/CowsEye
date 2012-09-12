@@ -51,7 +51,7 @@
     imageBounds = new google.maps.LatLngBounds(lat, lng);
     overlay = new google.maps.GroundOverlay("" + incident.thumbnail_url, imageBounds);
     google.maps.event.addListener(overlay, 'click', function() {
-      return Window.CreateIncidentModal(incident.id);
+      return window.CreateIncidentModal(incident.id);
     });
     overlay.setMap(googleMap);
     return overlaysOnMap.push(overlay);
@@ -74,7 +74,7 @@
     return console.log("Rest Call failed");
   };
 
-  Window.RWCall(onSuccess, onFail, {}, "unapproved", "/start=" + current + "/number=" + range, "GET");
+  window.RWCall(onSuccess, onFail, {}, "unapproved", "/start=" + current + "/number=" + range, "GET");
 
   nextButton = $("#nextBtn");
 
@@ -93,21 +93,21 @@
   nextButton.click(function() {
     RemoveFromMap();
     console.log("Clicked Next");
-    return Window.RWCall(onSuccess, onFail, {}, "unapproved", "/start=" + current + "/number=" + range, "GET");
+    return window.RWCall(onSuccess, onFail, {}, "unapproved", "/start=" + current + "/number=" + range, "GET");
   });
 
   prevButton.click(function() {
     RemoveFromMap();
     console.log("Clicked Prev");
     current = current - range > 0 ? current - range : 0;
-    return Window.RWCall(onSuccess, onFail, {}, "unapproved", "/start=" + current + "/number=" + range, "GET");
+    return window.RWCall(onSuccess, onFail, {}, "unapproved", "/start=" + current + "/number=" + range, "GET");
   });
 
   changeRange = function(newRange) {
     RemoveFromMap();
     current = current - range > 0 ? current - range : 0;
     range = newRange;
-    return Window.RWCall(onSuccess, onFail, {}, "unapproved", "/start=" + current + "/number=" + range, "GET");
+    return window.RWCall(onSuccess, onFail, {}, "unapproved", "/start=" + current + "/number=" + range, "GET");
   };
 
   d16Button.click(function() {

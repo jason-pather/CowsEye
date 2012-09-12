@@ -119,7 +119,7 @@
       args = [];
       callType = "POST";
       sendButton.text("Submitting...");
-      Window.RWCall(onSuccess, onFailure, data, path, args, callType);
+      window.RWCall(onSuccess, onFailure, data, path, args, callType);
       return false;
     }
     return false;

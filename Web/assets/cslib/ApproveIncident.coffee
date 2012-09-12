@@ -31,26 +31,23 @@ make = (i) ->
 	
 	contentArea.append incident	
 	
-	postPath = "assess_incident_stub"
 	postCalltype = "POST"
 	postDone = (data) ->
 		incident.animate {height:0, opacity:0.25}, ->
 			incident.remove()
 		
 	acceptButton.click ->
-		Window.RWCall postDone, postDone, {}, postPath, "/id=#{i.id}/status=accepted}", postCalltype
+		window.RWCall postDone, postDone, {}, "incident/#{i.id}/approve", "", postCalltype
 		
 	rejectButton.click ->
-		Window.RWCall postDone, postDone, {}, postPath, "/id=#{i.id}/status=rejected}", postCalltype
+		window.RWCall postDone, postDone, {}, "incident/#{i.id}/reject", "", postCalltype
 
 onFail = (data) ->
 		console.log "Rest Call has failed"
-path = "unapproved_stub"
-args = "/start=#{0}/range=24"
 calltype = "GET"	
 
 onSuccess = (data) ->
 	for i in data[ "incidents" ]
 		make i
 	
-Window.RWCall onSuccess, onFail, {}, path, args, calltype
+window.RWCall onSuccess, onFail, {}, "/unapproved/start=0/number=100", "", calltype

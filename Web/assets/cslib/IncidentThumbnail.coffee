@@ -19,10 +19,10 @@ Make = ( incident ) ->
 		
 	# Show Modal on Click
 	cell.click ->
-		Window.CreateIncidentModal incident.id
+		window.CreateIncidentModal incident.id
 	
 	# Return Completed JQuery Element
 	return cell
 		
 # Bind the method to the window so its global
-Window.CreateIncidentThumbnail = Make
+window.CreateIncidentThumbnail = Make
