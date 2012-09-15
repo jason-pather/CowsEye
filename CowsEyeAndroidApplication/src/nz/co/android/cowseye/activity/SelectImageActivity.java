@@ -46,7 +46,7 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 	private TextView previewTextView;
 	private Button selectImageFromGalleryButton;
 	private Button buttonTESTPOST;
-	
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -60,11 +60,11 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 		buttonTESTPOST.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-//				submissionEventBuilder.setImagePath(cameraFileUri)
-//				.setImageDescription("This is an Image Description")
-//				.setImageTag(new ArrayList <String> ())
-//				.setGeoCoordinates(new GeoPoint(12141414, 493124312))
-//				.setAddress("2 adventure drive");
+				//				submissionEventBuilder.setImagePath(cameraFileUri)
+				//				.setImageDescription("This is an Image Description")
+				//				.setImageTag(new ArrayList <String> ())
+				//				.setGeoCoordinates(new GeoPoint(12141414, 493124312))
+				//				.setAddress("2 adventure drive");
 				submissionEventBuilder.setImagePath(cameraFileUri)
 				.setImageDescription("This is an Image Description")
 				.setImageTag(new ArrayList <String> ())
@@ -104,7 +104,7 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 					submissionEventBuilder.setImagePath(cameraFileUri);
 					//start description activity
 					startActivity(new Intent(SelectImageActivity.this,DescriptionActivity.class));
-//					Toast.makeText(SelectImageActivity.this, getString(R.string.saving_image), Toast.LENGTH_LONG).show();
+					//					Toast.makeText(SelectImageActivity.this, getString(R.string.saving_image), Toast.LENGTH_LONG).show();
 				}
 				else
 					Toast.makeText(SelectImageActivity.this, getString(R.string.please_select_a_image), Toast.LENGTH_LONG).show();
@@ -122,6 +122,12 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 				//open gallery
 				//dealt with at onActivityResult()
 				retrieveImageFromGallery();
+			}
+		});
+		backButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				onBackPressed();
 			}
 		});
 
@@ -235,6 +241,18 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 			previewImageView.setImageBitmap(bitmap);
 		}
 
+	}
+
+	@Override
+	public void onBackPressed() {
+		if(cameraFileUri!=null){
+			String imagePath = cameraFileUri.toString();
+			//delete image
+			if(imagePath!=null && !imagePath.equals("")){
+				myApplication.deleteImage(imagePath);
+			}
+		}
+		super.onBackPressed();
 	}
 
 

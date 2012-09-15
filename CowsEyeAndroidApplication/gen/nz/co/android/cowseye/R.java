@@ -114,6 +114,7 @@ public final class R {
         public static final int errorInReverseGeoCoding=0x7f05001e;
         public static final int failed_camera_please_try_again=0x7f050032;
         public static final int failed_to_connect_to_camera_message=0x7f050033;
+        public static final int failure_submission_msg=0x7f050036;
         public static final int geocoordinates_text=0x7f050034;
         public static final int gps_message=0x7f050017;
         public static final int gps_message_submission=0x7f050016;
@@ -149,6 +150,7 @@ public final class R {
         public static final int select_location=0x7f050002;
         public static final int submit=0x7f050005;
         public static final int submit_pollution_event=0x7f05000b;
+        public static final int success_submission_msg=0x7f050035;
         public static final int tag_labeltitle=0x7f050004;
         public static final int take_picture_title=0x7f050030;
         public static final int thisIsTheLocationFound=0x7f05001f;

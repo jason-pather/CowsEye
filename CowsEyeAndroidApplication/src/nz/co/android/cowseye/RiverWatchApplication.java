@@ -217,8 +217,19 @@ public class RiverWatchApplication extends Application  {
 	/** Deletes an image from local storage */
 	public void deleteImage(String filePath) {
 		File imageFile = new File(filePath);
+		Log.d(toString(), "deleteImage image exists before ? "+imageFile.exists());
+
 		//delete image
 		if(imageFile.exists())
 			imageFile.delete();
+		Log.d(toString(), "deleteImage image exists after ? "+imageFile.exists());
+
+	}
+	
+	/* Deletes the image belonging to the current event */
+	public void deleteImage(Event currentEvent) {
+		String filename = currentEvent.getImagePath().toString();
+		deleteImage(filename);
+
 	}
 }

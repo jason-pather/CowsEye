@@ -1,17 +1,20 @@
 package nz.co.android.cowseye.activity;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
 import org.json.JSONObject;
 
 import nz.co.android.cowseye.R;
 import nz.co.android.cowseye.event.Event;
 import nz.co.android.cowseye.event.SubmissionEvent;
 import nz.co.android.cowseye.event.SubmissionEventBuilderException;
+import nz.co.android.cowseye.utility.AlertBuilder;
 import nz.co.android.cowseye.utility.JSONHelper;
 import nz.co.android.cowseye.utility.Utils;
 import android.content.Intent;
@@ -45,9 +48,9 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 	private TextView location;
 	private TextView description;
 	private TextView tag;
-//	private ListView tagslist;
-	private int maxLength = 100;
-//	private List <String> imageTags;
+	//	private ListView tagslist;
+	private int maxLength = 1000;
+	//	private List <String> imageTags;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -60,7 +63,7 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 	/* Sets up the User Interface */
 	protected void setupUI() {
 		super.setupUI();
-		
+
 		submitButton = (Button)findViewById(R.id.submit_button);
 		//sends the event to the server
 		submitButton.setOnClickListener(new View.OnClickListener() {	
@@ -71,7 +74,7 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 					submitPollutionEvent();
 				}
 				catch(SubmissionEventBuilderException e){
-					Toast.makeText(PreviewActivity.this, "SubmissionEventBuilderException error message ", Toast.LENGTH_LONG).show();
+					Toast.makeText(PreviewActivity.this, "You have not succesfully given all required information", Toast.LENGTH_LONG).show();
 				}
 			}
 		});
@@ -102,23 +105,16 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 		//		description.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, DescriptionActivity.class));
 
 		tag = (TextView)findViewById(R.id.PreviewImageTag);
-	
 
-		System.out.println ("CRASHED HERE");
-		
-		System.out.println ("NULL  HERE COS OF" + submissionEventBuilder.getImageTag());
-		System.out.println ("PROCEEDS");
-		
 		StringBuffer st = new StringBuffer();
-		
+
 		for (String s: submissionEventBuilder.getImageTag()){
 			st.append(s);
 			if (s!=null){ st.append(", "); } 
-		
+
 		}
 		tag.setText(st.toString());
-
-				tag.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, DescriptionActivity.class));
+		//				tag.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, DescriptionActivity.class));
 
 
 	}
@@ -146,37 +142,90 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 	 * @throws SubmissionEventBuilderException if not enough data
 	 */
 	protected void submitPollutionEvent() throws SubmissionEventBuilderException{
-		SubmissionEvent event = submissionEventBuilder.build(); // - throws SubmissionEventBuilderException if not enough data
-		//add event
-		myApplication.getEventHandler().addEvent(event);
-		myApplication.forceStartEventHandling();
-		// go back to starting activity
-		Intent intent = new Intent(this, MainScreenActivity.class);
-		//Finishes all previous activities on the activity stack
-		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
-		startActivity(intent);
-		finish();
+		SubmissionEvent currentEvent = submissionEventBuilder.build(); // - throws SubmissionEventBuilderException if not enough data
+		if(myApplication.isOnline()){
+			boolean success = processSubmissionEventResponse(currentEvent.processRaw());
+			success = true;
+			Log.i(toString(), "successfully processed event? : "+ success);
+			//only actually remove event if successful
+			if(success){
+				Toast.makeText(this, getString(R.string.success_submission_msg), Toast.LENGTH_LONG).show();
+				myApplication.deleteImage(currentEvent);
+				// go back to starting activity
+				Intent intent = new Intent(this, MainScreenActivity.class);
+				//Finishes all previous activities on the activity stack
+				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+				startActivity(intent);
+				finish();
+			}
+			//if unsuccessful stop event handling and move the event to the end of the queue
+			else{
+				Toast.makeText(this, getString(R.string.failure_submission_msg), Toast.LENGTH_LONG).show();
+			}
+		}
+		else
+			AlertBuilder.buildAlertMessageNoInternet(this);
+
 	}
 
+	/**
+	 * Deals with the response from a submission event return
+	 * @param response from a submission event
+	 * @return true if succesfull submission, otherwise false
+	 */
+	public static boolean processSubmissionEventResponse(HttpResponse response){
+		if(response==null)
+			return false;
+		StatusLine statusLine = response.getStatusLine();
+		if(statusLine == null)
+			return false;
+		int statusCode = statusLine.getStatusCode();
+		Log.i("app", "statusCode : "+statusCode);
+		try{
+			switch(statusCode){
+			case Utils.HTTP_OK:
+				Log.i("app", "Sucessful submission!");
+				return true;
+			case Utils.HTTP_LOGIC_ERROR:
+				Log.i("app", "Logic error: Unsucessful submission!");
+				return false;
+			case Utils.HTTP_SERVER_ERROR:
+				Log.i("app", "Server error: Unsucessful submission!");
+				return false;
+			default:
+				Log.i("app", "Uncaught error: Unsucessful submission!");
+				return false;
+			}
+			//			JSONObject jsonObject = JSONHelper.parseHttpResponseAsJSON(response);
+			//			Log.d("app", "jsonObject : "+jsonObject);
+		}
+		catch(Exception f){ 
+			Log.e("app", "Exception in JsonParsing : "+f);
+		}
+		return false;
+
+	}
+
+
 	public void submitEvent(Event e){
-			HttpResponse response = e.processRaw();
-			Log.d(toString(), "response : "+response);
-			try{
-				Log.d(toString(),"Status line : "+ response.getStatusLine());
-				for(Header header : response.getAllHeaders()){
-					Log.d(toString(),"header : "+ header.getName() + " - > "+header.getValue());
-				}
-
-
-				JSONObject jsonObject = JSONHelper.parseHttpResponseAsJSON(response);
-				Log.d(toString(), "jsonObject : "+jsonObject);
-
-				//				            if(jsonObject.has(Utils.RESPONSE_CODE))
-				//				                return ResponseCodeState.stringToResponseCode((String)jsonObject.getString(Utils.RESPONSE_CODE))==ResponseCodeState.SUCCESS;
+		HttpResponse response = e.processRaw();
+		Log.d(toString(), "response : "+response);
+		try{
+			Log.d(toString(),"Status line : "+ response.getStatusLine());
+			for(Header header : response.getAllHeaders()){
+				Log.d(toString(),"header : "+ header.getName() + " - > "+header.getValue());
 			}
-			catch(Exception f){ 
-				Log.e(toString(), "Exception in JsonParsing : "+f);
-			}
+
+
+			JSONObject jsonObject = JSONHelper.parseHttpResponseAsJSON(response);
+			Log.d(toString(), "jsonObject : "+jsonObject);
+
+			//				            if(jsonObject.has(Utils.RESPONSE_CODE))
+			//				                return ResponseCodeState.stringToResponseCode((String)jsonObject.getString(Utils.RESPONSE_CODE))==ResponseCodeState.SUCCESS;
+		}
+		catch(Exception f){ 
+			Log.e(toString(), "Exception in JsonParsing : "+f);
+		}
 	}
 
 }

@@ -83,10 +83,6 @@ public class SubmissionEventBuilder {
 			return false;
 		if(submissionEvent.getImageDescription().equals(""))
 			return false;
-		if(submissionEvent.getImageTag()==null)
-			return false;
-		if(submissionEvent.getImageTag().equals(""))
-			return false;
 		//good if we have either geo coordinates or address
 		return submissionEvent.getGeoCoordinates()!=null || (submissionEvent.getAddress()!=null && !submissionEvent.getAddress().equals("")) ;
 	}
