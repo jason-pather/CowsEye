@@ -77,9 +77,9 @@ public class IncidentGalleryActivity extends Activity {
 		myGallery = (RiverWatchGallery) (findViewById(R.id.incident_gallery));
 		//TODO show ProgressDialog querying for image downloads
 		List<String> imageUris = new ArrayList<String>();
-		imageUris.add(SubmissionEventBuilder.getSubmissionEventBuilder().getImagePath().toString());
-		imageUris.add(SubmissionEventBuilder.getSubmissionEventBuilder().getImagePath().toString());
-		imageUris.add(SubmissionEventBuilder.getSubmissionEventBuilder().getImagePath().toString());
+		imageUris.add(SubmissionEventBuilder.getSubmissionEventBuilder(myApplication).getImagePath().toString());
+		imageUris.add(SubmissionEventBuilder.getSubmissionEventBuilder(myApplication).getImagePath().toString());
+		imageUris.add(SubmissionEventBuilder.getSubmissionEventBuilder(myApplication).getImagePath().toString());
 
 		myGallery.setupUI(myApplication, this, imageUris);
 	}

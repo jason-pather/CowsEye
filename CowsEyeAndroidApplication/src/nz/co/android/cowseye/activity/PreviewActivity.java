@@ -80,7 +80,7 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 		});
 
 		image = (ImageView)findViewById(R.id.PreviewImageImage);
-		setPreviewImageOn(submissionEventBuilder.getImagePath());
+		setPreviewImageOn(Uri.parse(submissionEventBuilder.getImagePath().toString()));
 		//		image.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, SelectImageActivity.class));
 
 		location = (TextView)findViewById(R.id.PreviewLocationText);

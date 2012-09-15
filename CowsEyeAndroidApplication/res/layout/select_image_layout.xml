@@ -73,11 +73,6 @@
                         android:id="@+id/select_image_from_gallery_button"
                         style="@style/riverWatchButtonStyle"
                         android:text="@string/select_image_from_gallery" />
-
-                    <Button
-                        android:id="@+id/button_test_post"
-                        style="@style/riverWatchButtonStyle"
-                        android:text="TESTING POST" />
                 </LinearLayout>
             </FrameLayout>
         </FrameLayout>

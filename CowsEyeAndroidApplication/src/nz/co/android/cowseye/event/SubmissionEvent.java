@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
+import nz.co.android.cowseye.RiverWatchApplication;
 import nz.co.android.cowseye.common.Constants;
 import nz.co.android.cowseye.utility.JSONHelper;
 
@@ -37,6 +38,7 @@ public class SubmissionEvent implements Event{
 	protected HttpClient client;
 
 	protected Uri imageToPath; /* Stores the path to the image on local storage */
+	protected boolean fromGallery;
 	protected String imageDescription;
 	protected List<String> imageTag;
 	protected String address;
@@ -47,6 +49,7 @@ public class SubmissionEvent implements Event{
 	//    protected final String loginCode;
 	private int failCount = 0;
 	protected String timeStamp;
+	private final RiverWatchApplication myApplication;
 
 	//    public StandardEvent(String loginCode, String password, boolean authorize){
 	//        this.loginCode = loginCode;
@@ -60,7 +63,8 @@ public class SubmissionEvent implements Event{
 	//            httpPost = constructHttpPost();
 	//    }
 
-	public SubmissionEvent(){
+	public SubmissionEvent(RiverWatchApplication myApplication){
+		this.myApplication = myApplication;
 		client = constructHttpClient();
 		httpPost = constructHttpPost();
 	}
@@ -182,7 +186,11 @@ public class SubmissionEvent implements Event{
 		}
 		try{
 			//add image data
-			reqEntity.addPart(Constants.FORM_POST_IMAGE, new FileBody(new File(imageToPath.toString())));
+			String imagePath = imageToPath.toString();
+			if(fromGallery)
+				imagePath = myApplication.getRealPathFromURI(imageToPath);
+				
+			reqEntity.addPart(Constants.FORM_POST_IMAGE, new FileBody(new File(imagePath)));
 			//add Data in JSON format
 			reqEntity.addPart(Constants.FORM_POST_DATA, new StringBody(jsonObject.toString()));
 		}catch (UnsupportedEncodingException e1) {
@@ -240,6 +248,14 @@ public class SubmissionEvent implements Event{
 
 	public void setGeoCoordinates(GeoPoint geoCoordinates) {
 		this.geoCoordinates = geoCoordinates;
+	}
+
+	public boolean isFromGallery() {
+		return fromGallery;
+	}
+
+	public void setFromGallery(boolean fromGallery) {
+		this.fromGallery = fromGallery;
 	}
 
 

@@ -7,20 +7,17 @@ import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.apache.http.Header;
-import org.apache.http.HttpResponse;
-import org.json.JSONObject;
-
 import nz.co.android.cowseye.event.Event;
 import nz.co.android.cowseye.event.EventHandler;
-import nz.co.android.cowseye.utility.JSONHelper;
-
 import android.app.Application;
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.util.Log;
 
 public class RiverWatchApplication extends Application  {
@@ -226,10 +223,43 @@ public class RiverWatchApplication extends Application  {
 
 	}
 	
+//	/* Deletes the image belonging to the current event */
+//	public void deleteImage(Event currentEvent) {
+//		Log.d(toString(), "path1 : "+currentEvent.getImagePath().getPath());
+//		URI uri = null;
+//		try {
+//			uri = new URI(currentEvent.getImagePath().getPath());
+//		} catch (URISyntaxException e) {
+//			Log.e(toString(), "URISyntaxException: "+e);
+//			return ;
+//		}
+//			Log.d(toString(), "path1 : "+uri);
+//				File imageFile = new File(currentEvent.getImagePath().getPath());
+//		Log.d(toString(), "deleteImage image exists before ? "+imageFile.exists());
+//		//delete image
+//		if(imageFile.exists())
+//			imageFile.delete();
+//		Log.d(toString(), "deleteImage image exists after ? "+imageFile.exists());
+//
+//	}
+	
 	/* Deletes the image belonging to the current event */
 	public void deleteImage(Event currentEvent) {
-		String filename = currentEvent.getImagePath().toString();
-		deleteImage(filename);
+    File imageFile = new File(currentEvent.getImagePath().toString());
+		Log.d(toString(), "deleteImage image exists before ? "+imageFile.exists());
+		//delete image
+		if(imageFile.exists())
+			imageFile.delete();
+		Log.d(toString(), "deleteImage image exists after ? "+imageFile.exists());
 
+	}
+	
+	public String getRealPathFromURI(Uri contentURI) {
+	    Cursor cursor = getContentResolver()
+	               .query(contentURI, null, null, null, null); 
+	    cursor.moveToFirst(); 
+	    int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA); 
+	    Log.d(toString(), "path : "+cursor.getString(idx));
+	    return cursor.getString(idx); 
 	}
 }

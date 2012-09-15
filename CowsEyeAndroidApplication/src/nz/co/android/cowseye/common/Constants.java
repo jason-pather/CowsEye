@@ -19,6 +19,8 @@ public interface Constants {
 	
 	/* Keys for information passed between activities or within for activity destroy on rotation */
 	public static final String IMAGE_URI_KEY = "image_uri_key";
+	public static final String FROM_GALLERY_KEY = "from_gallery_key";
+
 	public static final String DESCRIPTION_KEY = "description";
 	public static final String CONTACT_DETAILS_KEY = "contact";
 	public static final String LOCATION_KEY = "location";

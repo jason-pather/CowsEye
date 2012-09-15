@@ -43,7 +43,7 @@ public abstract class AbstractSubmissionActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		myApplication = (RiverWatchApplication)getApplication();
-		submissionEventBuilder = SubmissionEventBuilder.getSubmissionEventBuilder();
+		submissionEventBuilder = SubmissionEventBuilder.getSubmissionEventBuilder(myApplication);
 	}
 
 	/* Sets up the User Interface */

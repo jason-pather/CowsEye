@@ -1,6 +1,8 @@
 package nz.co.android.cowseye.event;
 
 import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -79,8 +81,16 @@ public class EventHandler {
 
 	/* Deletes the image belonging to the current event */
 	private void deleteImage(Event currentEvent) {
-		String filename = currentEvent.getImagePath().toString();
-		File imageFile = new File(filename);
+		Log.d(toString(), "path1 : "+currentEvent.getImagePath().getPath());
+		URI uri = null;
+		try {
+			uri = new URI(currentEvent.getImagePath().getPath());
+		} catch (URISyntaxException e) {
+			Log.e(toString(), "URISyntaxException: "+e);
+			return ;
+		}
+			Log.d(toString(), "path1 : "+uri);
+				File imageFile = new File(uri);
 		Log.d(toString(), "deleteImage image exists before ? "+imageFile.exists());
 		//delete image
 		if(imageFile.exists())
