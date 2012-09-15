@@ -48,6 +48,9 @@ public class MainScreenActivity extends Activity {
 	private Button buttonSubmit;
 	private Button buttonGallery;
 	private RiverWatchApplication myApplication;
+	private Button buttonServer;
+	
+	private boolean test = true;
 
 
 	/** Called when the activity is first created. */
@@ -86,6 +89,17 @@ public class MainScreenActivity extends Activity {
 				startActivity(new Intent(MainScreenActivity.this, IncidentGalleryActivity.class));
 			}
 		});
+		buttonServer = (Button)findViewById(R.id.button_view_server);
+		buttonServer.setOnClickListener(new View.OnClickListener() {	
+			@Override
+			public void onClick(View v) {
+				AlertBuilder.buildServerPrompt(MainScreenActivity.this).show();
+			}
+		});
+		if(test){
+			buttonGallery.setVisibility(View.VISIBLE);
+			buttonServer.setVisibility(View.VISIBLE);
+		}
 	}
 
 	@Override

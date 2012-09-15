@@ -168,7 +168,7 @@ public class SubmissionEvent implements Event{
 
 	/** construct path to web service */
 	public HttpPost constructHttpPost(){
-		return new HttpPost(Constants.SUBMISSION_PATH);
+		return new HttpPost(RiverWatchApplication.submission_path);
 	}
 
 

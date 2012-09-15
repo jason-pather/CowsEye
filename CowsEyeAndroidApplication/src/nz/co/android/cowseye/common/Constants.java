@@ -39,11 +39,7 @@ public interface Constants {
 
 	public static final int IMAGE_WIDTH = 640;
 	public static final int IMAGE_HEIGHT = 480;
-	
-	/* Service paths */
-	public static final String SERVER_PATH = "http://barretts.ecs.vuw.ac.nz:4567/wainz/";
-	public static final String SUBMISSION_PATH = SERVER_PATH + "submit/";
-	
+
 	/* Form post entities */
 	public static final String FORM_POST_IMAGE = "image";
 	public static final String FORM_POST_DATA = "data";

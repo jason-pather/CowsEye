@@ -22,6 +22,11 @@ import android.util.Log;
 
 public class RiverWatchApplication extends Application  {
 
+	/* Service paths */
+	public static String server_path = "http://barretts.ecs.vuw.ac.nz:4567/wainz/";
+	public static String submission_path = server_path + "submit/";
+	
+	
 	private static final long timerZeroDelay = 0;
 	private static final long timerEventsProcessingPeriod = 300000; // 5 minutes
 	private static final long timerEventsProcessingLargeDelay = 6000000; // 30 minutes

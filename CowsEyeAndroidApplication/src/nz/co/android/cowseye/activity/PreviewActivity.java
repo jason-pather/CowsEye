@@ -164,7 +164,7 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 			}
 		}
 		else
-			AlertBuilder.buildAlertMessageNoInternet(this);
+			AlertBuilder.buildAlertMessageNoInternet(this).show();
 
 	}
 
