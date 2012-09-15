@@ -1,14 +1,6 @@
 package nz.co.android.cowseye.activity;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.http.Header;
-import org.apache.http.HttpResponse;
-import org.apache.http.StatusLine;
-import org.json.JSONObject;
 
 import nz.co.android.cowseye.R;
 import nz.co.android.cowseye.event.Event;
@@ -17,18 +9,23 @@ import nz.co.android.cowseye.event.SubmissionEventBuilderException;
 import nz.co.android.cowseye.utility.AlertBuilder;
 import nz.co.android.cowseye.utility.JSONHelper;
 import nz.co.android.cowseye.utility.Utils;
+
+import org.apache.http.Header;
+import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
+import org.json.JSONObject;
+
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,19 +48,25 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 	//	private ListView tagslist;
 	private int maxLength = 1000;
 	//	private List <String> imageTags;
+	private ProgressDialog progressDialog;
+	private Handler handler;
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.preview_layout);
+		handler = new Handler();
 		setupUI();
 	}
 
 	/* Sets up the User Interface */
 	protected void setupUI() {
 		super.setupUI();
-
+		progressDialog = new ProgressDialog(this);
+		progressDialog.setCancelable(false);
+		progressDialog.setTitle(getString(R.string.sending_incident_title));
+		progressDialog.setMessage(getString(R.string.sending_incident_msg));
 		submitButton = (Button)findViewById(R.id.submit_button);
 		//sends the event to the server
 		submitButton.setOnClickListener(new View.OnClickListener() {	
@@ -142,26 +145,39 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 	 * @throws SubmissionEventBuilderException if not enough data
 	 */
 	protected void submitPollutionEvent() throws SubmissionEventBuilderException{
-		SubmissionEvent currentEvent = submissionEventBuilder.build(); // - throws SubmissionEventBuilderException if not enough data
+		final SubmissionEvent currentEvent = submissionEventBuilder.build(); // - throws SubmissionEventBuilderException if not enough data
 		if(myApplication.isOnline()){
-			boolean success = processSubmissionEventResponse(currentEvent.processRaw());
-			success = true;
-			Log.i(toString(), "successfully processed event? : "+ success);
-			//only actually remove event if successful
-			if(success){
-				Toast.makeText(this, getString(R.string.success_submission_msg), Toast.LENGTH_LONG).show();
-				myApplication.deleteImage(currentEvent);
-				// go back to starting activity
-				Intent intent = new Intent(this, MainScreenActivity.class);
-				//Finishes all previous activities on the activity stack
-				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
-				startActivity(intent);
-				finish();
-			}
-			//if unsuccessful stop event handling and move the event to the end of the queue
-			else{
-				Toast.makeText(this, getString(R.string.failure_submission_msg), Toast.LENGTH_LONG).show();
-			}
+			progressDialog.show();
+			
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					final boolean success = processSubmissionEventResponse(currentEvent.processRaw());
+					handler.post(new Runnable() {
+						
+						@Override
+						public void run() {
+							Log.i(toString(), "successfully processed event? : "+ success);
+							//only actually remove event if successful
+							if(success){
+								Toast.makeText(PreviewActivity.this, getString(R.string.success_submission_msg), Toast.LENGTH_LONG).show();
+								myApplication.deleteImage(currentEvent);
+								// go back to starting activity
+								Intent intent = new Intent(PreviewActivity.this, MainScreenActivity.class);
+								//Finishes all previous activities on the activity stack
+								intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+								startActivity(intent);
+								finish();
+							}
+							//if unsuccessful stop event handling and move the event to the end of the queue
+							else{
+								Toast.makeText(PreviewActivity.this, getString(R.string.failure_submission_msg), Toast.LENGTH_LONG).show();
+							}
+							progressDialog.dismiss();
+						}
+					});
+				}
+			}).start();
 		}
 		else
 			AlertBuilder.buildAlertMessageNoInternet(this).show();

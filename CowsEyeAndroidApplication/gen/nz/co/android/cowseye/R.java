@@ -148,6 +148,9 @@ public final class R {
         public static final int select_image_from_gallery=0x7f05002f;
         public static final int select_image_title=0x7f050026;
         public static final int select_location=0x7f050002;
+        public static final int sending_incident_msg=0x7f050038;
+        public static final int sending_incident_msg_please_wait=0x7f050039;
+        public static final int sending_incident_title=0x7f050037;
         public static final int submit=0x7f050005;
         public static final int submit_pollution_event=0x7f05000b;
         public static final int success_submission_msg=0x7f050035;
