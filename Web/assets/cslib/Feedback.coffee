@@ -121,7 +121,7 @@ sendButton.click ->
 		sendButton.text "Submitting..."
 		
 		# Send
-		Window.RWCall onSuccess, onFailure, data, path, args, callType
+		window.RWCall onSuccess, onFailure, data, path, args, callType
 		
 		# Don't Refresh
 		return false

@@ -6,11 +6,42 @@ Author Matthew Betts
 
 
 # Globals
-BASE_URL = "http://barretts.ecs.vuw.ac.nz:4567/wainz/"
+BASE_URL = "http://greta-pt.ecs.vuw.ac.nz:4567/wainz/"
 CONTENT_TYPE = "contentType"
 PROCESS_DATA = false
 TIMEOUT = 5000
 DATA_TYPE = "jsonp"
+
+
+### REST CALLS
+'/wainz/reset_db'
+'/wainz/?'
+'/wainz/submit/?'
+'/wainz/incident/:id/comment/?'
+'/wainz/all'
+
+Submit incidents
+{ "description":"Blah", "tags":["cow", "poo"], "geolocation":{"lat":"1","long":"1"}, "physical_location":"NWENLAB" }
+'/wainz/submit/?'
+
+Submit comments
+{ "comment": "This is a comment With a name and email", "name": "David Tredger", "email": "tredger@gmail.com" }
+'/wainz/incident/:id/comment/?'
+
+'/wainz/approved/:start/:number?'
+'/wainz/unapproved/:start/:number'
+'/wainz/unapproved_stub/:start?/:number'
+'/wainz/incident/:id/comments/?'
+'/wainz/incident/:id/?'
+'/wainz/image/:id/full/?'
+'/wainz/image/:id/?'
+'/wainz/image/:id/thumb/?'
+'/wainz/incident/:id/approve/?'
+'/wainz/incident/:id/approve/?'
+'/wainz/comment/:id/approve/?'
+'/wainz/comment/:id/approve/?'
+'/wainz/comments/unapproved/?'
+###
 
 		
 ###
@@ -31,22 +62,51 @@ RWCall = (onSuccess, onFailure, data, path, args, callType) ->
 	# Format the data
 	json = JSON.stringify data 
 	
-	$.ajax
-		# type: callType,
-		url: BASE_URL + path + args,
-		# data: json,
-		dataType: "jsonp",
-		# jsonp: "jsonp"
-		# processData: false ,
-		# contentType: "application/json;charset=UTF-8",
-		# timeout: TIMEOUT,
-		success: (msg) ->
-			onSuccess msg 
-			ajaxLoader.css "display", "none"
-		error: (msg) -> 
-			onFailure msg
-			ajaxLoader.css "display", "none"
+	dataType = "jsonp"
 	
+	console.log "Call:#{path}| callType:#{callType}|json:#{json}"
+	
+	if(callType == "GET")
+	
+		$.ajax
+			# type: callType,
+			url: BASE_URL + path + args,
+			# data: json,
+			dataType: dataType,
+			type: callType,
+			# jsonp: "jsonp",
+			# processData: false ,
+			# contentType: "application/json;charset=UTF-8",
+			# timeout: TIMEOUT,
+			success: (msg) ->
+				ajaxLoader.css "display", "none"
+				onSuccess msg 
+			error: (msg) -> 
+				ajaxLoader.css "display", "none"
+				onFailure msg
+				
+				
+	else if (callType == "POST")
+		# $.post BASE_URL + path + args, "{ \"comment\": \"hello comment\"}"
+
+		$.ajax
+			url: BASE_URL + path + args,
+			# data: json,
+			dataType: "json",
+			type: "POST",
+			data: json,
+			# processData	: false ,
+			# contentType: "application/json;charset=UTF-8",
+			# timeout: TIMEOUT,
+			success: () ->
+				ajaxLoader.css "display", "none"
+				onSuccess() 
+				
+			error: () -> 
+				ajaxLoader.css "display", "none"
+				onFailure()
+				
+
 ###
 Make an AJAX Gete request to the River Watch Server
 
@@ -60,4 +120,7 @@ Make an AJAX Gete request to the River Watch Server
 ###
 Save calls, so that can be accessed globaly across the website.
 ###
-Window.RWCall = RWCall
+# `var global = {};
+# global.RWCall = RWCall`
+
+window.RWCall = RWCall

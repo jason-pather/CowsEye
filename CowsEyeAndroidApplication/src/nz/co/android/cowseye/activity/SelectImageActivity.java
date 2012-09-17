@@ -1,6 +1,8 @@
 package nz.co.android.cowseye.activity;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,9 +47,7 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 	private ImageView previewImageView;
 	private TextView previewTextView;
 	private Button selectImageFromGalleryButton;
-	private Button buttonTESTPOST;
-	
-
+	private boolean fromGallery;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -58,24 +58,6 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 		loadState(savedInstanceState);
 		//starts a new submission event
 		submissionEventBuilder.startNewSubmissionEvent();
-		buttonTESTPOST = (Button)findViewById(R.id.button_test_post);
-		buttonTESTPOST.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				submissionEventBuilder.setImagePath(cameraFileUri)
-				.setImageDescription("This is an Image Description")
-				.setImageTag(new ArrayList <String> ())
-				.setGeoCoordinates(new GeoPoint(12141414, 493124312))
-				.setAddress("2 adventure drive");
-				try {
-					myApplication.getEventHandler().addEvent(submissionEventBuilder.build());
-
-				} catch (SubmissionEventBuilderException e) {
-					Log.e(toString(), e.toString());
-				}
-
-			}
-		});
 	}
 
 	/* Sets up the User Interface */
@@ -93,14 +75,16 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 		//goes to the description activity
 		nextButton.setOnClickListener(new View.OnClickListener() {
 
+
 			@Override
 			public void onClick(View v) {
 				if(cameraFileUri!=null){
 					//save the image URI to the submissionEventBuilder
-					submissionEventBuilder.setImagePath(cameraFileUri);
+						submissionEventBuilder.setImagePath(cameraFileUri);
+						submissionEventBuilder.setFromGallery(fromGallery);
 					//start description activity
 					startActivity(new Intent(SelectImageActivity.this,DescriptionActivity.class));
-//					Toast.makeText(SelectImageActivity.this, getString(R.string.saving_image), Toast.LENGTH_LONG).show();
+					//					Toast.makeText(SelectImageActivity.this, getString(R.string.saving_image), Toast.LENGTH_LONG).show();
 				}
 				else
 					Toast.makeText(SelectImageActivity.this, getString(R.string.please_select_a_image), Toast.LENGTH_LONG).show();
@@ -120,6 +104,12 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 				retrieveImageFromGallery();
 			}
 		});
+		backButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				onBackPressed();
+			}
+		});
 
 	}
 
@@ -131,6 +121,7 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 				cameraFileUri = Uri.parse(savedInstanceState.getString(Constants.IMAGE_URI_KEY));
 				setPreviewImageOn(cameraFileUri);
 			}
+			fromGallery = savedInstanceState.getBoolean(Constants.FROM_GALLERY_KEY);
 		}
 	}
 
@@ -140,6 +131,8 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 		super.onSaveInstanceState(outState);
 		if(cameraFileUri!=null && !cameraFileUri.equals(""))
 			outState.putString(Constants.IMAGE_URI_KEY, cameraFileUri.toString());
+		outState.putBoolean(Constants.FROM_GALLERY_KEY, fromGallery);
+
 	}
 
 	/** Creates an intents to open the camera application and initiates it*/
@@ -170,16 +163,18 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 				//Picture has been taken natively, get the path from activity
 				cameraFileUri = Uri.parse(data.getStringExtra(Constants.IMAGE_URI_KEY));
 				setPreviewImageOn(cameraFileUri);
+				fromGallery = false;
 			}
 		}
-		//Coming from capturing an image from native activity
+		//Coming from gallery
 		if (requestCode == Constants.REQUEST_CODE_GALLERY && resultCode == Activity.RESULT_OK){
 			if (data != null) {
 				cameraFileUri = data.getData();
 				setPreviewImageOn(cameraFileUri);
+				fromGallery = true;
 			}
 		}
-		Log.d(toString(), "cameraFileUri : "+cameraFileUri);
+		Log.i(toString(), "cameraFileUri : "+cameraFileUri);
 	}
 
 	/** Enables the preview image, first by trying to decode the URI natively into a bitmap 
@@ -187,8 +182,12 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 	 * @param cameraFileUri - path to the image
 	 */
 	private void setPreviewImageOn(Uri cameraFileUri) {
+		Log.d(toString(), "setPreviewImageOn: ");
+
 		try{
 			Bitmap b = Utils.getAppFriendlyBitmap(cameraFileUri, getContentResolver());
+			Log.d(toString(), "bitt..  "+b);
+
 			if(b==null)
 				throw new IOException("Bitmap returned is null");
 			setPreviewBitmapImageOn(b);
@@ -225,6 +224,18 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 			previewImageView.setImageBitmap(bitmap);
 		}
 
+	}
+
+	@Override
+	public void onBackPressed() {
+		if(cameraFileUri!=null){
+			String imagePath = cameraFileUri.toString();
+			//delete image
+			if(imagePath!=null && !imagePath.equals("")){
+				myApplication.deleteImage(imagePath);
+			}
+		}
+		super.onBackPressed();
 	}
 
 

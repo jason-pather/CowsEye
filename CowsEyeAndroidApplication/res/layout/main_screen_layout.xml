@@ -24,7 +24,13 @@
         <Button
             android:id="@+id/button_view_gallery"
             style="@style/riverWatchButtonStyle"
-            android:text="@string/view_submission_gallery" />
+            android:text="@string/view_submission_gallery" 
+            android:visibility="invisible"/>
+        <Button
+            android:id="@+id/button_view_server"
+            style="@style/riverWatchButtonStyle"
+            android:text="Change Server"
+            android:visibility="invisible" />
     </LinearLayout>
 
 </LinearLayout>

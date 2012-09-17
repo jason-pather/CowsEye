@@ -1,5 +1,6 @@
 package nz.co.android.cowseye.activity;
 import nz.co.android.cowseye.R;
+import nz.co.android.cowseye.RiverWatchApplication;
 import nz.co.android.cowseye.R.id;
 import nz.co.android.cowseye.R.layout;
 import nz.co.android.cowseye.R.string;
@@ -46,11 +47,14 @@ public class RecordLocationActivity extends MapActivity {
 	private String geoAddress;
 	private GeoPoint addressCoordinates;
 	private SubmissionEventBuilder submissionEventBuilder;
+	private RiverWatchApplication myApplication;
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		myApplication = (RiverWatchApplication)getApplication();
+
 		setContentView(R.layout.location_layout);
 		addressEditText = (EditText)findViewById(R.id.addressEditText);
 		Intent intent = getIntent();
@@ -90,7 +94,7 @@ public class RecordLocationActivity extends MapActivity {
 		}
 		else
 			setupManagers(savedInstanceState);
-		submissionEventBuilder = SubmissionEventBuilder.getSubmissionEventBuilder();
+		submissionEventBuilder = SubmissionEventBuilder.getSubmissionEventBuilder(myApplication);
 	}
 
 	private void buildAlertMessageNoGps(final Bundle savedInstanceState) {

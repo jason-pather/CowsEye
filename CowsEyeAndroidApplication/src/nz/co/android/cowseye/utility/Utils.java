@@ -22,10 +22,19 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 public class Utils {
-
+	
+	public static final int HTTP_OK = 200;
+	public static final int HTTP_LOGIC_ERROR = 400;
+	public static final int HTTP_SERVER_ERROR = 500;
+	
 	//
-	public static final int MAX_PREVIEW_IMAGE_SIZE = 800;
-	public static final int MAX_GALLERY_IMAGE_SIZE = 1200;
+	public static final int MAX_PREVIEW_IMAGE_SIZE_WIDTH = 1600;
+	public static final int MAX_PREVIEW_IMAGE_SIZE_HEIGHT = 1600;
+
+//	public static final int IMAGE_SIZE_WIDTH = 1200;
+//	public static final int IMAGE_SIZE_HEIGHT = 800;
+	
+//	public static final int MAX_GALLERY_IMAGE_SIZE = 1600;
 
 
 	//Camera Constants
@@ -80,8 +89,8 @@ public class Utils {
 
 			int scale = 1;
 			//resize
-			if (o.outHeight > MAX_PREVIEW_IMAGE_SIZE || o.outWidth > MAX_PREVIEW_IMAGE_SIZE) {
-				scale = (int)Math.pow(2, (int) Math.round(Math.log(MAX_PREVIEW_IMAGE_SIZE / (double) Math.max(o.outHeight, o.outWidth)) / Math.log(0.5)));
+			if (o.outHeight > MAX_PREVIEW_IMAGE_SIZE_HEIGHT || o.outWidth > MAX_PREVIEW_IMAGE_SIZE_WIDTH) {
+				scale = (int)Math.pow(2, (int) Math.round(Math.log(MAX_PREVIEW_IMAGE_SIZE_WIDTH / (double) Math.max(o.outHeight, o.outWidth)) / Math.log(0.5)));
 			}
 			//Decode with inSampleSize
 			BitmapFactory.Options o2 = new BitmapFactory.Options();

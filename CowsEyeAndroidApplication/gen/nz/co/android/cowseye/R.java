@@ -56,22 +56,22 @@ public final class R {
     public static final class id {
         public static final int ChooseImageTag=0x7f080005;
         public static final int EnterDescriptionLabel=0x7f080003;
-        public static final int PreviewDescriptionText=0x7f08001c;
-        public static final int PreviewDescriptionTitle=0x7f08001b;
-        public static final int PreviewImageImage=0x7f080016;
-        public static final int PreviewImageTag=0x7f08001a;
-        public static final int PreviewImageTagTitle=0x7f080019;
-        public static final int PreviewImageTitle=0x7f080015;
-        public static final int PreviewLocationTag=0x7f080017;
-        public static final int PreviewLocationText=0x7f080018;
+        public static final int PreviewDescriptionText=0x7f08001d;
+        public static final int PreviewDescriptionTitle=0x7f08001c;
+        public static final int PreviewImageImage=0x7f080017;
+        public static final int PreviewImageTag=0x7f08001b;
+        public static final int PreviewImageTagTitle=0x7f08001a;
+        public static final int PreviewImageTitle=0x7f080016;
+        public static final int PreviewLocationTag=0x7f080018;
+        public static final int PreviewLocationText=0x7f080019;
         public static final int addressEditText=0x7f080010;
         public static final int backButton=0x7f080001;
         public static final int button=0x7f080006;
         public static final int button_submit=0x7f080012;
-        public static final int button_test_post=0x7f080023;
         public static final int button_view_gallery=0x7f080013;
-        public static final int capture_image_button=0x7f080021;
-        public static final int contactDetailsScreenTitle=0x7f08001e;
+        public static final int button_view_server=0x7f080014;
+        public static final int capture_image_button=0x7f080022;
+        public static final int contactDetailsScreenTitle=0x7f08001f;
         public static final int descriptionScreenTitle=0x7f080000;
         public static final int descriptionText=0x7f080004;
         public static final int detailsScreenTitle=0x7f080011;
@@ -85,11 +85,11 @@ public final class R {
         public static final int mapview=0x7f08000f;
         public static final int nextButton=0x7f080002;
         public static final int previewFrameLayout=0x7f080024;
-        public static final int preview_image=0x7f08001f;
-        public static final int preview_text=0x7f080020;
-        public static final int preview_title=0x7f080014;
-        public static final int select_image_from_gallery_button=0x7f080022;
-        public static final int submit_button=0x7f08001d;
+        public static final int preview_image=0x7f080020;
+        public static final int preview_text=0x7f080021;
+        public static final int preview_title=0x7f080015;
+        public static final int select_image_from_gallery_button=0x7f080023;
+        public static final int submit_button=0x7f08001e;
         public static final int thumbnails_scrollview=0x7f080008;
     }
     public static final class layout {
@@ -114,6 +114,7 @@ public final class R {
         public static final int errorInReverseGeoCoding=0x7f05001e;
         public static final int failed_camera_please_try_again=0x7f050032;
         public static final int failed_to_connect_to_camera_message=0x7f050033;
+        public static final int failure_submission_msg=0x7f050036;
         public static final int geocoordinates_text=0x7f050034;
         public static final int gps_message=0x7f050017;
         public static final int gps_message_submission=0x7f050016;
@@ -147,8 +148,12 @@ public final class R {
         public static final int select_image_from_gallery=0x7f05002f;
         public static final int select_image_title=0x7f050026;
         public static final int select_location=0x7f050002;
+        public static final int sending_incident_msg=0x7f050038;
+        public static final int sending_incident_msg_please_wait=0x7f050039;
+        public static final int sending_incident_title=0x7f050037;
         public static final int submit=0x7f050005;
         public static final int submit_pollution_event=0x7f05000b;
+        public static final int success_submission_msg=0x7f050035;
         public static final int tag_labeltitle=0x7f050004;
         public static final int take_picture_title=0x7f050030;
         public static final int thisIsTheLocationFound=0x7f05001f;

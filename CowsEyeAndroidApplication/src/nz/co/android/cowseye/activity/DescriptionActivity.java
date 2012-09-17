@@ -36,8 +36,7 @@ public class DescriptionActivity extends AbstractSubmissionActivity {
 	private EditText descriptionEditText;
 	private String imageDescription;
 	private String imageTag;
-	protected CharSequence[] _options = { "Cow", "Run off", "Pollution",
-			"Cow Shit" };
+	protected CharSequence[] _options = { "Stock", "Cow", "Sheep", "Dog", "Horse","Goat", "Litter", "River","Pollution" };
 	protected boolean[] _selections = new boolean[_options.length];
 	private List <String> imageTags;
 
@@ -64,7 +63,6 @@ public class DescriptionActivity extends AbstractSubmissionActivity {
 	protected void setupUI() {
 		super.setupUI();
 		descriptionEditText = (EditText) findViewById(R.id.descriptionText);
-
 		// Set text of description if we have it
 		Intent intent = getIntent();
 		if (intent.hasExtra(Constants.DESCRIPTION_KEY)) {
@@ -112,14 +110,7 @@ public class DescriptionActivity extends AbstractSubmissionActivity {
 		
 		
 		tosendtags = new ArrayList <String> ();
-		
-		for (int i = 0; i < _options.length; i++) {
-			Log.i("ME", _options[i] + " selected: " + _selections[i]);
-			if (_selections[i]){
-				tosendtags.add((String)_options[i]);
-			}
-		}
-		System.out.println ("Size of tosendtags is " + tosendtags.size());
+//		System.out.println ("Size of tosendtags is " + tosendtags.size());
 		
 		
 		nextButton.setOnClickListener(new View.OnClickListener() {
@@ -133,23 +124,19 @@ public class DescriptionActivity extends AbstractSubmissionActivity {
 							getString(R.string.pleaseEnterDescription),
 							Toast.LENGTH_LONG).show();
 				}
-
-//				
-//				else if (tosendtags.size()==0) {
-//					Toast.makeText(DescriptionActivity.this,
-//							getString(R.string.pleaseChooseTags),
-//							Toast.LENGTH_LONG).show();
-//				}
-				
 				
 				// description has been entered and recognised by user and this
 				// will move the application onto the record location activity
 				else {
-	
+					for (int i = 0; i < _options.length; i++) {
+						Log.i("ME", _options[i] + " selected: " + _selections[i]);
+						if (_selections[i]){
+							tosendtags.add((String)_options[i]);
+						}
+					}
 					
 					imageDescription = descriptionEditText.getText().toString();
-					submissionEventBuilder
-							.setImageDescription(imageDescription);
+					submissionEventBuilder.setImageDescription(imageDescription);
 					System.out.println("Sent DESCRIPTION");
 					Log.e("image description is", imageDescription);
 					
