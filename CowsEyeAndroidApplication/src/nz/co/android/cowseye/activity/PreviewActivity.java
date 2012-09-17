@@ -118,7 +118,12 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 	
 		
 		}
-		tag.setText(st.toString());
+		
+		String text = (String) st.toString();
+		System.out.println ("Text value is   " + text);
+		String ntext = text.substring(0,text.length());
+		tag.setText(ntext);
+		
 
 				tag.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, DescriptionActivity.class));
 
