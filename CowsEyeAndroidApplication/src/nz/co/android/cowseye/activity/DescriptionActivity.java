@@ -36,12 +36,13 @@ public class DescriptionActivity extends AbstractSubmissionActivity {
 	private EditText descriptionEditText;
 	private String imageDescription;
 	private String imageTag;
-	protected CharSequence[] _options = { "Stock", "Cow", "Sheep", "Dog", "Horse","Goat", "Litter", "River","Pollution" };
+	protected CharSequence[] _options = { "Cow", "Dog", "Goat", "Horse",
+			"Litter", "River", "Pollution", "Sheep", "Stock" };
 	protected boolean[] _selections = new boolean[_options.length];
-	private List <String> imageTags;
+	private List<String> imageTags;
 
 	protected Button _optionsButton;
-	private List <String> tosendtags;
+	private List<String> tosendtags;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -49,7 +50,7 @@ public class DescriptionActivity extends AbstractSubmissionActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.description_layout);
 		nextButton = (Button) findViewById(R.id.nextButton);
-		imageTags = new ArrayList <String> ();
+		imageTags = new ArrayList<String>();
 
 		super.onCreate(savedInstanceState);
 
@@ -84,7 +85,6 @@ public class DescriptionActivity extends AbstractSubmissionActivity {
 		return descriptionEditText.getText().toString();
 	}
 
-	
 	public void onItemSelected(AdapterView<?> parent, View view, int pos,
 			long id) {
 
@@ -104,15 +104,12 @@ public class DescriptionActivity extends AbstractSubmissionActivity {
 	 * method checks for inputs being made by the user
 	 */
 	public void pressNextButton() {
-	
 
 		Log.d(toString(), "Sent image tags");
-		
-		
-		tosendtags = new ArrayList <String> ();
-//		System.out.println ("Size of tosendtags is " + tosendtags.size());
-		
-		
+
+		tosendtags = new ArrayList<String>();
+		// System.out.println ("Size of tosendtags is " + tosendtags.size());
+
 		nextButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -124,31 +121,30 @@ public class DescriptionActivity extends AbstractSubmissionActivity {
 							getString(R.string.pleaseEnterDescription),
 							Toast.LENGTH_LONG).show();
 				}
-				
+
 				// description has been entered and recognised by user and this
 				// will move the application onto the record location activity
 				else {
 					for (int i = 0; i < _options.length; i++) {
-						Log.i("ME", _options[i] + " selected: " + _selections[i]);
-						if (_selections[i]){
-							tosendtags.add((String)_options[i]);
+						Log.i("ME", _options[i] + " selected: "
+								+ _selections[i]);
+						if (_selections[i]) {
+							tosendtags.add((String) _options[i]);
 						}
 					}
-					
+
 					imageDescription = descriptionEditText.getText().toString();
-					submissionEventBuilder.setImageDescription(imageDescription);
+					submissionEventBuilder
+							.setImageDescription(imageDescription);
 					System.out.println("Sent DESCRIPTION");
 					Log.e("image description is", imageDescription);
-					
-			
 
 					Intent intent = new Intent(DescriptionActivity.this,
 							RecordLocationActivity.class);
-                    
 
 					submissionEventBuilder.setImageTag(tosendtags);
-					Log.d("hi","reached here tan");
-					
+					Log.d("hi", "reached here tan");
+
 					startActivity(intent);
 				}
 

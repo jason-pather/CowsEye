@@ -56,7 +56,7 @@
     <style name="nextButtonStyle" parent="@style/buttonStyle">
         <item name="android:layout_gravity">right|center_vertical</item>
         <item name="android:text">@string/next</item>
-        <item name="android:background">@drawable/done_button</item>
+        <item name="android:background">@drawable/next_button</item>
     </style>
     
     <style name="riverWatchButtonStyle" parent="@style/buttonStyle">

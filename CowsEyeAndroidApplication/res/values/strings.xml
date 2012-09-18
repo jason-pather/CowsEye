@@ -3,7 +3,7 @@
     <string name="app_name">RiverWatch</string>
     <string name="capture_image">Capture Image</string>
     <string name="select_location">Select Location</string>
-    <string name="description_labeltitle"> Enter Description of Image </string>
+    <string name="description_labeltitle"> Enter Image Description </string>
     <string name="tag_labeltitle"> Select Image Tags </string>
     <string name="submit"> Submit </string>
     <string name="noPhotoAdded">No photo added</string>
@@ -55,13 +55,6 @@
     <string name="incident_view_gallery_title">Gallery</string>
     <string name="failed_camera_please_try_again">Failed to save image, please try again</string>
     <string name="failed_to_connect_to_camera_message">Failed to open camera. Please try again later</string>
-
-    <string-array name="phototag_array">
-        <item>Cow</item>
-        <item>Run off</item>
-        <item>Pollution</item>
-    </string-array>
-
     <string name="geocoordinates_text">Geocoordinate location:</string>
     <string name="success_submission_msg">You have succesfully submitted a river pollution incident.</string>
     <string name="failure_submission_msg">Your incident submission was unsuccessful. Please try again later.</string>
