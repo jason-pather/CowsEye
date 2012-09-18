@@ -43,6 +43,7 @@ public class DescriptionActivity extends AbstractSubmissionActivity {
 
 	protected Button _optionsButton;
 	private List<String> tosendtags;
+	private int numberOfSelections = 0;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -108,7 +109,6 @@ public class DescriptionActivity extends AbstractSubmissionActivity {
 		Log.d(toString(), "Sent image tags");
 
 		tosendtags = new ArrayList<String>();
-		// System.out.println ("Size of tosendtags is " + tosendtags.size());
 
 		nextButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -122,6 +122,8 @@ public class DescriptionActivity extends AbstractSubmissionActivity {
 							Toast.LENGTH_LONG).show();
 				}
 
+				
+				
 				// description has been entered and recognised by user and this
 				// will move the application onto the record location activity
 				else {
@@ -130,15 +132,27 @@ public class DescriptionActivity extends AbstractSubmissionActivity {
 						Log.i("ME", _options[i] + " selected: "+ _selections[i]);
 						if (_selections[i]) {
 							tosendtags.add((String) _options[i]);
+							numberOfSelections = numberOfSelections + 1; //used to keep count of if any tags are selected or not
 						}
 					}
-
+					
 					imageDescription = descriptionEditText.getText().toString();
 					submissionEventBuilder
 							.setImageDescription(imageDescription);
 					System.out.println("Sent DESCRIPTION");
 					Log.e("image description is", imageDescription);
 
+					
+					//checks if there has been any tags selected, else doesn't let the user progress through
+					if (numberOfSelections == 0) {
+						Toast.makeText(DescriptionActivity.this,
+								getString(R.string.pleaseChooseTags),
+								Toast.LENGTH_LONG).show();
+
+					}
+					
+					else {
+				
 					Intent intent = new Intent(DescriptionActivity.this,
 							RecordLocationActivity.class);
 
@@ -149,8 +163,8 @@ public class DescriptionActivity extends AbstractSubmissionActivity {
 				}
 
 			}
-		});
-
+		}});
+		
 	}
 
 	public class ButtonClickHandler implements View.OnClickListener {
