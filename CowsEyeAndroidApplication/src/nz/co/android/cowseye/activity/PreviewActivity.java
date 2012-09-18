@@ -112,19 +112,22 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 		StringBuffer st = new StringBuffer();
 
 		for (String s: submissionEventBuilder.getImageTag()){
-			st.append(s);
-			if (s!=null){ st.append(", "); } 
-
+			if (s!=null){ 
+				st.append(s);
+				st.append(", "); 
+			} 
 		}
 
-		
+
 		String text = (String) st.toString();
+		if(text.length()>0)
+			text = text.substring(0, text.length()-2);
 		System.out.println ("Text value is   " + text);
 		String ntext = text.substring(0,text.length());
 		tag.setText(ntext);
-		
 
-				tag.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, DescriptionActivity.class));
+
+		tag.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, DescriptionActivity.class));
 
 
 	}
@@ -155,13 +158,13 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 		final SubmissionEvent currentEvent = submissionEventBuilder.build(); // - throws SubmissionEventBuilderException if not enough data
 		if(myApplication.isOnline()){
 			progressDialog.show();
-			
+
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
 					final boolean success = processSubmissionEventResponse(currentEvent.processRaw());
 					handler.post(new Runnable() {
-						
+
 						@Override
 						public void run() {
 							Log.i(toString(), "successfully processed event? : "+ success);

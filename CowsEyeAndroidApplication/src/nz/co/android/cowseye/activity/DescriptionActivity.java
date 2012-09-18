@@ -125,9 +125,9 @@ public class DescriptionActivity extends AbstractSubmissionActivity {
 				// description has been entered and recognised by user and this
 				// will move the application onto the record location activity
 				else {
+					tosendtags.clear();
 					for (int i = 0; i < _options.length; i++) {
-						Log.i("ME", _options[i] + " selected: "
-								+ _selections[i]);
+						Log.i("ME", _options[i] + " selected: "+ _selections[i]);
 						if (_selections[i]) {
 							tosendtags.add((String) _options[i]);
 						}
