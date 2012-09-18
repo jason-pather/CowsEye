@@ -50,7 +50,7 @@ public class MainScreenActivity extends Activity {
 	private RiverWatchApplication myApplication;
 	private Button buttonServer;
 	
-	private boolean test = true;
+	private boolean test = false;
 
 
 	/** Called when the activity is first created. */
