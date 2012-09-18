@@ -24,12 +24,13 @@
             style="@style/nextButtonStyle" />
     </FrameLayout>
 
+     <!-- android:apiKey = Mitch's laptop debug key -->
     <com.google.android.maps.MapView
         android:id="@+id/mapview"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:apiKey="0W_gYkxqIw4R9y2cU_9u9T5qOpCXwJBnqnf8Flw"
+        android:apiKey="0W_gYkxqIw4QuXYkhYV0aSvFaypmJ1V3lLo6xlQ"
         android:clickable="true" />
 
     <LinearLayout style="@style/location_layout_style" >

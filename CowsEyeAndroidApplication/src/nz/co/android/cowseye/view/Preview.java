@@ -5,6 +5,7 @@ import java.util.List;
 
 import nz.co.android.cowseye.R;
 import nz.co.android.cowseye.common.Constants;
+import nz.co.android.cowseye.utility.Utils;
 import android.app.Activity;
 import android.content.Context;
 import android.hardware.Camera;
@@ -112,6 +113,7 @@ public class Preview extends SurfaceView implements SurfaceHolder.Callback {
 		{
 			//            parameters.setPreviewSize(h, w);  
 			setPreviewSize(h, w, parameters, false);
+			setPictureSize(Constants.IMAGE_HEIGHT, Constants.IMAGE_WIDTH, parameters);
 			camera.setDisplayOrientation(90);
 		}
 
@@ -119,13 +121,15 @@ public class Preview extends SurfaceView implements SurfaceHolder.Callback {
 		{
 			//            parameters.setPreviewSize(w, h);  
 			setPreviewSize(w, h, parameters, true);
-
+			setPictureSize(Constants.IMAGE_WIDTH, Constants.IMAGE_HEIGHT, parameters);
 		}
 
 		if(display.getRotation() == Surface.ROTATION_180)
 		{
 			//            parameters.setPreviewSize(h, w);  
 			setPreviewSize(h, w, parameters, false);
+			setPictureSize(Constants.IMAGE_HEIGHT, Constants.IMAGE_WIDTH, parameters);
+
 
 		}
 
@@ -133,6 +137,7 @@ public class Preview extends SurfaceView implements SurfaceHolder.Callback {
 		{
 			//            parameters.setPreviewSize(w, h);
 			setPreviewSize(w, h, parameters, true);
+			setPictureSize(Constants.IMAGE_WIDTH,Constants.IMAGE_HEIGHT, parameters);
 
 			camera.setDisplayOrientation(180);
 		}
@@ -143,7 +148,6 @@ public class Preview extends SurfaceView implements SurfaceHolder.Callback {
 
 		//		Camera.Parameters parameters = camera.getParameters();
 		//		setPreviewSize(w, h, parameters);
-		setPictureSize(w, h, parameters);
 		//		camera.startPreview();
 	}
 
@@ -213,6 +217,7 @@ public class Preview extends SurfaceView implements SurfaceHolder.Callback {
 			parameters.setPictureSize(Constants.IMAGE_WIDTH, Constants.IMAGE_HEIGHT);
 			camera.setParameters(parameters);
 			correctPictureSizeSet = true;
+			Log.e(toString(), "wd : "+Constants.IMAGE_WIDTH+", "+Constants.IMAGE_HEIGHT);
 
 		}
 		catch(RuntimeException e){
@@ -220,6 +225,8 @@ public class Preview extends SurfaceView implements SurfaceHolder.Callback {
 			Size s = findBestPictureSize(Constants.IMAGE_WIDTH, Constants.IMAGE_HEIGHT);
 			try{
 				parameters.setPictureSize(s.width, s.height);
+				Log.e(toString(), "wd : "+s.width+", "+s.height);
+
 			}
 			catch(RuntimeException f){
 				correctPictureSizeSet = false;

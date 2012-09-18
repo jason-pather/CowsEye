@@ -24,22 +24,22 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.55"
+        android:layout_weight="0.525"
         android:orientation="vertical" >
 
         <TextView
             android:id="@+id/PreviewImageTitle"
             style="@style/field_title_style"
             android:layout_gravity="center_horizontal"
-            android:text="@string/preview_image" />
+            android:text="@string/preview_title" />
 
         <ImageView
             android:id="@+id/PreviewImageImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             android:layout_gravity="center"
             android:contentDescription="@string/preview_image"
-            android:src="@drawable/done_button" />
+            android:src="@drawable/next_button" />
     </LinearLayout>
 
     <LinearLayout
@@ -65,7 +65,7 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.125"
+        android:layout_weight="0.15"
         android:orientation="vertical" >
 
         <TextView
@@ -79,6 +79,7 @@
             android:id="@+id/PreviewImageTag"
             style="@style/text_view_style"
             android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
             android:text="@string/preview_imagetag" />
     </LinearLayout>
 

@@ -5,7 +5,7 @@
   contentArea = $("#approveCommentContent");
 
   make = function(c) {
-    var acceptButton, btnGroup, incident, outcome, postCalltype, postDone, postPath, rejectButton;
+    var acceptButton, btnGroup, incident, outcome, postCalltype, postDone, rejectButton;
     incident = $("<ul class=\"thumbnails\">						<li class = \"span3\">							<div class=\"thumbnail\">								<img src=\"" + c.thumbnail_url + "\" alt=\"\">							</div>						</li>						<li class = \"span5\">							<div class = \"caption\">								<h2>Description</h2>								<p>" + c.description + "</p>							</div>						</li>						<li class = \"span4\">							<div class = \"caption\">								<h2>Comment</h2>								<p>" + c.comment + "</p>							</div>						</li>						<li class=\"span12\"> 							<div class=\"btn-group\" id =\"btns\"> 							</div>						</li>					</ul>				</div>");
     outcome = "reject";
     acceptButton = $("<a href=\"#\" class=\"btn btn-success btn-long\"><i class=\"icon-ok icon-white\"></i> Accept</a>");
@@ -14,9 +14,8 @@
     btnGroup.append(acceptButton);
     btnGroup.append(rejectButton);
     contentArea.append(incident);
-    postPath = "assess_incident_stub";
     postCalltype = "POST";
-    postDone = function(data) {
+    postDone = function() {
       return incident.animate({
         height: 0,
         opacity: 0.25
@@ -25,10 +24,10 @@
       });
     };
     acceptButton.click(function() {
-      return Window.RWCall(postDone, postDone, {}, postPath, "/id=" + c.incident_id + "/comment_id=" + c.comment_id + "/status=accepted}", postCalltype);
+      return window.RWCall(postDone, postDone, {}, "comment/" + c.id + "/approve", "", postCalltype);
     });
     return rejectButton.click(function() {
-      return Window.RWCall(postDone, postDone, {}, postPath, "/id=" + c.incident_id + "/comment_id=" + c.comment_id + "/status=rejected}", postCalltype);
+      return window.RWCall(postDone, postDone, {}, "comment/" + c.id + "/reject", "", postCalltype);
     });
   };
 
@@ -36,9 +35,9 @@
     return console.log("Rest Call has failed");
   };
 
-  path = "unapproved_comments";
+  path = "comments/unapproved/";
 
-  args = "/start=" + 0 + "/range=24";
+  args = "";
 
   calltype = "GET";
 
@@ -53,6 +52,6 @@
     return _results;
   };
 
-  Window.RWCall(onSuccess, onFail, {}, path, args, calltype);
+  window.RWCall(onSuccess, onFail, {}, path, args, calltype);
 
 }).call(this);

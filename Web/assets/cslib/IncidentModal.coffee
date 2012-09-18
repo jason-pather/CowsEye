@@ -31,9 +31,9 @@ Make = (id) ->
 	# Reterive Infromation
 	onFail = (data) ->
 		console.log "Rest Call has failed"
-	path = "unapproved_detail_stub"
-	args = "/id=#{id}"
-	calltype = "success"
+	path = "incident"
+	args = "/#{id}"
+	calltype = "GET"
 	
 	onSuccess = (data) ->
 	
@@ -45,10 +45,10 @@ Make = (id) ->
 			</div>
 			<div class=\"modal-body\">
 				<div href=\"#\" class=\"thumbnail\" id=\"testThumbnail\">
-					<img src=\"#{data.Full_URL}\" alt=\"\">	
+					<img src=\"#{data.image_url}\" alt=\"\">	
 				</div>
 				<h2>Details</h2>
-				<p> #{data.Description}</p>
+				<p> #{data.description}</p>
 				<h2>Comments</h2>
 				<p></p>
 				<div id = \"comments\"></div>
@@ -80,20 +80,19 @@ Make = (id) ->
 			# Get comment text
 			if checkMessage()
 				data = {
+					
 					comment: getMessage()
+					name: "NA"
+					email: "NA"
 				}
 				
-				path = "comment_stub"
-				args = [id]
-				callType = "GET"
-				
-				onSuccess = (msg) ->
+				onSuccess = () ->
 					submitCommentButton.removeClass "btn-primary"
 					submitCommentButton.addClass "btn-success"
 					console.log "Success"
 					submitCommentButton.text "Comment Submitted Successfuly, Awaiting Approval"
 
-				onFailure = (msg) ->
+				onFailure = () ->
 					submitCommentButton.removeClass "btn-primary"
 					submitCommentButton.addClass "btn-danger"
 					console.log "Fail"
@@ -102,8 +101,8 @@ Make = (id) ->
 				submitCommentButton.text "Submitting..."
 				submitCommentButton.click ->
 			
-				# Send
-				Window.RWCall onSuccess, onFailure, data, path, args, callType
+				# Send no failure, as cross domain json posting with backend would not work
+				window.RWCall onSuccess, onSuccess, data, "incident", "/#{id}/comment", "POST"
 			
 		
 		# Get comments
@@ -112,13 +111,14 @@ Make = (id) ->
 		
 		commentSuccess = (data) ->
 			commentsSection = incidentModal.find "#comments"
-			for c in data[ "Comments" ]
+			for c in data[ "comments" ]
+			# for c in data[ "comments" ]
 				console.log "adding coment #{c}"
-				commentsSection.append $ "<p>#{c.Comment_Text}</p>"
+				commentsSection.append $ "<p>#{c.comment}</p>"
 				
-		Window.RWCall commentSuccess, commentFailure, {}, "comment_stub", "/id=#{id}/start=0/range=24", "success"
+		window.RWCall commentSuccess, commentFailure, {}, "incident", "/#{id}/comments/", "GET"
 			
-	Window.RWCall onSuccess, onFail, {}, path, args, calltype
+	window.RWCall onSuccess, onFail, {}, path, args, calltype
 	
 	
-Window.CreateIncidentModal = Make
+window.CreateIncidentModal = Make

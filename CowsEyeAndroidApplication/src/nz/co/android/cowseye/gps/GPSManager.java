@@ -118,8 +118,8 @@ public class GPSManager implements LocationListener{
 
 	/** Adds the gps update listeneres */
 	public void requestUpdateListeners() {
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,  12000, 10, this);
-		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 12000, 10, this);
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,  10000, 10, this);
+		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 15000, 10, this);
 	}
 
 	/** Returns the location of the user as a geo point containing latitude and longitutude */
@@ -158,7 +158,18 @@ public class GPSManager implements LocationListener{
 	public void onLocationChanged(Location location) {
 		// update last known position
 		lastKnownLocation = location;
-		userLocationGeoPoint =new GeoPoint((int) ( location.getLatitude() * 1E6), (int) ( location.getLongitude() * 1E6));
+		double lat = 0;
+		double lon = 0;
+		if(userLocationGeoPoint!=null){
+			lat = userLocationGeoPoint.getLatitudeE6()/1E6;
+			lon = userLocationGeoPoint.getLongitudeE6()/1E6;
+		}
+		GeoPoint newGeoPoint  = new GeoPoint((int) ( lastKnownLocation.getLatitude() * 1E6), (int) ( lastKnownLocation.getLongitude() * 1E6));
+		if((newGeoPoint.getLatitudeE6()/1E6 == lat) && (newGeoPoint.getLongitudeE6()/1E6 == lon)){
+			return;
+		}
+		userLocationGeoPoint = newGeoPoint;
+
 //		locationActivity.setGeoCoordinates(userLocationGeoPoint);
 		// add new user position
 		updateLocationActivity(location);
@@ -199,7 +210,7 @@ public class GPSManager implements LocationListener{
 	public void requestBuildAlertMessageUpdatePosition(String addr, GeoPoint userPoint) {
 		if(alert!=null)
 			alert.dismiss();
-		AlertDialog alert = AlertBuilder.buildAlertMessageUpdatePosition(locationActivity, mapHelper, locationActivity, addr, userPoint);
+		alert = AlertBuilder.buildAlertMessageUpdatePosition(locationActivity, mapHelper, locationActivity, addr, userPoint);
 		try{
 		if(alert!=null)
 			alert.show();

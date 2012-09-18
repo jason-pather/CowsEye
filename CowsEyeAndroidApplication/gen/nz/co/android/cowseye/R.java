@@ -8,9 +8,6 @@
 package nz.co.android.cowseye;
 
 public final class R {
-    public static final class array {
-        public static final int phototag_array=0x7f060000;
-    }
     public static final class attr {
     }
     public static final class color {
@@ -45,52 +42,52 @@ public final class R {
         public static final int header_style=0x7f020006;
         public static final int icon=0x7f020007;
         public static final int location_background=0x7f020008;
-        public static final int preview_image_background=0x7f020009;
-        public static final int right_arrow=0x7f02000a;
-        public static final int riverwatch_button=0x7f02000b;
-        public static final int screen1=0x7f02000c;
-        public static final int submit_button=0x7f02000d;
-        public static final int submit_button_selected=0x7f02000e;
-        public static final int you_are_here_45x45=0x7f02000f;
+        public static final int next_button=0x7f020009;
+        public static final int preview_image_background=0x7f02000a;
+        public static final int right_arrow=0x7f02000b;
+        public static final int riverwatch_button=0x7f02000c;
+        public static final int screen1=0x7f02000d;
+        public static final int submit_button=0x7f02000e;
+        public static final int submit_button_selected=0x7f02000f;
+        public static final int you_are_here_45x45=0x7f020010;
     }
     public static final class id {
-        public static final int ChooseImageTag=0x7f080005;
-        public static final int EnterDescriptionLabel=0x7f080003;
-        public static final int PreviewDescriptionText=0x7f08001c;
-        public static final int PreviewDescriptionTitle=0x7f08001b;
-        public static final int PreviewImageImage=0x7f080016;
-        public static final int PreviewImageTag=0x7f08001a;
-        public static final int PreviewImageTagTitle=0x7f080019;
-        public static final int PreviewImageTitle=0x7f080015;
-        public static final int PreviewLocationTag=0x7f080017;
-        public static final int PreviewLocationText=0x7f080018;
-        public static final int addressEditText=0x7f080010;
-        public static final int backButton=0x7f080001;
-        public static final int button=0x7f080006;
-        public static final int button_submit=0x7f080012;
-        public static final int button_test_post=0x7f080023;
-        public static final int button_view_gallery=0x7f080013;
-        public static final int capture_image_button=0x7f080021;
-        public static final int contactDetailsScreenTitle=0x7f08001e;
-        public static final int descriptionScreenTitle=0x7f080000;
-        public static final int descriptionText=0x7f080004;
-        public static final int detailsScreenTitle=0x7f080011;
-        public static final int doneButton=0x7f08000e;
-        public static final int holding_thumbs_frame_layout=0x7f08000a;
-        public static final int holding_thumbs_linear_layout=0x7f080009;
-        public static final int incident_gallery=0x7f080007;
-        public static final int incident_image=0x7f08000c;
-        public static final int locationScreenTitle=0x7f08000d;
-        public static final int main_frame_layout=0x7f08000b;
-        public static final int mapview=0x7f08000f;
-        public static final int nextButton=0x7f080002;
-        public static final int previewFrameLayout=0x7f080024;
-        public static final int preview_image=0x7f08001f;
-        public static final int preview_text=0x7f080020;
-        public static final int preview_title=0x7f080014;
-        public static final int select_image_from_gallery_button=0x7f080022;
-        public static final int submit_button=0x7f08001d;
-        public static final int thumbnails_scrollview=0x7f080008;
+        public static final int EnterDescriptionLabel=0x7f070003;
+        public static final int PreviewDescriptionText=0x7f07001c;
+        public static final int PreviewDescriptionTitle=0x7f07001b;
+        public static final int PreviewImageImage=0x7f070016;
+        public static final int PreviewImageTag=0x7f07001a;
+        public static final int PreviewImageTagTitle=0x7f070019;
+        public static final int PreviewImageTitle=0x7f070015;
+        public static final int PreviewLocationTag=0x7f070017;
+        public static final int PreviewLocationText=0x7f070018;
+        public static final int addressEditText=0x7f07000f;
+        public static final int backButton=0x7f070001;
+        public static final int button=0x7f070005;
+        public static final int button_submit=0x7f070011;
+        public static final int button_view_gallery=0x7f070012;
+        public static final int button_view_server=0x7f070013;
+        public static final int capture_image_button=0x7f070021;
+        public static final int contactDetailsScreenTitle=0x7f07001e;
+        public static final int descriptionScreenTitle=0x7f070000;
+        public static final int descriptionText=0x7f070004;
+        public static final int detailsScreenTitle=0x7f070010;
+        public static final int doneButton=0x7f07000d;
+        public static final int holding_thumbs_frame_layout=0x7f070009;
+        public static final int holding_thumbs_linear_layout=0x7f070008;
+        public static final int incident_gallery=0x7f070006;
+        public static final int incident_image=0x7f07000b;
+        public static final int locationScreenTitle=0x7f07000c;
+        public static final int main_frame_layout=0x7f07000a;
+        public static final int mapview=0x7f07000e;
+        public static final int nextButton=0x7f070002;
+        public static final int previewFrameLayout=0x7f070023;
+        public static final int preview_image=0x7f07001f;
+        public static final int preview_text=0x7f070020;
+        public static final int preview_title=0x7f070014;
+        public static final int select_image_from_gallery_button=0x7f070022;
+        public static final int submit_button=0x7f07001d;
+        public static final int thumbnails_scrollview=0x7f070007;
     }
     public static final class layout {
         public static final int description_layout=0x7f030000;
@@ -114,6 +111,7 @@ public final class R {
         public static final int errorInReverseGeoCoding=0x7f05001e;
         public static final int failed_camera_please_try_again=0x7f050032;
         public static final int failed_to_connect_to_camera_message=0x7f050033;
+        public static final int failure_submission_msg=0x7f050036;
         public static final int geocoordinates_text=0x7f050034;
         public static final int gps_message=0x7f050017;
         public static final int gps_message_submission=0x7f050016;
@@ -147,8 +145,12 @@ public final class R {
         public static final int select_image_from_gallery=0x7f05002f;
         public static final int select_image_title=0x7f050026;
         public static final int select_location=0x7f050002;
+        public static final int sending_incident_msg=0x7f050038;
+        public static final int sending_incident_msg_please_wait=0x7f050039;
+        public static final int sending_incident_title=0x7f050037;
         public static final int submit=0x7f050005;
         public static final int submit_pollution_event=0x7f05000b;
+        public static final int success_submission_msg=0x7f050035;
         public static final int tag_labeltitle=0x7f050004;
         public static final int take_picture_title=0x7f050030;
         public static final int thisIsTheLocationFound=0x7f05001f;
@@ -158,20 +160,20 @@ public final class R {
         public static final int wouldYouLikeToUpdateStill=0x7f050023;
     }
     public static final class style {
-        public static final int backButtonStyle=0x7f070005;
-        public static final int buttonStyle=0x7f070004;
-        public static final int button_option=0x7f070003;
-        public static final int detailsArrow=0x7f070002;
-        public static final int detailsMainText=0x7f070001;
-        public static final int field_title_style=0x7f07000d;
-        public static final int location_layout_style=0x7f070008;
-        public static final int lots_text_style=0x7f07000c;
-        public static final int nextButtonStyle=0x7f070006;
-        public static final int preview_image_framelayout_style=0x7f07000a;
-        public static final int riverWatchButtonStyle=0x7f070007;
-        public static final int text_field_style=0x7f070009;
-        public static final int text_style=0x7f07000b;
-        public static final int text_view_style=0x7f07000e;
-        public static final int titleHeading=0x7f070000;
+        public static final int backButtonStyle=0x7f060005;
+        public static final int buttonStyle=0x7f060004;
+        public static final int button_option=0x7f060003;
+        public static final int detailsArrow=0x7f060002;
+        public static final int detailsMainText=0x7f060001;
+        public static final int field_title_style=0x7f06000d;
+        public static final int location_layout_style=0x7f060008;
+        public static final int lots_text_style=0x7f06000c;
+        public static final int nextButtonStyle=0x7f060006;
+        public static final int preview_image_framelayout_style=0x7f06000a;
+        public static final int riverWatchButtonStyle=0x7f060007;
+        public static final int text_field_style=0x7f060009;
+        public static final int text_style=0x7f06000b;
+        public static final int text_view_style=0x7f06000e;
+        public static final int titleHeading=0x7f060000;
     }
 }

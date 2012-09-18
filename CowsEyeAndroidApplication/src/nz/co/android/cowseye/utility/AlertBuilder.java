@@ -1,15 +1,19 @@
 package nz.co.android.cowseye.utility;
 
 import nz.co.android.cowseye.R;
+import nz.co.android.cowseye.RiverWatchApplication;
 import nz.co.android.cowseye.activity.RecordLocationActivity;
+import nz.co.android.cowseye.common.Constants;
 import nz.co.android.cowseye.gps.MapManager;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.provider.Settings;
+import android.text.InputType;
 import android.util.Log;
 import android.view.WindowManager.BadTokenException;
+import android.widget.EditText;
 
 import com.google.android.maps.GeoPoint;
 
@@ -81,6 +85,29 @@ public class AlertBuilder {
 		}
 		return null;
 	
+	}
+	
+	/** Builds a dialog where the user has to input the correct pin to launch an intent*/
+	public static AlertDialog buildServerPrompt(final Context context) {
+		final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		builder.setTitle("Enter Server location");
+		final EditText input = new EditText(context);
+		input.setInputType(InputType.TYPE_CLASS_TEXT);
+		builder.setView(input);
+		builder.setCancelable(true)
+		.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			public void onClick(final DialogInterface dialog, final int id) {
+				RiverWatchApplication.server_path = input.getText().toString().trim();
+				RiverWatchApplication.submission_path = RiverWatchApplication.server_path + "submit/";
+			}
+		})
+		.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+			public void onClick(final DialogInterface dialog, final int id) {
+				dialog.cancel();
+			}
+		});
+		return builder.create();
+
 	}
 
 }

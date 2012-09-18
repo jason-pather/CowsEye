@@ -1,6 +1,9 @@
 package nz.co.android.cowseye.event;
 
+import java.net.URI;
 import java.util.List;
+
+import nz.co.android.cowseye.RiverWatchApplication;
 
 import com.google.android.maps.GeoPoint;
 
@@ -15,21 +18,23 @@ public class SubmissionEventBuilder {
 
 	private static SubmissionEvent submissionEvent;
 	private static SubmissionEventBuilder builder = null;
+	private static RiverWatchApplication myApplication;
 
 	/** Singleton */
-	public static SubmissionEventBuilder getSubmissionEventBuilder(){
+	public static SubmissionEventBuilder getSubmissionEventBuilder(RiverWatchApplication myApplication){
+		SubmissionEventBuilder.myApplication = myApplication;
 		if(builder == null )
 			builder = new SubmissionEventBuilder();
 		return builder;
 	}
 	private SubmissionEventBuilder(){
-		submissionEvent = new SubmissionEvent();
+		submissionEvent = new SubmissionEvent(myApplication);
 	}
 	public void startNewSubmissionEvent(){
-		submissionEvent = new SubmissionEvent();
+		submissionEvent = new SubmissionEvent(myApplication);
 	}
-	public SubmissionEventBuilder setImagePath(Uri uriToImage) {
-		submissionEvent.setImagePath(uriToImage);
+	public SubmissionEventBuilder setImagePath(Uri uri) {
+		submissionEvent.setImagePath(uri);
 		return this;
 	}
 	public SubmissionEventBuilder setImageTag (List <String> tag) {
@@ -44,8 +49,16 @@ public class SubmissionEventBuilder {
 		submissionEvent.setGeoCoordinates(addressCoordinates);
 		return this;
 	}
-	public void setAddress(String address) {
+	public SubmissionEventBuilder setAddress(String address) {
 		submissionEvent.setAddress(address);	
+		return this;
+	}
+	public SubmissionEventBuilder setFromGallery(boolean b) {
+		submissionEvent.setFromGallery(b);
+		return this;
+	}
+	public boolean isFromGallery() {
+		return submissionEvent.isFromGallery();
 	}
 
 	public Uri getImagePath(){
@@ -82,10 +95,6 @@ public class SubmissionEventBuilder {
 		if(submissionEvent.getImageDescription()==null)
 			return false;
 		if(submissionEvent.getImageDescription().equals(""))
-			return false;
-		if(submissionEvent.getImageTag()==null)
-			return false;
-		if(submissionEvent.getImageTag().equals(""))
 			return false;
 		//good if we have either geo coordinates or address
 		return submissionEvent.getGeoCoordinates()!=null || (submissionEvent.getAddress()!=null && !submissionEvent.getAddress().equals("")) ;
