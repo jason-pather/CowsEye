@@ -34,22 +34,24 @@ public final class R {
     }
     public static final class drawable {
         public static final int back_button=0x7f020000;
-        public static final int button=0x7f020001;
-        public static final int button_pressed=0x7f020002;
-        public static final int default_thumb=0x7f020003;
-        public static final int details_background=0x7f020004;
-        public static final int done_button=0x7f020005;
-        public static final int header_style=0x7f020006;
-        public static final int icon=0x7f020007;
-        public static final int location_background=0x7f020008;
-        public static final int next_button=0x7f020009;
-        public static final int preview_image_background=0x7f02000a;
-        public static final int right_arrow=0x7f02000b;
-        public static final int riverwatch_button=0x7f02000c;
-        public static final int screen1=0x7f02000d;
-        public static final int submit_button=0x7f02000e;
-        public static final int submit_button_selected=0x7f02000f;
-        public static final int you_are_here_45x45=0x7f020010;
+        public static final int back_buttonselection=0x7f020001;
+        public static final int button=0x7f020002;
+        public static final int button_pressed=0x7f020003;
+        public static final int default_thumb=0x7f020004;
+        public static final int details_background=0x7f020005;
+        public static final int done_button=0x7f020006;
+        public static final int header_style=0x7f020007;
+        public static final int icon=0x7f020008;
+        public static final int location_background=0x7f020009;
+        public static final int next_button=0x7f02000a;
+        public static final int next_buttonselection=0x7f02000b;
+        public static final int preview_image_background=0x7f02000c;
+        public static final int right_arrow=0x7f02000d;
+        public static final int riverwatch_button=0x7f02000e;
+        public static final int screen1=0x7f02000f;
+        public static final int submit_button=0x7f020010;
+        public static final int submit_button_selected=0x7f020011;
+        public static final int you_are_here_45x45=0x7f020012;
     }
     public static final class id {
         public static final int EnterDescriptionLabel=0x7f070003;

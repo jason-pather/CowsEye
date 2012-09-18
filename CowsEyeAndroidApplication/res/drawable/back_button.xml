@@ -17,10 +17,4 @@
         android:topLeftRadius="5dp"
         android:topRightRadius="5dp" />
 
-    <selector xmlns:android="http://schemas.android.com/apk/res/android" >
-        <item
-            android:drawable="@drawable/button_pressed"
-            android:state_pressed="true"/> <!-- pressed -->
-    </selector>
-
 </shape>
