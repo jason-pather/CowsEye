@@ -13,7 +13,40 @@ SetupMap = () ->
 	# Map set up
 	mapCenter = new google.maps.LatLng -41.288889, 174.777222
 
+	
+	style = `
+	[
+		{
+			"stylers": [
+			{ "visibility": "off" }
+			]
+		},{
+			"featureType": "water",
+			"elementType": "geometry.fill",
+			"stylers": [
+			{ "visibility": "on" },
+			{ "lightness": 1 },
+			{ "color": "#19232F" }
+			]
+		},{
+			"featureType": "landscape",
+			"elementType": "geometry.fill",
+			"stylers": [
+			{ "visibility": "on" },
+			{ "color": "#B4B577" }
+			]
+		},{
+			"featureType": "poi",
+			"elementType": "geometry",
+			"stylers": [
+			{ "visibility": "on" },
+			{ "color": "#C8DE9B" }
+			]
+		}
+	]`
+	
 	mapOptions = { 
+		styles: style
 		zoom: 9,
 		center: mapCenter,
 		mapTypeId: google.maps.MapTypeId.ROADMAP,
