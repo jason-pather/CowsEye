@@ -82,24 +82,24 @@ public class MainScreenActivity extends Activity {
 	private void setupUI(){
 		buttonSubmit = (Button)findViewById(R.id.button_submit);
 		buttonSubmit.setOnClickListener(new SubmitPollutionEventOnClickListener());
-		buttonGallery = (Button)findViewById(R.id.button_view_gallery);
-		buttonGallery.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				startActivity(new Intent(MainScreenActivity.this, IncidentGalleryActivity.class));
-			}
-		});
-		buttonServer = (Button)findViewById(R.id.button_view_server);
-		buttonServer.setOnClickListener(new View.OnClickListener() {	
-			@Override
-			public void onClick(View v) {
-				AlertBuilder.buildServerPrompt(MainScreenActivity.this).show();
-			}
-		});
-		if(test){
-			buttonGallery.setVisibility(View.VISIBLE);
-			buttonServer.setVisibility(View.VISIBLE);
-		}
+//		buttonGallery = (Button)findViewById(R.id.button_view_gallery);
+//		buttonGallery.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				startActivity(new Intent(MainScreenActivity.this, IncidentGalleryActivity.class));
+//			}
+//		});
+//		buttonServer = (Button)findViewById(R.id.button_view_server);
+//		buttonServer.setOnClickListener(new View.OnClickListener() {	
+//			@Override
+//			public void onClick(View v) {
+//				AlertBuilder.buildServerPrompt(MainScreenActivity.this).show();
+//			}
+//		});
+//		if(test){
+//			buttonGallery.setVisibility(View.VISIBLE);
+//			buttonServer.setVisibility(View.VISIBLE);
+//		}
 	}
 
 	@Override

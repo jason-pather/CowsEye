@@ -61,5 +61,5 @@
     <string name="sending_incident_title">Incident Submission</string>
     <string name="sending_incident_msg">Submitting your river pollution incident...</string>
     <string name="sending_incident_msg_please_wait">Please wait</string>
-
+	<string name = "main_screen_image"> Main Image </string>
 </resources>
