@@ -31,7 +31,7 @@
             android:id="@+id/PreviewImageTitle"
             style="@style/field_title_style"
             android:layout_gravity="center_horizontal"
-            android:text="@string/preview_title" />
+            android:text="@string/preview_image" />
 
         <ImageView
             android:id="@+id/PreviewImageImage"

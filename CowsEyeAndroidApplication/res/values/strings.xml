@@ -43,7 +43,7 @@
     <string name="pleaseCompleteAllSteps">Please complete all steps before submitting your incident</string>
     <string name="select_image_title">Select Image</string>
     <string name="preview_title">Preview</string>
-    <string name="preview_image">Picture</string>
+    <string name="preview_image">Image</string>
     <string name="preview_location">Location</string>
     <string name="preview_descriptiontitle"> Description</string>
     <string name="preview_description"> Description</string>
