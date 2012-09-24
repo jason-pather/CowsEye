@@ -5,18 +5,19 @@
     android:background="@drawable/details_background"
     android:orientation="vertical" >
 
+    <!--  
     <TextView
         android:id="@+id/detailsScreenTitle"
         style="@style/titleHeading"
         android:text="@string/app_name" />
-
+-->
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical" >
-  
-  <!--         
+
+        <!--
         <Button
             android:id="@+id/button_view_gallery"
             style="@style/riverWatchButtonStyle"
@@ -27,25 +28,22 @@
             android:id="@+id/button_view_server"
             style="@style/riverWatchButtonStyle"
             android:text="Change Server"
-            android:visibility="invisible" />
-             
-    -->
-   
-          <ImageView
+            android:visibility="invisible" />
+        -->
+
+        <ImageView
             android:id="@+id/MainScreenLogo"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-        	android:layout_weight="1"
-            android:src="@drawable/cowgrazing" />
+            android:layout_weight="1"
+            android:src="@drawable/logo" />
 
-        <Button android:id="@+id/button_submit"
-            style="@style/riverWatchButtonStyle" 
+        <Button
+            android:id="@+id/button_submit"
+            style="@style/riverWatchButtonStyle"
             android:layout_width="fill_parent"
-    		android:layout_height="wrap_content"
- 		    android:text="@string/submit_pollution_event" />
- 
-     		
-        
+            android:layout_height="wrap_content"
+            android:text="@string/submit_pollution_event" />
     </LinearLayout>
 
 </LinearLayout>
