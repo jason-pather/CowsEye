@@ -5,10 +5,12 @@ import java.util.List;
 
 import nz.co.android.cowseye.R;
 import nz.co.android.cowseye.RiverWatchApplication;
+import nz.co.android.cowseye.common.Constants;
 import nz.co.android.cowseye.event.SubmissionEventBuilder;
 import nz.co.android.cowseye.utility.Utils;
 import nz.co.android.cowseye.view.RiverWatchGallery;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.RectF;
@@ -28,14 +30,12 @@ public class IncidentGalleryActivity extends Activity {
 	private RiverWatchGallery myGallery;
 	private RiverWatchApplication myApplication;
 
-
 	private FrameLayout thumbnailsLayout; // this is the layout that will contain the thumbnails of the pages
 	private LinearLayout holdingThumbsLayout;
 	private ScrollView scrollView; // the scrollview for containing the thumbnails 
 	private boolean thumbnailLayoutOrigami = false;
 	private boolean thumbnailsStarted = false;
 	private ArrayList<ImageButton> thumbnails;
-	private ArrayList<String> thumbnailPaths;
 	private int currentPosition = 0;
 	public static Matrix skewUpMatrix;
 	public static Matrix skewDownMatrix;
@@ -49,18 +49,21 @@ public class IncidentGalleryActivity extends Activity {
 	private static final float THUMBNAIL_SCALEY = 0.8f;
 	public static final int UNSELECTED_ALPHA = 160;
 	public static final int SELECTED_ALPHA = 255;
+	
+	private String[] imageUris;
+	private String[] thumbnailImageUris;
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.incident_gallery_layout);
-		setupUI();
-		thumbnailPaths = new ArrayList<String>();
-		thumbnailPaths.add("123");
-		thumbnailPaths.add("1213");
-		thumbnailPaths.add("11223");
-		thumbnailPaths.add("1223");
+		Intent intent = getIntent();
+		imageUris = intent.getStringArrayExtra(Constants.GALLERY_IMAGES_ARRAY_KEY);
+		thumbnailImageUris = intent.getStringArrayExtra(Constants.GALLERY_THUMBNAIL_IMAGES_ARRAY_KEY);
+
+		setupUI(imageUris);
+
 		setupThumbnails();
 		constructMatrices();
 		constructImageRectangleBounds();
@@ -68,7 +71,8 @@ public class IncidentGalleryActivity extends Activity {
 
 	}
 
-	private void setupUI() {
+
+	private void setupUI(String[] imageUris) {
 		backButton = (Button)findViewById(R.id.backButton);
 		//goes backwards
 		backButton.setOnClickListener(new Utils.BackEventOnClickListener(this));
@@ -76,11 +80,7 @@ public class IncidentGalleryActivity extends Activity {
 		myApplication = (RiverWatchApplication)getApplication();
 		myGallery = (RiverWatchGallery) (findViewById(R.id.incident_gallery));
 		//TODO show ProgressDialog querying for image downloads
-		List<String> imageUris = new ArrayList<String>();
-		imageUris.add(SubmissionEventBuilder.getSubmissionEventBuilder(myApplication).getImagePath().toString());
-		imageUris.add(SubmissionEventBuilder.getSubmissionEventBuilder(myApplication).getImagePath().toString());
-		imageUris.add(SubmissionEventBuilder.getSubmissionEventBuilder(myApplication).getImagePath().toString());
-
+		
 		myGallery.setupUI(myApplication, this, imageUris);
 	}
 
@@ -158,7 +158,7 @@ public class IncidentGalleryActivity extends Activity {
 		int maxHeight = 0;
 		//x coordinate of the last thumbnail placed
 		float lastX = 0f;
-		for(int pos = 0; pos < thumbnailPaths.size(); pos++){
+		for(int pos = 0; pos < thumbnailImageUris.length; pos++){
 			//create image
 			ImageButton image = new ImageButton(this);
 			int wd;

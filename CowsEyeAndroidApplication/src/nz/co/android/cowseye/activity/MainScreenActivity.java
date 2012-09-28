@@ -1,6 +1,8 @@
 package nz.co.android.cowseye.activity;
 
 import org.apache.http.HttpResponse;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import nz.co.android.cowseye.R;
@@ -10,13 +12,16 @@ import nz.co.android.cowseye.R.layout;
 import nz.co.android.cowseye.R.string;
 import nz.co.android.cowseye.common.Constants;
 import nz.co.android.cowseye.event.Event;
+import nz.co.android.cowseye.event.GetIncidentsEvent;
 import nz.co.android.cowseye.event.SubmissionEventBuilder;
 import nz.co.android.cowseye.event.SubmissionEventBuilderException;
+import nz.co.android.cowseye.service.GetIncidentsAsyncTask;
 import nz.co.android.cowseye.utility.AlertBuilder;
 import nz.co.android.cowseye.utility.JSONHelper;
 import nz.co.android.cowseye.utility.Utils;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -48,10 +53,10 @@ public class MainScreenActivity extends Activity {
 	private Button buttonSubmit;
 	private Button buttonGallery;
 	private RiverWatchApplication myApplication;
-	private Button buttonServer;
 	
-	private boolean test = false;
+	private boolean test = true;
 
+	private ProgressDialog progressDialog;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -80,26 +85,52 @@ public class MainScreenActivity extends Activity {
 
 	/* Sets up the UI */
 	private void setupUI(){
+		progressDialog = new ProgressDialog(this);
+		progressDialog.setTitle(getString(R.string.loading_images_title));
+		progressDialog.setMessage(getString(R.string.please_wait));
+		progressDialog.setCancelable(false);
+		
 		buttonSubmit = (Button)findViewById(R.id.button_submit);
 		buttonSubmit.setOnClickListener(new SubmitPollutionEventOnClickListener());
-//		buttonGallery = (Button)findViewById(R.id.button_view_gallery);
-//		buttonGallery.setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				startActivity(new Intent(MainScreenActivity.this, IncidentGalleryActivity.class));
-//			}
-//		});
-//		buttonServer = (Button)findViewById(R.id.button_view_server);
-//		buttonServer.setOnClickListener(new View.OnClickListener() {	
-//			@Override
-//			public void onClick(View v) {
-//				AlertBuilder.buildServerPrompt(MainScreenActivity.this).show();
-//			}
-//		});
-//		if(test){
-//			buttonGallery.setVisibility(View.VISIBLE);
-//			buttonServer.setVisibility(View.VISIBLE);
-//		}
+		buttonGallery = (Button)findViewById(R.id.button_view_gallery);
+		buttonGallery.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				progressDialog.show();
+				new GetIncidentsAsyncTask(MainScreenActivity.this, new GetIncidentsEvent(myApplication, 0, 9)).execute();
+				
+			}
+		});
+		if(test){
+			buttonGallery.setVisibility(View.VISIBLE);
+		}
+	}
+	
+	public void endLoadingIncidents(JSONArray data){
+		progressDialog.dismiss();
+		if(data==null){
+			Toast.makeText(this, getString(R.string.failure_load_images_msg), Toast.LENGTH_LONG).show();
+		}
+		else{
+			String[] imageUrls = new String[data.length()];
+			String[] thumbUrls = new String[data.length()];
+			for(int i = 0; i < data.length(); i++ ){
+				try {
+					JSONObject incident = data.getJSONObject(i);
+					if(incident.has(Constants.JSON_THUMBNAIL_URL_KEY) && incident.has(Constants.JSON_IMAGE_URL_KEY)){
+						imageUrls[i] = incident.getString(Constants.JSON_IMAGE_URL_KEY);
+						thumbUrls[i] = incident.getString(Constants.JSON_THUMBNAIL_URL_KEY);
+					}
+				} catch (JSONException e) {
+					Log.e(toString(), "No incident found in JSONObject");
+				}
+				
+			}
+			Intent i = new Intent(MainScreenActivity.this, IncidentGalleryActivity.class);
+			i.putExtra(Constants.GALLERY_IMAGES_ARRAY_KEY, imageUrls);
+			i.putExtra(Constants.GALLERY_THUMBNAIL_IMAGES_ARRAY_KEY, thumbUrls);
+			startActivity(i);
+		}
 	}
 
 	@Override

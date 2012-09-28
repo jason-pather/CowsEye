@@ -20,6 +20,9 @@ public interface Constants {
 	/* Keys for information passed between activities or within for activity destroy on rotation */
 	public static final String IMAGE_URI_KEY = "image_uri_key";
 	public static final String FROM_GALLERY_KEY = "from_gallery_key";
+	public static final String GALLERY_IMAGES_ARRAY_KEY = "gallery_images_key";
+	public static final String GALLERY_THUMBNAIL_IMAGES_ARRAY_KEY = "gallery_thumbnail_images_key";
+
 
 	public static final String DESCRIPTION_KEY = "description";
 	public static final String CONTACT_DETAILS_KEY = "contact";
@@ -52,6 +55,13 @@ public interface Constants {
 	public static final String SUBMISSION_JSON_GEO_LAT = "lat";
 	public static final String SUBMISSION_JSON_GEO_LON = "long";
 	public static final String SUBMISSION_JSON_ADDRESS = "physical_location";
+	
+	/* JSON keys */
+	public static final String JSON_INCIDENTS_KEY = "incidents";
+	public static final String JSON_THUMBNAIL_URL_KEY = "thumbnail_url";
+	public static final String JSON_IMAGE_URL_KEY = "image_url";
+
+
 
 
 }

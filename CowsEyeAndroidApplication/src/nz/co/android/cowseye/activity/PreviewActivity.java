@@ -3,6 +3,7 @@ package nz.co.android.cowseye.activity;
 import java.io.IOException;
 
 import nz.co.android.cowseye.R;
+import nz.co.android.cowseye.RiverWatchApplication;
 import nz.co.android.cowseye.event.Event;
 import nz.co.android.cowseye.event.SubmissionEvent;
 import nz.co.android.cowseye.event.SubmissionEventBuilderException;
@@ -162,7 +163,7 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
-					final boolean success = processSubmissionEventResponse(currentEvent.processRaw());
+					final boolean success = RiverWatchApplication.processSubmissionEventResponse(currentEvent.processRaw());
 					handler.post(new Runnable() {
 
 						@Override
@@ -194,43 +195,43 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 
 	}
 
-	/**
-	 * Deals with the response from a submission event return
-	 * @param response from a submission event
-	 * @return true if succesfull submission, otherwise false
-	 */
-	public static boolean processSubmissionEventResponse(HttpResponse response){
-		if(response==null)
-			return false;
-		StatusLine statusLine = response.getStatusLine();
-		if(statusLine == null)
-			return false;
-		int statusCode = statusLine.getStatusCode();
-		Log.i("app", "statusCode : "+statusCode);
-		try{
-			switch(statusCode){
-			case Utils.HTTP_OK:
-				Log.i("app", "Sucessful submission!");
-				return true;
-			case Utils.HTTP_LOGIC_ERROR:
-				Log.i("app", "Logic error: Unsucessful submission!");
-				return false;
-			case Utils.HTTP_SERVER_ERROR:
-				Log.i("app", "Server error: Unsucessful submission!");
-				return false;
-			default:
-				Log.i("app", "Uncaught error: Unsucessful submission!");
-				return false;
-			}
-			//			JSONObject jsonObject = JSONHelper.parseHttpResponseAsJSON(response);
-			//			Log.d("app", "jsonObject : "+jsonObject);
-		}
-		catch(Exception f){ 
-			Log.e("app", "Exception in JsonParsing : "+f);
-		}
-		return false;
-
-	}
+//	/**
+//	 * Deals with the response from a submission event return
+//	 * @param response from a submission event
+//	 * @return true if succesfull submission, otherwise false
+//	 */
+//	public static boolean processSubmissionEventResponse(HttpResponse response){
+//		if(response==null)
+//			return false;
+//		StatusLine statusLine = response.getStatusLine();
+//		if(statusLine == null)
+//			return false;
+//		int statusCode = statusLine.getStatusCode();
+//		Log.i("app", "statusCode : "+statusCode);
+//		try{
+//			switch(statusCode){
+//			case Utils.HTTP_OK:
+//				Log.i("app", "Sucessful submission!");
+//				return true;
+//			case Utils.HTTP_LOGIC_ERROR:
+//				Log.i("app", "Logic error: Unsucessful submission!");
+//				return false;
+//			case Utils.HTTP_SERVER_ERROR:
+//				Log.i("app", "Server error: Unsucessful submission!");
+//				return false;
+//			default:
+//				Log.i("app", "Uncaught error: Unsucessful submission!");
+//				return false;
+//			}
+//			//			JSONObject jsonObject = JSONHelper.parseHttpResponseAsJSON(response);
+//			//			Log.d("app", "jsonObject : "+jsonObject);
+//		}
+//		catch(Exception f){ 
+//			Log.e("app", "Exception in JsonParsing : "+f);
+//		}
+//		return false;
+//
+//	}
 
 
 	public void submitEvent(Event e){

@@ -6,6 +6,8 @@ import java.util.List;
 import nz.co.android.cowseye.R;
 import nz.co.android.cowseye.RiverWatchApplication;
 import nz.co.android.cowseye.activity.IncidentGalleryActivity;
+import nz.co.android.cowseye.event.GetImageEvent;
+import nz.co.android.cowseye.service.GetImageAsyncTask;
 import nz.co.android.cowseye.utility.Utils;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -21,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Gallery;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 /**
  * A gallery of RiverWatch incidents
@@ -29,7 +32,7 @@ import android.widget.ImageView;
  */
 public class RiverWatchGallery extends Gallery {
 
-	private List<String> imagePaths;
+	private String[] imageUris;
 	private static Context context;
 	private static MyGalleryImageAdapter imageAdapter;
 	private RiverWatchApplication myApplication;
@@ -54,11 +57,11 @@ public class RiverWatchGallery extends Gallery {
 
 	/** Sets up the UI with the given list of image Uris 
 	 * @param incidentGalleryActivity */
-	public void setupUI(RiverWatchApplication app, IncidentGalleryActivity incidentGalleryActivity, List<String> imageUris){
+	public void setupUI(RiverWatchApplication app, IncidentGalleryActivity incidentGalleryActivity, String[] imageUris){
 		myApplication = app;
 		this.incidentGalleryActivity = incidentGalleryActivity;
 		this.context = incidentGalleryActivity;
-		this.imagePaths = imageUris;
+		this.imageUris = imageUris;
 		// Cache the LayoutInflate to avoid asking for a new one each time.
 		inflater = LayoutInflater.from(context);
 		//Create and set the imageAdapter on this gallery
@@ -82,7 +85,7 @@ public class RiverWatchGallery extends Gallery {
 	}
 
 	public int getNumberOfImages() {
-		return imagePaths.size();
+		return imageUris.length;
 	}
 
 	public View getView(int position, View convertView, View parent){
@@ -100,6 +103,8 @@ public class RiverWatchGallery extends Gallery {
 			// we want to bind data to.
 			holder = new ViewHolder();
 			holder.pageImageView = (ImageView)convertView.findViewById(R.id.incident_image);
+			holder.progressBar = (ProgressBar)convertView.findViewById(R.id.incident_progress_bar);
+
 			convertView.setTag(holder);
 
 		} else{ 
@@ -113,12 +118,24 @@ public class RiverWatchGallery extends Gallery {
 
 	/* Build a View for the MyGalleryImage adapter */
 	public void buildView(int position, final ViewHolder holder) {
-		Log.d(toString(), "im : "+imagePaths.get(position));
-		Bitmap bm = BitmapFactory.decodeFile(imagePaths.get(position));
-		holder.pageImageView.setImageBitmap(bm);
+		Log.d(toString(), "im : "+imageUris[position]);
+		//TODO try to get from local storage
+		setImage(holder, imageUris[position]);
+
+		/** If fails to get from local storage, put a progress bar in and download */
+		holder.progressBar.setVisibility(View.VISIBLE);
+		//launch asynctask to get image
+		GetImageEvent event = new GetImageEvent(imageUris[position]);;
+		new GetImageAsyncTask(this, holder, event).execute();
 
 		//		holder.pageImageView.setLayoutParams(new FrameLayout.LayoutParams(myApplication.getScreenWidth(),myApplication.getScreenHeight()));
 		//		holder.pageImageView.setScaleType(ImageView.ScaleType.CENTER);
+	}
+	public void setImage(ViewHolder holder, String pathName){
+		Bitmap bm = BitmapFactory.decodeFile(pathName);
+		holder.pageImageView.setImageBitmap(bm);
+		holder.progressBar.setVisibility(View.INVISIBLE);	
+		
 	}
 
 	/**Scrolls the view very fast in the appropriate direction simulating a fling */
@@ -209,7 +226,8 @@ public class RiverWatchGallery extends Gallery {
 
 
 	}
-	static class ViewHolder {
+	public static class ViewHolder {
+		ProgressBar progressBar;
 		ImageView pageImageView;
 	}
 }
