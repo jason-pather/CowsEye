@@ -4,11 +4,16 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URI;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
+
 import nz.co.android.cowseye.event.Event;
 import nz.co.android.cowseye.event.EventHandler;
+import nz.co.android.cowseye.utility.Utils;
 import android.app.Application;
 import android.content.Context;
 import android.database.Cursor;
@@ -23,9 +28,11 @@ import android.util.Log;
 public class RiverWatchApplication extends Application  {
 
 	/* Service paths */
-	public static String server_path = "http://barretts.ecs.vuw.ac.nz:4567/wainz/";
-	public static String submission_path = server_path + "submit/";
-	
+	public static String server_path = "http://barretts.ecs.vuw.ac.nz:4567/wainz";
+	public static String submission_path = server_path + "/submit";
+	public static String get_incidents_path = server_path + "/approved";
+	public static String get_incidents_path_start = "/start=";
+	public static String get_incidents_path_number = "/number=";
 	
 	private static final long timerZeroDelay = 0;
 	private static final long timerEventsProcessingPeriod = 300000; // 5 minutes
@@ -247,6 +254,44 @@ public class RiverWatchApplication extends Application  {
 //		Log.d(toString(), "deleteImage image exists after ? "+imageFile.exists());
 //
 //	}
+	
+	/**
+	 * Deals with the response from a submission event return
+	 * @param response from a submission event
+	 * @return true if succesfull submission, otherwise false
+	 */
+	public static boolean processSubmissionEventResponse(HttpResponse response){
+		if(response==null)
+			return false;
+		StatusLine statusLine = response.getStatusLine();
+		if(statusLine == null)
+			return false;
+		int statusCode = statusLine.getStatusCode();
+		Log.i("app", "statusCode : "+statusCode);
+		try{
+			switch(statusCode){
+			case Utils.HTTP_OK:
+				Log.i("app", "Sucessful submission!");
+				return true;
+			case Utils.HTTP_LOGIC_ERROR:
+				Log.i("app", "Logic error: Unsucessful submission!");
+				return false;
+			case Utils.HTTP_SERVER_ERROR:
+				Log.i("app", "Server error: Unsucessful submission!");
+				return false;
+			default:
+				Log.i("app", "Uncaught error: Unsucessful submission!");
+				return false;
+			}
+			//			JSONObject jsonObject = JSONHelper.parseHttpResponseAsJSON(response);
+			//			Log.d("app", "jsonObject : "+jsonObject);
+		}
+		catch(Exception f){ 
+			Log.e("app", "Exception in JsonParsing : "+f);
+		}
+		return false;
+
+	}
 	
 	/* Deletes the image belonging to the current event */
 	public void deleteImage(Event currentEvent) {

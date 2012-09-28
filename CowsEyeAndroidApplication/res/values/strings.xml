@@ -58,8 +58,12 @@
     <string name="geocoordinates_text">Geocoordinate location:</string>
     <string name="success_submission_msg">You have succesfully submitted a river pollution incident.</string>
     <string name="failure_submission_msg">Your incident submission was unsuccessful. Please try again later.</string>
+    <string name="failure_load_images_msg">Failed to obtain river pollution images. Please try again later.</string>
     <string name="sending_incident_title">Incident Submission</string>
     <string name="sending_incident_msg">Submitting your river pollution incident...</string>
     <string name="sending_incident_msg_please_wait">Please wait</string>
-	<string name = "main_screen_image"> Main Image </string>
+    <string name="loading_images_title">Loading River Pollution Images</string>
+    <string name="please_wait">Please wait...</string>
+    <string name="main_screen_image"> Main Image </string>
+
 </resources>
