@@ -46,7 +46,7 @@ public class GetIncidentsAsyncTask extends AsyncTask<Void, Void, JSONArray> {
 
 	/** Does not do anything as nothing needs to be done upon ending*/
 	protected void onPostExecute(JSONArray data) {
-		mainScreen.endLoadingIncidents(data);
+		mainScreen.saveIncidentDataUris(data);
 
 	}
 }

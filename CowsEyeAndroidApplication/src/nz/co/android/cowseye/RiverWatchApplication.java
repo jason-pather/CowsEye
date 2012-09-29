@@ -203,7 +203,7 @@ public class RiverWatchApplication extends Application  {
 //	}
 
 	/* Saves a bitmap to disk */
-	private String saveBitmapToDisk(Bitmap bitmap) throws IOException {
+	public String saveBitmapToDisk(Bitmap bitmap) throws IOException {
 		try{
 			final long num = System.currentTimeMillis();
 			final String ID = getString(R.string.app_name) +num;
@@ -216,10 +216,7 @@ public class RiverWatchApplication extends Application  {
 		}
 		catch (FileNotFoundException e) {
 			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-		}
+		} 
 		throw new IOException("Could not create file or could not write to created file");
 	}
 
