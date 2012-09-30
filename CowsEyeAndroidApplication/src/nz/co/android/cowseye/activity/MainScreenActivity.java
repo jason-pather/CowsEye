@@ -57,6 +57,12 @@ public class MainScreenActivity extends Activity {
 	private boolean test = true;
 
 	private ProgressDialog progressDialog;
+	
+	private String[] imageUrls;
+	private String[] thumbUrls;
+	private boolean loadingGallery = false;
+	private boolean haveBaseIncidents = false;
+
 
 	/** Called when the activity is first created. */
 	@Override
@@ -65,6 +71,7 @@ public class MainScreenActivity extends Activity {
 		setContentView(R.layout.main_screen_layout);
 		myApplication = (RiverWatchApplication)getApplication();
 		setupUI();
+		new GetIncidentsAsyncTask(MainScreenActivity.this, new GetIncidentsEvent(myApplication, 0, 9)).execute();
 		Log.d(toString(), "onCreate");
 	}
 
@@ -94,26 +101,32 @@ public class MainScreenActivity extends Activity {
 		buttonSubmit.setOnClickListener(new SubmitPollutionEventOnClickListener());
 		buttonGallery = (Button)findViewById(R.id.button_view_gallery);
 		buttonGallery.setOnClickListener(new View.OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
 				progressDialog.show();
-				new GetIncidentsAsyncTask(MainScreenActivity.this, new GetIncidentsEvent(myApplication, 0, 9)).execute();
-				
+				//only get new list of incidents if we don't already have them
+				if(!haveBaseIncidents){
+					new GetIncidentsAsyncTask(MainScreenActivity.this, new GetIncidentsEvent(myApplication, 0, 9)).execute();
+					loadingGallery = true;
+				}
+				else
+					loadGallery();
 			}
 		});
-		if(test){
-			buttonGallery.setVisibility(View.VISIBLE);
-		}
+
 	}
 	
-	public void endLoadingIncidents(JSONArray data){
+	/** Saves incident data received from a JSON object after calling the getIncidents web service */
+	public void saveIncidentDataUris(JSONArray data){
 		progressDialog.dismiss();
-		if(data==null){
-			Toast.makeText(this, getString(R.string.failure_load_images_msg), Toast.LENGTH_LONG).show();
+		if(data==null ){
+			if(loadingGallery)
+				Toast.makeText(this, getString(R.string.failure_load_images_msg), Toast.LENGTH_LONG).show();
 		}
 		else{
-			String[] imageUrls = new String[data.length()];
-			String[] thumbUrls = new String[data.length()];
+			imageUrls = new String[data.length()];
+			thumbUrls = new String[data.length()];
 			for(int i = 0; i < data.length(); i++ ){
 				try {
 					JSONObject incident = data.getJSONObject(i);
@@ -126,24 +139,30 @@ public class MainScreenActivity extends Activity {
 				}
 				
 			}
-			Intent i = new Intent(MainScreenActivity.this, IncidentGalleryActivity.class);
-			i.putExtra(Constants.GALLERY_IMAGES_ARRAY_KEY, imageUrls);
-			i.putExtra(Constants.GALLERY_THUMBNAIL_IMAGES_ARRAY_KEY, thumbUrls);
-			startActivity(i);
+			haveBaseIncidents = true;
+			if(loadingGallery)
+				loadGallery();
 		}
+	}
+	public void loadGallery(){
+		loadingGallery = false;
+		Intent i = new Intent(MainScreenActivity.this, IncidentGalleryActivity.class);
+		i.putExtra(Constants.GALLERY_IMAGES_ARRAY_KEY, imageUrls);
+		i.putExtra(Constants.GALLERY_THUMBNAIL_IMAGES_ARRAY_KEY, thumbUrls);
+		startActivity(i);
 	}
 
 	@Override
 	protected void onStart() {
 		super.onStart();
-        myApplication.requestStartEventHandling();
+//        myApplication.requestStartEventHandling();
 		Log.i(toString(), "MainScreen requestStartEventHandling");
 	}
 	
 	@Override
 	protected void onDestroy() {
 		Log.i(toString(), "MainScreen stopTimerEventHandling");
-		myApplication.stopTimerEventHandling();
+//		myApplication.stopTimerEventHandling();
 		super.onDestroy();
 	}
 

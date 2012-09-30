@@ -16,9 +16,9 @@
     <color name="preview_background_start">#C0BABA</color>
     <color name="preview_background_end">#C0DAFF</color>
     <color name="riverWatch_outline_color">#003310</color>
-    <color name="riverWatch_button_start_colour"> #5BC0DE </color>
-    <color name="riverWatch_button_end_colour"> #2F96B4 </color>
-    <color name="riverWatch_selectbutton_start_colour"> #FBB450 </color>
-    <color name="riverWatch_selectbutton_end_colour"> #F89406 </color>
+    <color name="riverWatch_button_start_colour">#5BC0DE</color>
+    <color name="riverWatch_button_end_colour">#2F96B4</color>
+    <color name="riverWatch_selectbutton_start_colour">#FBB450</color>
+    <color name="riverWatch_selectbutton_end_colour">#F89406</color>
 
 </resources>

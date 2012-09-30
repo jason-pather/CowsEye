@@ -126,7 +126,7 @@ public class RiverWatchGallery extends Gallery {
 		holder.progressBar.setVisibility(View.VISIBLE);
 		//launch asynctask to get image
 		GetImageEvent event = new GetImageEvent(imageUris[position]);;
-		new GetImageAsyncTask(this, holder, event).execute();
+		new GetImageAsyncTask(myApplication, this, holder, event).execute();
 
 		//		holder.pageImageView.setLayoutParams(new FrameLayout.LayoutParams(myApplication.getScreenWidth(),myApplication.getScreenHeight()));
 		//		holder.pageImageView.setScaleType(ImageView.ScaleType.CENTER);
