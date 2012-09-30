@@ -89,11 +89,11 @@ public class GridIncidentGalleryActivity extends Activity {
 		}
 
 		// references to our images
-		private Integer[] mThumbIds = { R.drawable.logo, R.drawable.riverwatch,
-				R.drawable.cowgrazing, R.drawable.logo, R.drawable.riverwatch,
-				R.drawable.cowgrazing, R.drawable.logo, R.drawable.logo,
-				R.drawable.riverwatch, R.drawable.cowgrazing, R.drawable.logo,
-				R.drawable.riverwatch, };
+		private Integer[] mThumbIds = { R.drawable.logo, R.drawable.logo,
+				R.drawable.logo, R.drawable.logo, R.drawable.logo,
+				R.drawable.logo, R.drawable.logo, R.drawable.logo,
+				R.drawable.logo, R.drawable.logo, R.drawable.logo,
+				R.drawable.logo, };
 
 	}
 }
