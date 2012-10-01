@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import nz.co.android.cowseye.RiverWatchApplication;
+import nz.co.android.cowseye.activity.GridIncidentGalleryActivity;
 import nz.co.android.cowseye.activity.MainScreenActivity;
 import nz.co.android.cowseye.common.Constants;
 import nz.co.android.cowseye.event.GetImageEvent;
@@ -11,7 +12,6 @@ import nz.co.android.cowseye.event.GetIncidentsEvent;
 import nz.co.android.cowseye.utility.JSONHelper;
 import nz.co.android.cowseye.utility.Utils;
 import nz.co.android.cowseye.view.RiverWatchGallery;
-import nz.co.android.cowseye.view.RiverWatchGallery.ViewHolder;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -27,16 +27,30 @@ import android.util.Log;
 public class GetImageAsyncTask extends AsyncTask<Void, Void, String> {
 
 
-	private final RiverWatchGallery riverWatchGallery;
-	private final ViewHolder holder;
+	private  RiverWatchGallery riverWatchGallery;
+	private  RiverWatchGallery.ViewHolder galleryHolder;
+	private  GridIncidentGalleryActivity.ViewHolder gridHolder;
+
 	private final GetImageEvent event;
 	private final RiverWatchApplication myApplication;
+	private final int positionInArray;
+	private  GridIncidentGalleryActivity gridIncidentGalleryActivity;
 
-	public GetImageAsyncTask(RiverWatchApplication myApplication, RiverWatchGallery riverWatchGallery, RiverWatchGallery.ViewHolder holder, GetImageEvent event){
+	public GetImageAsyncTask(RiverWatchApplication myApplication, RiverWatchGallery riverWatchGallery, RiverWatchGallery.ViewHolder holder, GetImageEvent event, int positionInArray){
 		this.myApplication = myApplication;
 		this.riverWatchGallery = riverWatchGallery;
-		this.holder = holder;
+		this.galleryHolder = holder;
 		this.event = event;
+		this.positionInArray = positionInArray;
+	}
+
+	public GetImageAsyncTask(RiverWatchApplication myApplication,GridIncidentGalleryActivity gridIncidentGalleryActivity,
+			GridIncidentGalleryActivity.ViewHolder holder, GetImageEvent event, int position) {
+		this.myApplication = myApplication;
+		this.gridIncidentGalleryActivity = gridIncidentGalleryActivity;
+		this.gridHolder = holder;
+		this.event = event;
+		positionInArray = position;
 	}
 
 	protected String doInBackground(Void... Void) {
@@ -76,6 +90,9 @@ public class GetImageAsyncTask extends AsyncTask<Void, Void, String> {
 	}
 
 	protected void onPostExecute(String imagePath) {
-		riverWatchGallery.setImage(holder, imagePath);
+		if(riverWatchGallery!=null)
+			riverWatchGallery.setImage(galleryHolder, imagePath,positionInArray);
+		else if(gridIncidentGalleryActivity!=null)
+			gridIncidentGalleryActivity.setImage(gridHolder, imagePath, positionInArray);
 	}
 }

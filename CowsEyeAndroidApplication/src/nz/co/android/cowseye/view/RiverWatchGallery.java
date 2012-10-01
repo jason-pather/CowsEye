@@ -1,18 +1,13 @@
 package nz.co.android.cowseye.view;
 
-import java.io.IOException;
-import java.util.List;
-
 import nz.co.android.cowseye.R;
 import nz.co.android.cowseye.RiverWatchApplication;
 import nz.co.android.cowseye.activity.IncidentGalleryActivity;
 import nz.co.android.cowseye.event.GetImageEvent;
 import nz.co.android.cowseye.service.GetImageAsyncTask;
-import nz.co.android.cowseye.utility.Utils;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -91,7 +86,7 @@ public class RiverWatchGallery extends Gallery {
 	}
 
 	public View getView(int position, View convertView, View parent){
-		Log.d(toString(), "river watch gallery get view : "+position);
+//		Log.d(toString(), "river watch gallery get view : "+position);
 		// A ViewHolder keeps references to children views to avoid unneccessary calls
 		// to findViewById() on each row.
 		final ViewHolder holder;
@@ -120,24 +115,30 @@ public class RiverWatchGallery extends Gallery {
 
 	/* Build a View for the MyGalleryImage adapter */
 	public void buildView(int position, final ViewHolder holder) {
-//		Log.d(toString(), "im : "+imageUris[position]);
-		//TODO try to get from local storage
-		setImage(holder, serverImageUris[position]);
 
-		/** If fails to get from local storage, put a progress bar in and download */
-		holder.progressBar.setVisibility(View.VISIBLE);
-		//launch asynctask to get image
-		GetImageEvent event = new GetImageEvent(serverImageUris[position]);;
-		new GetImageAsyncTask(myApplication, this, holder, event).execute();
-
+		//try to get from local storage
+		String localImageUri = localImageUris[position];
+//		Log.d(toString(), "local image : "+localImageUri);
+		if(localImageUri !=null && !localImageUri.equals(""))
+			setImage(holder, localImageUris[position], position);
+		else{
+			/** If fails to get from local storage, put a progress bar in and download */
+			holder.progressBar.setVisibility(View.VISIBLE);
+			//launch asynctask to get image
+			GetImageEvent event = new GetImageEvent(serverImageUris[position]);
+			new GetImageAsyncTask(myApplication, this, holder, event,position).execute();
+		}
 		//		holder.pageImageView.setLayoutParams(new FrameLayout.LayoutParams(myApplication.getScreenWidth(),myApplication.getScreenHeight()));
 		//		holder.pageImageView.setScaleType(ImageView.ScaleType.CENTER);
 	}
-	public void setImage(ViewHolder holder, String pathName){
-		Bitmap bm = BitmapFactory.decodeFile(pathName);
-		holder.pageImageView.setImageBitmap(bm);
-		holder.progressBar.setVisibility(View.INVISIBLE);	
-		
+
+	public void setImage(ViewHolder holder, String pathName, int positionInArray){
+		if(pathName!=null && !pathName.equals("")){
+			localImageUris[positionInArray] = pathName;
+			Bitmap bm = BitmapFactory.decodeFile(pathName);
+			holder.pageImageView.setImageBitmap(bm);
+			holder.progressBar.setVisibility(View.INVISIBLE);
+		}
 	}
 
 	/**Scrolls the view very fast in the appropriate direction simulating a fling */
@@ -219,7 +220,7 @@ public class RiverWatchGallery extends Gallery {
 		 * next call
 		 */
 		public View getView(int position, View convertView, ViewGroup parent) {
-			Log.e(toString(), "getting view : "+position);
+//			Log.e(toString(), "getting view : "+position);
 			//Get the Gallery to make the view
 			View pageView = gallery.getView(position,convertView,parent);
 			return pageView;

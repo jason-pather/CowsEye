@@ -2,9 +2,18 @@ package nz.co.android.cowseye.activity;
 
 import java.util.List;
 import nz.co.android.cowseye.R;
+import nz.co.android.cowseye.RiverWatchApplication;
+import nz.co.android.cowseye.common.Constants;
+import nz.co.android.cowseye.event.GetImageEvent;
+import nz.co.android.cowseye.service.GetImageAsyncTask;
+import nz.co.android.cowseye.view.RiverWatchGallery.ViewHolder;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
@@ -12,59 +21,71 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.FrameLayout.LayoutParams;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 public class GridIncidentGalleryActivity extends Activity {
 
 	private Button backButton;
+	
+	private String[] serverImageUris;
+	private String[] serverThumbnailImageUris;
+	private String[] localThumbnailImageUris;
+	private String[] localImageUris;
+	private RiverWatchApplication myApplication;
+	private LayoutInflater inflater;
+
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.grid_incident_gallery_layout);
+		Intent intent = getIntent();
+		serverImageUris = intent.getStringArrayExtra(Constants.GALLERY_IMAGES_ARRAY_KEY);
+		serverThumbnailImageUris = intent.getStringArrayExtra(Constants.GALLERY_THUMBNAIL_IMAGES_ARRAY_KEY);
+		myApplication = (RiverWatchApplication)getApplication();
+		// Cache the LayoutInflate to avoid asking for a new one each time.
+		inflater = LayoutInflater.from(this);
+		
+		//TODO query database to get local Images
+		localImageUris = new String[serverImageUris.length];
+		localThumbnailImageUris = new String[serverThumbnailImageUris.length];
+		
+
 
 		GridView gridview = (GridView) findViewById(R.id.gridview);
 		gridview.setAdapter(new ImageAdapter(this));
-
 		gridview.setOnItemClickListener(new OnItemClickListener() {
-
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View view,
-					int position, long arg3) {
-				// TODO Auto-generated method stub
-
+			public void onItemClick(AdapterView<?> arg0, View view,int position, long arg3) {
+				//TODO load gallery with intent for which page to go to
 			}
-
 		});
 
 		backButton = (Button) findViewById(R.id.backButton);
 		backButton.setOnClickListener(new OnClickListener() {
-
 			public void onClick(View v) {
-				finish();
 				onBackPressed();
-
 			}
-
 		});
 
 	}
 
 	private class ImageAdapter extends BaseAdapter {
 		private Context mContext;
-		private List<String> healthyFoods;
 
 		public ImageAdapter(Context c) {
 			mContext = c;
 		}
-
 		public int getCount() {
-			return mThumbIds.length;
+			return serverThumbnailImageUris.length;
 		}
 
 		public String getItem(int position) {
-			return healthyFoods.get(position);
+			return serverThumbnailImageUris[position];
 		}
 
 		public long getItemId(int position) {
@@ -73,27 +94,57 @@ public class GridIncidentGalleryActivity extends Activity {
 
 		// create a new ImageView for each item referenced by the Adapter
 		public View getView(int position, View convertView, ViewGroup parent) {
-			ImageView imageView;
+			final ViewHolder holder;
 			if (convertView == null) { // if it's not recycled, initialize some
 										// attributes
-				imageView = new ImageView(mContext);
-				imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
-				imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-				imageView.setPadding(8, 8, 8, 8);
-			} else {
-				imageView = (ImageView) convertView;
+				convertView = inflater.inflate(R.layout.incident_gallery_layout_cell, null);
+				holder = new ViewHolder();
+
+				holder.imageView = (ImageView)convertView.findViewById(R.id.incident_image);
+				holder.progressBar = (ProgressBar)convertView.findViewById(R.id.incident_progress_bar);
+			
+				holder.imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+				holder.imageView.setPadding(8, 8, 8, 8);
+				convertView.setTag(holder);
+			}  else{ 
+				// Get the ViewHolder back to get fast access to the View
+				holder = (ViewHolder) convertView.getTag();
 			}
-
-			imageView.setImageResource(mThumbIds[position]);
-			return imageView;
+	
+			buildView(position, holder);
+			return convertView;
 		}
-
-		// references to our images
-		private Integer[] mThumbIds = { R.drawable.logo, R.drawable.logo,
-				R.drawable.logo, R.drawable.logo, R.drawable.logo,
-				R.drawable.logo, R.drawable.logo, R.drawable.logo,
-				R.drawable.logo, R.drawable.logo, R.drawable.logo,
-				R.drawable.logo, };
-
 	}
+	
+	
+	public static class ViewHolder {
+		ProgressBar progressBar;
+		ImageView imageView;
+	}
+	
+	/* Build a View for the MyGalleryImage adapter */
+	public void buildView(int position, final ViewHolder holder) {
+		//try to get from local storage
+		String localImageUri = localThumbnailImageUris[position];
+//		Log.d(toString(), "local image : "+localImageUri);
+		if(localImageUri !=null && !localImageUri.equals(""))
+			setImage(holder, localImageUri, position);
+		else{
+			/** If fails to get from local storage, put a progress bar in and download */
+			holder.progressBar.setVisibility(View.VISIBLE);
+			//launch asynctask to get image
+			GetImageEvent event = new GetImageEvent(serverThumbnailImageUris[position]);
+			new GetImageAsyncTask(myApplication, this, holder, event,position).execute();
+		}
+	}
+
+	public void setImage(ViewHolder holder, String pathName, int positionInArray){
+		if(pathName!=null && !pathName.equals("")){
+			localThumbnailImageUris[positionInArray] = pathName;
+			Bitmap bm = BitmapFactory.decodeFile(pathName);
+			holder.imageView.setImageBitmap(bm);
+			holder.progressBar.setVisibility(View.INVISIBLE);
+		}
+	}
+	
 }

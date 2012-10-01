@@ -54,13 +54,11 @@ public class MainScreenActivity extends Activity {
 	private Button buttonGallery;
 	private RiverWatchApplication myApplication;
 	
-	private boolean test = true;
-
 	private ProgressDialog progressDialog;
 	
 	private String[] imageUrls;
 	private String[] thumbUrls;
-	private boolean loadingGallery = false;
+	private boolean loadingGridView = false;
 	private boolean haveBaseIncidents = false;
 
 
@@ -106,11 +104,11 @@ public class MainScreenActivity extends Activity {
 				progressDialog.show();
 				//only get new list of incidents if we don't already have them
 				if(!haveBaseIncidents){
-					new GetIncidentsAsyncTask(MainScreenActivity.this, new GetIncidentsEvent(myApplication, 0, 9)).execute();
-					loadingGallery = true;
+					new GetIncidentsAsyncTask(MainScreenActivity.this, new GetIncidentsEvent(myApplication, 0, 50)).execute();
+					loadingGridView = true;
 				}
 				else
-					loadGallery();
+					loadGridView();
 			}
 		});
 
@@ -120,7 +118,7 @@ public class MainScreenActivity extends Activity {
 	public void saveIncidentDataUris(JSONArray data){
 		progressDialog.dismiss();
 		if(data==null ){
-			if(loadingGallery)
+			if(loadingGridView)
 				Toast.makeText(this, getString(R.string.failure_load_images_msg), Toast.LENGTH_LONG).show();
 		}
 		else{
@@ -139,13 +137,15 @@ public class MainScreenActivity extends Activity {
 				
 			}
 			haveBaseIncidents = true;
-			if(loadingGallery)
-				loadGallery();
+			if(loadingGridView)
+				loadGridView();
 		}
 	}
-	public void loadGallery(){
-		loadingGallery = false;
-		Intent i = new Intent(MainScreenActivity.this, IncidentGalleryActivity.class);
+	public void loadGridView(){
+		loadingGridView = false;
+		if(progressDialog!=null)
+			progressDialog.dismiss();
+		Intent i = new Intent(MainScreenActivity.this, GridIncidentGalleryActivity.class);
 		i.putExtra(Constants.GALLERY_IMAGES_ARRAY_KEY, imageUrls);
 		i.putExtra(Constants.GALLERY_THUMBNAIL_IMAGES_ARRAY_KEY, thumbUrls);
 		startActivity(i);
