@@ -163,7 +163,7 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
-					final boolean success = RiverWatchApplication.processSubmissionEventResponse(currentEvent.processRaw());
+					final boolean success = RiverWatchApplication.processEventResponse(currentEvent.processRaw());
 					handler.post(new Runnable() {
 
 						@Override

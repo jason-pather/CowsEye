@@ -79,9 +79,10 @@ public class IncidentGalleryActivity extends Activity {
 
 		myApplication = (RiverWatchApplication)getApplication();
 		myGallery = (RiverWatchGallery) (findViewById(R.id.incident_gallery));
-		//TODO show ProgressDialog querying for image downloads
 		
-		myGallery.setupUI(myApplication, this, imageUris);
+		//TODO query database to get localImageUris
+		String[] localImageUris = imageUris;
+		myGallery.setupUI(myApplication, this, imageUris, localImageUris);
 	}
 
 	private void setupThumbnails(){

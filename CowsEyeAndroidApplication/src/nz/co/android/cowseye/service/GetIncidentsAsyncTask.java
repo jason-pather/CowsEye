@@ -31,7 +31,7 @@ public class GetIncidentsAsyncTask extends AsyncTask<Void, Void, JSONArray> {
 		HttpResponse response = getIncidentEvent.processRaw();
 		Log.d(toString(), "response : "+response);
 		JSONArray jsonArray = null;
-		if(RiverWatchApplication.processSubmissionEventResponse(response)){		
+		if(RiverWatchApplication.processEventResponse(response)){		
 			try{
 				JSONObject jsonObject = JSONHelper.parseHttpResponseAsJSON(response);
 				if(jsonObject.has(Constants.JSON_INCIDENTS_KEY))

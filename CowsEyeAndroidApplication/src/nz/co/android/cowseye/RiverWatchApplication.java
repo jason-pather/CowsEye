@@ -257,27 +257,26 @@ public class RiverWatchApplication extends Application  {
 	 * @param response from a submission event
 	 * @return true if succesfull submission, otherwise false
 	 */
-	public static boolean processSubmissionEventResponse(HttpResponse response){
+	public static boolean processEventResponse(HttpResponse response){
 		if(response==null)
 			return false;
 		StatusLine statusLine = response.getStatusLine();
 		if(statusLine == null)
 			return false;
 		int statusCode = statusLine.getStatusCode();
-		Log.i("app", "statusCode : "+statusCode);
 		try{
 			switch(statusCode){
 			case Utils.HTTP_OK:
-				Log.i("app", "Sucessful submission!");
+				Log.i("app", "statusCode : "+statusCode+", Sucessful event response!");
 				return true;
 			case Utils.HTTP_LOGIC_ERROR:
-				Log.i("app", "Logic error: Unsucessful submission!");
+				Log.i("app", "statusCode : "+statusCode+", Logic error: Unsucessful event response!");
 				return false;
 			case Utils.HTTP_SERVER_ERROR:
-				Log.i("app", "Server error: Unsucessful submission!");
+				Log.i("app", "statusCode : "+statusCode+", Server error: Unsucessful event response!");
 				return false;
 			default:
-				Log.i("app", "Uncaught error: Unsucessful submission!");
+				Log.i("app", "statusCode : "+statusCode+", ncaught error: Unsucessful event response!");
 				return false;
 			}
 			//			JSONObject jsonObject = JSONHelper.parseHttpResponseAsJSON(response);

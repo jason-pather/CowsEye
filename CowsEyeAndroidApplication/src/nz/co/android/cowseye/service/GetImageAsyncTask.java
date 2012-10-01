@@ -9,6 +9,7 @@ import nz.co.android.cowseye.common.Constants;
 import nz.co.android.cowseye.event.GetImageEvent;
 import nz.co.android.cowseye.event.GetIncidentsEvent;
 import nz.co.android.cowseye.utility.JSONHelper;
+import nz.co.android.cowseye.utility.Utils;
 import nz.co.android.cowseye.view.RiverWatchGallery;
 import nz.co.android.cowseye.view.RiverWatchGallery.ViewHolder;
 
@@ -40,9 +41,8 @@ public class GetImageAsyncTask extends AsyncTask<Void, Void, String> {
 
 	protected String doInBackground(Void... Void) {
 		HttpResponse response = event.processRaw();
-		Log.d(toString(), "response : "+response);
 
-		if(RiverWatchApplication.processSubmissionEventResponse(response)){
+		if(RiverWatchApplication.processEventResponse(response)){
 			//save image from input stream
 			return saveImageFromInputStream(response);
 		}
@@ -59,11 +59,10 @@ public class GetImageAsyncTask extends AsyncTask<Void, Void, String> {
 			InputStream instream;
 			try {
 				instream = entity.getContent();
-				Bitmap bm = BitmapFactory.decodeStream(instream);
-				instream.close();
+				Bitmap bm = Utils.scaleBitmap(instream, 2);
 				//save bitmap to filepath
 				if(bm!=null){
-					//TODO Save this to database with ID
+					//TODO Save this to database with ID0.
 					return myApplication.saveBitmapToDisk(bm);
 				}
 			} catch (IllegalStateException e) {

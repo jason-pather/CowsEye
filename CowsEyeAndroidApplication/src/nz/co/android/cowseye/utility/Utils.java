@@ -22,19 +22,19 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 public class Utils {
-	
+
 	public static final int HTTP_OK = 200;
 	public static final int HTTP_LOGIC_ERROR = 400;
 	public static final int HTTP_SERVER_ERROR = 500;
-	
+
 	//
 	public static final int MAX_PREVIEW_IMAGE_SIZE_WIDTH = 1600;
 	public static final int MAX_PREVIEW_IMAGE_SIZE_HEIGHT = 1600;
 
-//	public static final int IMAGE_SIZE_WIDTH = 1200;
-//	public static final int IMAGE_SIZE_HEIGHT = 800;
-	
-//	public static final int MAX_GALLERY_IMAGE_SIZE = 1600;
+	//	public static final int IMAGE_SIZE_WIDTH = 1200;
+	//	public static final int IMAGE_SIZE_HEIGHT = 800;
+
+	//	public static final int MAX_GALLERY_IMAGE_SIZE = 1600;
 
 
 	//Camera Constants
@@ -100,7 +100,7 @@ public class Utils {
 			inputStream.close();
 			//re-orient
 			float rotation = rotationForImage(uri);
-//			Log.d("UTILS", "rotation : "+rotation);
+			//			Log.d("UTILS", "rotation : "+rotation);
 			if (rotation != 0f) {
 				Matrix matrix = new Matrix();
 				matrix.preRotate(rotation);
@@ -113,7 +113,7 @@ public class Utils {
 				int orientation = -1;
 				if (cur != null && cur.moveToFirst()) {
 					orientation = cur.getInt(cur.getColumnIndex(orientationColumn[0]));
-//					Log.d("UTILS", "orientation : "+orientation);
+					//					Log.d("UTILS", "orientation : "+orientation);
 					if (orientation > 0) {
 						Matrix matrix = new Matrix();
 						matrix.preRotate(orientation);
@@ -128,6 +128,21 @@ public class Utils {
 				cur.close();
 			}
 		}
+		return b;
+	}
+	/**
+	 * Scales the bitmap 
+	 * @return the scaled-down bitmap.
+	 * @throws IOException 
+	 */
+	public static Bitmap scaleBitmap(InputStream inputStream, int scale) throws IOException {
+		Bitmap b = null;
+
+		BitmapFactory.Options o2 = new BitmapFactory.Options();
+		o2.inSampleSize = scale;
+		b = BitmapFactory.decodeStream(inputStream, null, o2);
+		inputStream.close();
+
 		return b;
 	}
 

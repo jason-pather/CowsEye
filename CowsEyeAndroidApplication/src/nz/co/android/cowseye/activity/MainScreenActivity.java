@@ -72,7 +72,6 @@ public class MainScreenActivity extends Activity {
 		myApplication = (RiverWatchApplication)getApplication();
 		setupUI();
 		new GetIncidentsAsyncTask(MainScreenActivity.this, new GetIncidentsEvent(myApplication, 0, 9)).execute();
-		Log.d(toString(), "onCreate");
 	}
 
 	/** This gets called after a successfull submission event as the activity is already open and

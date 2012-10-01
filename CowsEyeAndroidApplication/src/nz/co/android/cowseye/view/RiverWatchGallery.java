@@ -32,7 +32,8 @@ import android.widget.ProgressBar;
  */
 public class RiverWatchGallery extends Gallery {
 
-	private String[] imageUris;
+	private String[] serverImageUris;
+	private String[] localImageUris;
 	private static Context context;
 	private static MyGalleryImageAdapter imageAdapter;
 	private RiverWatchApplication myApplication;
@@ -57,11 +58,12 @@ public class RiverWatchGallery extends Gallery {
 
 	/** Sets up the UI with the given list of image Uris 
 	 * @param incidentGalleryActivity */
-	public void setupUI(RiverWatchApplication app, IncidentGalleryActivity incidentGalleryActivity, String[] imageUris){
+	public void setupUI(RiverWatchApplication app, IncidentGalleryActivity incidentGalleryActivity, String[] serverImageUris, String[] localImageUris){
 		myApplication = app;
 		this.incidentGalleryActivity = incidentGalleryActivity;
 		this.context = incidentGalleryActivity;
-		this.imageUris = imageUris;
+		this.serverImageUris = serverImageUris;
+		this.localImageUris = localImageUris;
 		// Cache the LayoutInflate to avoid asking for a new one each time.
 		inflater = LayoutInflater.from(context);
 		//Create and set the imageAdapter on this gallery
@@ -85,11 +87,11 @@ public class RiverWatchGallery extends Gallery {
 	}
 
 	public int getNumberOfImages() {
-		return imageUris.length;
+		return serverImageUris.length;
 	}
 
 	public View getView(int position, View convertView, View parent){
-		Log.d(toString(), "river watch gallery get view");
+		Log.d(toString(), "river watch gallery get view : "+position);
 		// A ViewHolder keeps references to children views to avoid unneccessary calls
 		// to findViewById() on each row.
 		final ViewHolder holder;
@@ -118,14 +120,14 @@ public class RiverWatchGallery extends Gallery {
 
 	/* Build a View for the MyGalleryImage adapter */
 	public void buildView(int position, final ViewHolder holder) {
-		Log.d(toString(), "im : "+imageUris[position]);
+//		Log.d(toString(), "im : "+imageUris[position]);
 		//TODO try to get from local storage
-		setImage(holder, imageUris[position]);
+		setImage(holder, serverImageUris[position]);
 
 		/** If fails to get from local storage, put a progress bar in and download */
 		holder.progressBar.setVisibility(View.VISIBLE);
 		//launch asynctask to get image
-		GetImageEvent event = new GetImageEvent(imageUris[position]);;
+		GetImageEvent event = new GetImageEvent(serverImageUris[position]);;
 		new GetImageAsyncTask(myApplication, this, holder, event).execute();
 
 		//		holder.pageImageView.setLayoutParams(new FrameLayout.LayoutParams(myApplication.getScreenWidth(),myApplication.getScreenHeight()));
@@ -217,7 +219,7 @@ public class RiverWatchGallery extends Gallery {
 		 * next call
 		 */
 		public View getView(int position, View convertView, ViewGroup parent) {
-			Log.d(toString(), "getView in adapter");
+			Log.e(toString(), "getting view : "+position);
 			//Get the Gallery to make the view
 			View pageView = gallery.getView(position,convertView,parent);
 			return pageView;
