@@ -22,8 +22,9 @@ import android.widget.ProgressBar;
 
 /**
  * A gallery of RiverWatch incidents
+ * 
  * @author Mitchell Lane
- *
+ * 
  */
 public class RiverWatchGallery extends Gallery {
 
@@ -51,9 +52,14 @@ public class RiverWatchGallery extends Gallery {
 		this.context = context;
 	}
 
-	/** Sets up the UI with the given list of image Uris 
-	 * @param incidentGalleryActivity */
-	public void setupUI(RiverWatchApplication app, IncidentGalleryActivity incidentGalleryActivity, String[] serverImageUris, String[] localImageUris){
+	/**
+	 * Sets up the UI with the given list of image Uris
+	 * 
+	 * @param incidentGalleryActivity
+	 */
+	public void setupUI(RiverWatchApplication app,
+			IncidentGalleryActivity incidentGalleryActivity,
+			String[] serverImageUris, String[] localImageUris) {
 		myApplication = app;
 		this.incidentGalleryActivity = incidentGalleryActivity;
 		this.context = incidentGalleryActivity;
@@ -61,23 +67,26 @@ public class RiverWatchGallery extends Gallery {
 		this.localImageUris = localImageUris;
 		// Cache the LayoutInflate to avoid asking for a new one each time.
 		inflater = LayoutInflater.from(context);
-		//Create and set the imageAdapter on this gallery
+		// Create and set the imageAdapter on this gallery
 		imageAdapter = new MyGalleryImageAdapter(this);
 		setAdapter(imageAdapter);
+
 	}
 
-	/* Tell the imageAdapter that the pages have been changed and to 
-	 * refresh itself. Then change the page to the given position
+	/*
+	 * Tell the imageAdapter that the pages have been changed and to refresh
+	 * itself. Then change the page to the given position
 	 */
-	//		public void updateAdapter(int position){
-	//			imageAdapter.notifyDataSetChanged();
-	//			setSelection(position);
-	//			slidingDrawer.redrawThumbnails(currentPageList);
-	//		}
-	public void refreshImageAdapter(){
+	// public void updateAdapter(int position){
+	// imageAdapter.notifyDataSetChanged();
+	// setSelection(position);
+	// slidingDrawer.redrawThumbnails(currentPageList);
+	// }
+	public void refreshImageAdapter() {
 		imageAdapter.notifyDataSetChanged();
 	}
-	public void setImageAdapterSelection(int position){
+
+	public void setImageAdapterSelection(int position) {
 		setSelection(position);
 	}
 
@@ -85,26 +94,32 @@ public class RiverWatchGallery extends Gallery {
 		return serverImageUris.length;
 	}
 
-	public View getView(int position, View convertView, View parent){
-//		Log.d(toString(), "river watch gallery get view : "+position);
-		// A ViewHolder keeps references to children views to avoid unneccessary calls
+	public View getView(int position, View convertView, View parent) {
+		// Log.d(toString(), "river watch gallery get view : "+position);
+		// A ViewHolder keeps references to children views to avoid unneccessary
+		// calls
 		// to findViewById() on each row.
 		final ViewHolder holder;
 
-		// When convertView is not null, we can reuse it directly, there is no need
-		// to reinflate it. We only inflate a new View when the convertView supplied
+		// When convertView is not null, we can reuse it directly, there is no
+		// need
+		// to reinflate it. We only inflate a new View when the convertView
+		// supplied
 		// by ListView is null.
 		if (convertView == null) {
-			convertView = inflater.inflate(R.layout.incident_gallery_layout_cell, null);
+			convertView = inflater.inflate(
+					R.layout.incident_gallery_layout_cell, null);
 			// Creates a ViewHolder and store references to the children views
 			// we want to bind data to.
 			holder = new ViewHolder();
-			holder.pageImageView = (ImageView)convertView.findViewById(R.id.incident_image);
-			holder.progressBar = (ProgressBar)convertView.findViewById(R.id.incident_progress_bar);
+			holder.pageImageView = (ImageView) convertView
+					.findViewById(R.id.incident_image);
+			holder.progressBar = (ProgressBar) convertView
+					.findViewById(R.id.incident_progress_bar);
 
 			convertView.setTag(holder);
 
-		} else{ 
+		} else {
 			// Get the ViewHolder back to get fast access to the View
 			holder = (ViewHolder) convertView.getTag();
 		}
@@ -116,24 +131,29 @@ public class RiverWatchGallery extends Gallery {
 	/* Build a View for the MyGalleryImage adapter */
 	public void buildView(int position, final ViewHolder holder) {
 
-		//try to get from local storage
+		// try to get from local storage
 		String localImageUri = localImageUris[position];
-//		Log.d(toString(), "local image : "+localImageUri);
-		if(localImageUri !=null && !localImageUri.equals(""))
+		// Log.d(toString(), "local image : "+localImageUri);
+		if (localImageUri != null && !localImageUri.equals(""))
 			setImage(holder, localImageUris[position], position);
-		else{
-			/** If fails to get from local storage, put a progress bar in and download */
+		else {
+			/**
+			 * If fails to get from local storage, put a progress bar in and
+			 * download
+			 */
 			holder.progressBar.setVisibility(View.VISIBLE);
-			//launch asynctask to get image
+			// launch asynctask to get image
 			GetImageEvent event = new GetImageEvent(serverImageUris[position]);
-			new GetImageAsyncTask(myApplication, this, holder, event,position).execute();
+			new GetImageAsyncTask(myApplication, this, holder, event, position)
+					.execute();
 		}
-		//		holder.pageImageView.setLayoutParams(new FrameLayout.LayoutParams(myApplication.getScreenWidth(),myApplication.getScreenHeight()));
-		//		holder.pageImageView.setScaleType(ImageView.ScaleType.CENTER);
+		// holder.pageImageView.setLayoutParams(new
+		// FrameLayout.LayoutParams(myApplication.getScreenWidth(),myApplication.getScreenHeight()));
+		// holder.pageImageView.setScaleType(ImageView.ScaleType.CENTER);
 	}
 
-	public void setImage(ViewHolder holder, String pathName, int positionInArray){
-		if(pathName!=null && !pathName.equals("")){
+	public void setImage(ViewHolder holder, String pathName, int positionInArray) {
+		if (pathName != null && !pathName.equals("")) {
 			localImageUris[positionInArray] = pathName;
 			Bitmap bm = BitmapFactory.decodeFile(pathName);
 			holder.pageImageView.setImageBitmap(bm);
@@ -141,9 +161,13 @@ public class RiverWatchGallery extends Gallery {
 		}
 	}
 
-	/**Scrolls the view very fast in the appropriate direction simulating a fling */
+	/**
+	 * Scrolls the view very fast in the appropriate direction simulating a
+	 * fling
+	 */
 	@Override
-	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+			float velocityY) {
 		float velMax = 1800f;
 		float velMin = 800f;
 		float velX = Math.abs(velocityX);
@@ -172,18 +196,19 @@ public class RiverWatchGallery extends Gallery {
 
 	/** Scrolls the Gallery pages */
 	@Override
-	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
+			float distanceY) {
 		setAnimationDuration(300);
 		return super.onScroll(e1, e2, distanceX, distanceY);
 	}
 
 	/** Returns true if the user is scrolling left */
-	private boolean isScrollingLeft(MotionEvent e1, MotionEvent e2){
+	private boolean isScrollingLeft(MotionEvent e1, MotionEvent e2) {
 		return e2.getX() > e1.getX();
 	}
 
 	@Override
-	public boolean onTouchEvent(MotionEvent event){
+	public boolean onTouchEvent(MotionEvent event) {
 		return super.onTouchEvent(event);
 
 	}
@@ -205,30 +230,34 @@ public class RiverWatchGallery extends Gallery {
 			return position;
 		}
 
-		/** This method sneakily gets called by the cache of the gallery 
-		 * to retrieve a cached item in the adapter */
+		/**
+		 * This method sneakily gets called by the cache of the gallery to
+		 * retrieve a cached item in the adapter
+		 */
 		public long getItemId(int position) {
 			// Set the selected page thumbnail
-			//			slidingDrawer.setThumbnailSelection(position);
-			//			currentPageList.setCurrentPageNumber(position);
+			// slidingDrawer.setThumbnailSelection(position);
+			// currentPageList.setCurrentPageNumber(position);
 			return position;
 		}
 
-		/** Gets the view at the given position in the current pageList
-		 * Tries to use pre-built view if in temporary storage, otherwise it
-		 * will create a new view and add it to the temporary storage for faster access
-		 * next call
+		/**
+		 * Gets the view at the given position in the current pageList Tries to
+		 * use pre-built view if in temporary storage, otherwise it will create
+		 * a new view and add it to the temporary storage for faster access next
+		 * call
 		 */
 		public View getView(int position, View convertView, ViewGroup parent) {
-//			Log.e(toString(), "getting view : "+position);
-			//Get the Gallery to make the view
-			View pageView = gallery.getView(position,convertView,parent);
+			// Log.e(toString(), "getting view : "+position);
+
+			// Get the Gallery to make the view
+			View pageView = gallery.getView(position, convertView, parent);
 			return pageView;
 
 		}
 
-
 	}
+
 	public static class ViewHolder {
 		ProgressBar progressBar;
 		ImageView pageImageView;

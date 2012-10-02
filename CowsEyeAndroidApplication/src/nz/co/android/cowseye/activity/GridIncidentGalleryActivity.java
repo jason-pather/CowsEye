@@ -30,7 +30,7 @@ import android.widget.ProgressBar;
 public class GridIncidentGalleryActivity extends Activity {
 
 	private Button backButton;
-	
+
 	private String[] serverImageUris;
 	private String[] serverThumbnailImageUris;
 	private String[] localThumbnailImageUris;
@@ -38,30 +38,41 @@ public class GridIncidentGalleryActivity extends Activity {
 	private RiverWatchApplication myApplication;
 	private LayoutInflater inflater;
 
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.grid_incident_gallery_layout);
 		Intent intent = getIntent();
-		serverImageUris = intent.getStringArrayExtra(Constants.GALLERY_IMAGES_ARRAY_KEY);
-		serverThumbnailImageUris = intent.getStringArrayExtra(Constants.GALLERY_THUMBNAIL_IMAGES_ARRAY_KEY);
-		myApplication = (RiverWatchApplication)getApplication();
+		serverImageUris = intent
+				.getStringArrayExtra(Constants.GALLERY_IMAGES_ARRAY_KEY);
+		serverThumbnailImageUris = intent
+				.getStringArrayExtra(Constants.GALLERY_THUMBNAIL_IMAGES_ARRAY_KEY);
+
+		myApplication = (RiverWatchApplication) getApplication();
 		// Cache the LayoutInflate to avoid asking for a new one each time.
 		inflater = LayoutInflater.from(this);
-		
-		//TODO query database to get local Images
+
+		// TODO query database to get local Images
 		localImageUris = new String[serverImageUris.length];
 		localThumbnailImageUris = new String[serverThumbnailImageUris.length];
-		
-
 
 		GridView gridview = (GridView) findViewById(R.id.gridview);
 		gridview.setAdapter(new ImageAdapter(this));
 		gridview.setOnItemClickListener(new OnItemClickListener() {
+			Intent intent = new Intent(GridIncidentGalleryActivity.this,
+					IncidentGalleryActivity.class);
+
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View view,int position, long arg3) {
-				//TODO load gallery with intent for which page to go to
+			public void onItemClick(AdapterView<?> arg0, View view,
+					int position, long arg3) {
+
+				intent.putExtra("Page Number", position);
+				intent.putExtra(Constants.GALLERY_IMAGES_ARRAY_KEY,
+						serverImageUris);
+				intent.putExtra(Constants.GALLERY_THUMBNAIL_IMAGES_ARRAY_KEY,
+						serverThumbnailImageUris);
+				startActivity(intent);
+
 			}
 		});
 
@@ -80,6 +91,7 @@ public class GridIncidentGalleryActivity extends Activity {
 		public ImageAdapter(Context c) {
 			mContext = c;
 		}
+
 		public int getCount() {
 			return serverThumbnailImageUris.length;
 		}
@@ -97,54 +109,61 @@ public class GridIncidentGalleryActivity extends Activity {
 			final ViewHolder holder;
 			if (convertView == null) { // if it's not recycled, initialize some
 										// attributes
-				convertView = inflater.inflate(R.layout.incident_gallery_layout_cell, null);
+				convertView = inflater.inflate(
+						R.layout.incident_gallery_layout_cell, null);
 				holder = new ViewHolder();
 
-				holder.imageView = (ImageView)convertView.findViewById(R.id.incident_image);
-				holder.progressBar = (ProgressBar)convertView.findViewById(R.id.incident_progress_bar);
-			
+				holder.imageView = (ImageView) convertView
+						.findViewById(R.id.incident_image);
+				holder.progressBar = (ProgressBar) convertView
+						.findViewById(R.id.incident_progress_bar);
+
 				holder.imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 				holder.imageView.setPadding(8, 8, 8, 8);
 				convertView.setTag(holder);
-			}  else{ 
+			} else {
 				// Get the ViewHolder back to get fast access to the View
 				holder = (ViewHolder) convertView.getTag();
 			}
-	
+
 			buildView(position, holder);
 			return convertView;
 		}
 	}
-	
-	
+
 	public static class ViewHolder {
 		ProgressBar progressBar;
 		ImageView imageView;
 	}
-	
+
 	/* Build a View for the MyGalleryImage adapter */
 	public void buildView(int position, final ViewHolder holder) {
-		//try to get from local storage
+		// try to get from local storage
 		String localImageUri = localThumbnailImageUris[position];
-//		Log.d(toString(), "local image : "+localImageUri);
-		if(localImageUri !=null && !localImageUri.equals(""))
+		// Log.d(toString(), "local image : "+localImageUri);
+		if (localImageUri != null && !localImageUri.equals(""))
 			setImage(holder, localImageUri, position);
-		else{
-			/** If fails to get from local storage, put a progress bar in and download */
+		else {
+			/**
+			 * If fails to get from local storage, put a progress bar in and
+			 * download
+			 */
 			holder.progressBar.setVisibility(View.VISIBLE);
-			//launch asynctask to get image
-			GetImageEvent event = new GetImageEvent(serverThumbnailImageUris[position]);
-			new GetImageAsyncTask(myApplication, this, holder, event,position).execute();
+			// launch asynctask to get image
+			GetImageEvent event = new GetImageEvent(
+					serverThumbnailImageUris[position]);
+			new GetImageAsyncTask(myApplication, this, holder, event, position)
+					.execute();
 		}
 	}
 
-	public void setImage(ViewHolder holder, String pathName, int positionInArray){
-		if(pathName!=null && !pathName.equals("")){
+	public void setImage(ViewHolder holder, String pathName, int positionInArray) {
+		if (pathName != null && !pathName.equals("")) {
 			localThumbnailImageUris[positionInArray] = pathName;
 			Bitmap bm = BitmapFactory.decodeFile(pathName);
 			holder.imageView.setImageBitmap(bm);
 			holder.progressBar.setVisibility(View.INVISIBLE);
 		}
 	}
-	
+
 }
