@@ -58,6 +58,7 @@ public class MainScreenActivity extends Activity {
 	
 	private String[] imageUrls;
 	private String[] thumbUrls;
+	private String[] descriptions;
 	private boolean loadingGridView = false;
 	private boolean haveBaseIncidents = false;
 
@@ -124,12 +125,14 @@ public class MainScreenActivity extends Activity {
 		else{
 			imageUrls = new String[data.length()];
 			thumbUrls = new String[data.length()];
+			descriptions = new String[data.length()];
 			for(int i = 0; i < data.length(); i++ ){
 				try {
 					JSONObject incident = data.getJSONObject(i);
 					if(incident.has(Constants.JSON_THUMBNAIL_URL_KEY) && incident.has(Constants.JSON_IMAGE_URL_KEY)){
 						imageUrls[i] = incident.getString(Constants.JSON_IMAGE_URL_KEY);
 						thumbUrls[i] = incident.getString(Constants.JSON_THUMBNAIL_URL_KEY);
+						descriptions [i] = incident.getString(Constants.JSON_IMAGE_DESCRIPTION_KEY);
 					}
 				} catch (JSONException e) {
 					Log.e(toString(), "No incident found in JSONObject");
@@ -148,6 +151,7 @@ public class MainScreenActivity extends Activity {
 		Intent i = new Intent(MainScreenActivity.this, GridIncidentGalleryActivity.class);
 		i.putExtra(Constants.GALLERY_IMAGES_ARRAY_KEY, imageUrls);
 		i.putExtra(Constants.GALLERY_THUMBNAIL_IMAGES_ARRAY_KEY, thumbUrls);
+		i.putExtra(Constants.JSON_IMAGE_DESCRIPTION_KEY,descriptions);
 		startActivity(i);
 	}
 

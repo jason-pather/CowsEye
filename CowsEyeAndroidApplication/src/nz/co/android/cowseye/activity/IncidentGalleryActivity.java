@@ -55,6 +55,7 @@ public class IncidentGalleryActivity extends Activity {
 	private String[] serverThumbnailImageUris;
 	private String[] localThumbnailImageUris;
 	private String[] localImageUris;
+	private String [] descriptions;
 	private int pageNumber;
 
 	/** Called when the activity is first created. */
@@ -70,6 +71,9 @@ public class IncidentGalleryActivity extends Activity {
 				.getStringArrayExtra(Constants.GALLERY_THUMBNAIL_IMAGES_ARRAY_KEY);
 		pageNumber = intent.getIntExtra("Page Number", 1);
 
+		
+		descriptions= intent
+				.getStringArrayExtra(Constants.JSON_IMAGE_DESCRIPTION_KEY);
 		// TODO query database to get local Images
 		localImageUris = new String[serverImageUris.length];
 		localThumbnailImageUris = new String[serverThumbnailImageUris.length];
@@ -90,7 +94,7 @@ public class IncidentGalleryActivity extends Activity {
 		myApplication = (RiverWatchApplication) getApplication();
 		myGallery = (RiverWatchGallery) (findViewById(R.id.incident_gallery));
 
-		myGallery.setupUI(myApplication, this, serverImageUris, localImageUris);
+		myGallery.setupUI(myApplication, this, serverImageUris, localImageUris, descriptions);
 		myGallery.setImageAdapterSelection(pageNumber);
 
 	}

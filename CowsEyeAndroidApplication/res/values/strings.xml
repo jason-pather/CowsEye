@@ -53,7 +53,7 @@
     <string name="select_image_from_gallery">Select Image From Gallery</string>
     <string name="take_picture_title">Capture Image</string>
     <string name="incident_view_gallery_title">Gallery</string>
-        <string name="incident_view_grid_title">Incidents</string>
+        <string name="incident_view_grid_title">Incident Gallery </string>
     
     <string name="failed_camera_please_try_again">Failed to save image, please try again</string>
     <string name="failed_to_connect_to_camera_message">Failed to open camera. Please try again later</string>

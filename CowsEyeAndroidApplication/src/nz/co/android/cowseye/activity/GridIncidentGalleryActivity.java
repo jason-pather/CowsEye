@@ -22,10 +22,12 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+
 
 public class GridIncidentGalleryActivity extends Activity {
 
@@ -35,8 +37,10 @@ public class GridIncidentGalleryActivity extends Activity {
 	private String[] serverThumbnailImageUris;
 	private String[] localThumbnailImageUris;
 	private String[] localImageUris;
+	private String [] descriptions;
 	private RiverWatchApplication myApplication;
 	private LayoutInflater inflater;
+
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -47,7 +51,8 @@ public class GridIncidentGalleryActivity extends Activity {
 				.getStringArrayExtra(Constants.GALLERY_IMAGES_ARRAY_KEY);
 		serverThumbnailImageUris = intent
 				.getStringArrayExtra(Constants.GALLERY_THUMBNAIL_IMAGES_ARRAY_KEY);
-
+		descriptions= intent
+				.getStringArrayExtra(Constants.JSON_IMAGE_DESCRIPTION_KEY);
 		myApplication = (RiverWatchApplication) getApplication();
 		// Cache the LayoutInflate to avoid asking for a new one each time.
 		inflater = LayoutInflater.from(this);
@@ -71,6 +76,7 @@ public class GridIncidentGalleryActivity extends Activity {
 						serverImageUris);
 				intent.putExtra(Constants.GALLERY_THUMBNAIL_IMAGES_ARRAY_KEY,
 						serverThumbnailImageUris);
+				intent.putExtra(Constants.JSON_IMAGE_DESCRIPTION_KEY,descriptions);
 				startActivity(intent);
 
 			}
@@ -115,9 +121,13 @@ public class GridIncidentGalleryActivity extends Activity {
 
 				holder.imageView = (ImageView) convertView
 						.findViewById(R.id.incident_image);
+				
+				holder.descriptionView = (TextView)convertView.findViewById(R.id.incident_description);
 				holder.progressBar = (ProgressBar) convertView
 						.findViewById(R.id.incident_progress_bar);
 
+		
+				
 				holder.imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 				holder.imageView.setPadding(8, 8, 8, 8);
 				convertView.setTag(holder);
@@ -134,6 +144,7 @@ public class GridIncidentGalleryActivity extends Activity {
 	public static class ViewHolder {
 		ProgressBar progressBar;
 		ImageView imageView;
+		TextView descriptionView;
 	}
 
 	/* Build a View for the MyGalleryImage adapter */

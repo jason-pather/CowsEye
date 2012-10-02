@@ -60,6 +60,7 @@ public interface Constants {
 	public static final String JSON_INCIDENTS_KEY = "incidents";
 	public static final String JSON_THUMBNAIL_URL_KEY = "thumbnail_url";
 	public static final String JSON_IMAGE_URL_KEY = "image_url";
+	public static final String JSON_IMAGE_DESCRIPTION_KEY = "description";
 
 
 
