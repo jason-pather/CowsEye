@@ -33,24 +33,27 @@ public class GetImageAsyncTask extends AsyncTask<Void, Void, String> {
 
 	private final GetImageEvent event;
 	private final RiverWatchApplication myApplication;
-	private final int positionInArray;
-	private  GridIncidentGalleryActivity gridIncidentGalleryActivity;
+	private final int incidentId;
+	private GridIncidentGalleryActivity gridIncidentGalleryActivity;
+	private int position;
 
-	public GetImageAsyncTask(RiverWatchApplication myApplication, RiverWatchGallery riverWatchGallery, RiverWatchGallery.ViewHolder holder, GetImageEvent event, int positionInArray){
+	public GetImageAsyncTask(RiverWatchApplication myApplication, RiverWatchGallery riverWatchGallery, RiverWatchGallery.ViewHolder holder, GetImageEvent event, int positionInArray,  int incidentId){
 		this.myApplication = myApplication;
 		this.riverWatchGallery = riverWatchGallery;
 		this.galleryHolder = holder;
 		this.event = event;
-		this.positionInArray = positionInArray;
+		this.incidentId = incidentId;
+		this.position = positionInArray;
 	}
 
 	public GetImageAsyncTask(RiverWatchApplication myApplication,GridIncidentGalleryActivity gridIncidentGalleryActivity,
-			GridIncidentGalleryActivity.ViewHolder holder, GetImageEvent event, int position) {
+			GridIncidentGalleryActivity.ViewHolder holder, GetImageEvent event, int position, int incidentId) {
 		this.myApplication = myApplication;
 		this.gridIncidentGalleryActivity = gridIncidentGalleryActivity;
 		this.gridHolder = holder;
 		this.event = event;
-		positionInArray = position;
+		this.position = position;
+		this.incidentId = incidentId;
 	}
 
 	protected String doInBackground(Void... Void) {
@@ -76,8 +79,14 @@ public class GetImageAsyncTask extends AsyncTask<Void, Void, String> {
 				Bitmap bm = Utils.scaleBitmap(instream, 2);
 				//save bitmap to filepath
 				if(bm!=null){
-					//TODO Save this to database with ID0.
-					return myApplication.saveBitmapToDisk(bm);
+					//save image
+					String imagePath = myApplication.saveBitmapToDisk(bm, incidentId,  (gridIncidentGalleryActivity != null));
+					//save file path to database
+					if(riverWatchGallery!=null)
+						myApplication.getDatabaseAdapter().updateIncidentTable(incidentId+"", myApplication.getDatabaseAdapter().getLocalImagePathNameContentValues(imagePath));
+					else if(gridIncidentGalleryActivity!=null)
+						myApplication.getDatabaseAdapter().updateIncidentTable(incidentId+"", myApplication.getDatabaseAdapter().getLocalThumbPathNameContentValues(imagePath));
+					return imagePath;
 				}
 			} catch (IllegalStateException e) {
 				Log.e(toString(), "IllegalStateException : "+e);
@@ -91,8 +100,8 @@ public class GetImageAsyncTask extends AsyncTask<Void, Void, String> {
 
 	protected void onPostExecute(String imagePath) {
 		if(riverWatchGallery!=null)
-			riverWatchGallery.setImage(galleryHolder, imagePath,positionInArray);
+			riverWatchGallery.setImage(galleryHolder, imagePath,position);
 		else if(gridIncidentGalleryActivity!=null)
-			gridIncidentGalleryActivity.setImage(gridHolder, imagePath, positionInArray);
+			gridIncidentGalleryActivity.setImage(gridHolder, imagePath, position);
 	}
 }

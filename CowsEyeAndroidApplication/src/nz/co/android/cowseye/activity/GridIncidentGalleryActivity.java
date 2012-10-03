@@ -4,6 +4,7 @@ import java.util.List;
 import nz.co.android.cowseye.R;
 import nz.co.android.cowseye.RiverWatchApplication;
 import nz.co.android.cowseye.common.Constants;
+import nz.co.android.cowseye.database.Incident;
 import nz.co.android.cowseye.event.GetImageEvent;
 import nz.co.android.cowseye.service.GetImageAsyncTask;
 import nz.co.android.cowseye.view.RiverWatchGallery.ViewHolder;
@@ -13,6 +14,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,33 +35,21 @@ public class GridIncidentGalleryActivity extends Activity {
 
 	private Button backButton;
 
-	private String[] serverImageUris;
-	private String[] serverThumbnailImageUris;
-	private String[] localThumbnailImageUris;
-	private String[] localImageUris;
-	private String [] descriptions;
 	private RiverWatchApplication myApplication;
 	private LayoutInflater inflater;
 
-
+	private List<Incident> incidents;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.grid_incident_gallery_layout);
-		Intent intent = getIntent();
-		serverImageUris = intent
-				.getStringArrayExtra(Constants.GALLERY_IMAGES_ARRAY_KEY);
-		serverThumbnailImageUris = intent
-				.getStringArrayExtra(Constants.GALLERY_THUMBNAIL_IMAGES_ARRAY_KEY);
-		descriptions= intent
-				.getStringArrayExtra(Constants.JSON_IMAGE_DESCRIPTION_KEY);
+		
 		myApplication = (RiverWatchApplication) getApplication();
+		incidents = myApplication.getDatabaseAdapter().getAllIncidents();
+
 		// Cache the LayoutInflate to avoid asking for a new one each time.
 		inflater = LayoutInflater.from(this);
-
-		// TODO query database to get local Images
-		localImageUris = new String[serverImageUris.length];
-		localThumbnailImageUris = new String[serverThumbnailImageUris.length];
 
 		GridView gridview = (GridView) findViewById(R.id.gridview);
 		gridview.setAdapter(new ImageAdapter(this));
@@ -72,11 +62,6 @@ public class GridIncidentGalleryActivity extends Activity {
 					int position, long arg3) {
 
 				intent.putExtra("Page Number", position);
-				intent.putExtra(Constants.GALLERY_IMAGES_ARRAY_KEY,
-						serverImageUris);
-				intent.putExtra(Constants.GALLERY_THUMBNAIL_IMAGES_ARRAY_KEY,
-						serverThumbnailImageUris);
-				intent.putExtra(Constants.JSON_IMAGE_DESCRIPTION_KEY,descriptions);
 				startActivity(intent);
 
 			}
@@ -99,11 +84,11 @@ public class GridIncidentGalleryActivity extends Activity {
 		}
 
 		public int getCount() {
-			return serverThumbnailImageUris.length;
+			return incidents.size();
 		}
 
-		public String getItem(int position) {
-			return serverThumbnailImageUris[position];
+		public Incident getItem(int position) {
+			return incidents.get(position);
 		}
 
 		public long getItemId(int position) {
@@ -115,18 +100,12 @@ public class GridIncidentGalleryActivity extends Activity {
 			final ViewHolder holder;
 			if (convertView == null) { // if it's not recycled, initialize some
 										// attributes
-				convertView = inflater.inflate(
-						R.layout.incident_gallery_layout_cell, null);
+				convertView = inflater.inflate(R.layout.incident_gallery_layout_cell, null);
 				holder = new ViewHolder();
 
-				holder.imageView = (ImageView) convertView
-						.findViewById(R.id.incident_image);
-				
+				holder.imageView = (ImageView) convertView.findViewById(R.id.incident_image);
 				holder.descriptionView = (TextView)convertView.findViewById(R.id.incident_description);
-				holder.progressBar = (ProgressBar) convertView
-						.findViewById(R.id.incident_progress_bar);
-
-		
+				holder.progressBar = (ProgressBar) convertView.findViewById(R.id.incident_progress_bar);
 				
 				holder.imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 				holder.imageView.setPadding(8, 8, 8, 8);
@@ -141,7 +120,7 @@ public class GridIncidentGalleryActivity extends Activity {
 		}
 	}
 
-	public static class ViewHolder {
+	public class ViewHolder {
 		ProgressBar progressBar;
 		ImageView imageView;
 		TextView descriptionView;
@@ -149,9 +128,9 @@ public class GridIncidentGalleryActivity extends Activity {
 
 	/* Build a View for the MyGalleryImage adapter */
 	public void buildView(int position, final ViewHolder holder) {
+		Incident incident = incidents.get(position);
 		// try to get from local storage
-		String localImageUri = localThumbnailImageUris[position];
-		// Log.d(toString(), "local image : "+localImageUri);
+		String localImageUri = incident.getLocalThumbnailUrl();
 		if (localImageUri != null && !localImageUri.equals(""))
 			setImage(holder, localImageUri, position);
 		else {
@@ -161,16 +140,14 @@ public class GridIncidentGalleryActivity extends Activity {
 			 */
 			holder.progressBar.setVisibility(View.VISIBLE);
 			// launch asynctask to get image
-			GetImageEvent event = new GetImageEvent(
-					serverThumbnailImageUris[position]);
-			new GetImageAsyncTask(myApplication, this, holder, event, position)
-					.execute();
+			GetImageEvent event = new GetImageEvent(incident.getThumbnailUrl());
+			new GetImageAsyncTask(myApplication, this, holder, event, position, incident.getId()).execute();
 		}
 	}
 
 	public void setImage(ViewHolder holder, String pathName, int positionInArray) {
 		if (pathName != null && !pathName.equals("")) {
-			localThumbnailImageUris[positionInArray] = pathName;
+			incidents.get(positionInArray).setLocalThumbnailUrl(pathName);
 			Bitmap bm = BitmapFactory.decodeFile(pathName);
 			holder.imageView.setImageBitmap(bm);
 			holder.progressBar.setVisibility(View.INVISIBLE);

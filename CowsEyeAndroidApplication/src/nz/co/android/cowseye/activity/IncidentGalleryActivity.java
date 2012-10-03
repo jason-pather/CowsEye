@@ -1,27 +1,21 @@
 package nz.co.android.cowseye.activity;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import nz.co.android.cowseye.R;
 import nz.co.android.cowseye.RiverWatchApplication;
 import nz.co.android.cowseye.common.Constants;
+import nz.co.android.cowseye.database.Incident;
 import nz.co.android.cowseye.utility.Utils;
 import nz.co.android.cowseye.view.RiverWatchGallery;
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
-import android.widget.ImageView.ScaleType;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
 
 public class IncidentGalleryActivity extends Activity {
 
@@ -38,45 +32,33 @@ public class IncidentGalleryActivity extends Activity {
 	// private boolean thumbnailsStarted = false;
 	// private ArrayList<ImageButton> thumbnails;
 	private int currentPosition = 0;
-	public static Matrix skewUpMatrix;
-	public static Matrix skewDownMatrix;
-	public static RectF imageRectangleSkewedUp;
-	public static RectF imageRectangleSkewedDown;
+//	public static Matrix skewUpMatrix;
+//	public static Matrix skewDownMatrix;
+//	public static RectF imageRectangleSkewedUp;
+//	public static RectF imageRectangleSkewedDown;
 
 	// private static final float THUMBNAIL_SKEW = 0.3f;
 	// private static final int THUMBNAIL_WIDTH = 100;
 	// private static final int THUMBNAIL_HEIGHT = 75;
 	// private static final float THUMBNAIL_SCALEX = 0.8f;
 	// private static final float THUMBNAIL_SCALEY = 0.8f;
-	public static final int UNSELECTED_ALPHA = 160;
-	public static final int SELECTED_ALPHA = 255;
+//	public static final int UNSELECTED_ALPHA = 160;
+//	public static final int SELECTED_ALPHA = 255;
 
-	private String[] serverImageUris;
-	private String[] serverThumbnailImageUris;
-	private String[] localThumbnailImageUris;
-	private String[] localImageUris;
-	private String [] descriptions;
 	private int pageNumber;
+	
+	private List<Incident> incidents;
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.incident_gallery_layout);
+		myApplication = (RiverWatchApplication) getApplication();
 		Intent intent = getIntent();
-		serverImageUris = intent
-				.getStringArrayExtra(Constants.GALLERY_IMAGES_ARRAY_KEY);
-
-		serverThumbnailImageUris = intent
-				.getStringArrayExtra(Constants.GALLERY_THUMBNAIL_IMAGES_ARRAY_KEY);
 		pageNumber = intent.getIntExtra("Page Number", 1);
+		incidents = myApplication.getDatabaseAdapter().getAllIncidents();
 
-		
-		descriptions= intent
-				.getStringArrayExtra(Constants.JSON_IMAGE_DESCRIPTION_KEY);
-		// TODO query database to get local Images
-		localImageUris = new String[serverImageUris.length];
-		localThumbnailImageUris = new String[serverThumbnailImageUris.length];
 		setupUI();
 
 		// setupThumbnails();
@@ -90,11 +72,9 @@ public class IncidentGalleryActivity extends Activity {
 		backButton = (Button) findViewById(R.id.backButton);
 		// goes backwards
 		backButton.setOnClickListener(new Utils.BackEventOnClickListener(this));
-
-		myApplication = (RiverWatchApplication) getApplication();
 		myGallery = (RiverWatchGallery) (findViewById(R.id.incident_gallery));
 
-		myGallery.setupUI(myApplication, this, serverImageUris, localImageUris, descriptions);
+		myGallery.setupUI(myApplication, incidents);
 		myGallery.setImageAdapterSelection(pageNumber);
 
 	}

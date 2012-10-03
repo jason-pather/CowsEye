@@ -58,9 +58,16 @@ public interface Constants {
 	
 	/* JSON keys */
 	public static final String JSON_INCIDENTS_KEY = "incidents";
-	public static final String JSON_THUMBNAIL_URL_KEY = "thumbnail_url";
-	public static final String JSON_IMAGE_URL_KEY = "image_url";
-	public static final String JSON_IMAGE_DESCRIPTION_KEY = "description";
+	
+	public static final String JSON_INCIDENT_ID_KEY = "id";
+	public static final String JSON_INCIDENT_THUMBNAIL_URL_KEY = "thumbnail_url";
+	public static final String JSON_INCIDENT_IMAGE_URL_KEY = "image_url";
+	public static final String JSON_INCIDENT_IMAGE_DESCRIPTION_KEY = "description";
+	public static final String JSON_INCIDENT_GEOLOCATION_KEY = "geolocation";
+	public static final String JSON_INCIDENT_LATITUDE_KEY = "lat";
+	public static final String JSON_INCIDENT_LONGITUDE_KEY = "long";
+	public static final String JSON_INCIDENT_PHYSICAL_LOCATION_KEY = "physical_location";
+
 
 
 

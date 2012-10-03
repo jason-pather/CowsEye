@@ -1,15 +1,18 @@
 package nz.co.android.cowseye.view;
 
+import java.util.List;
+
 import nz.co.android.cowseye.R;
 import nz.co.android.cowseye.RiverWatchApplication;
 import nz.co.android.cowseye.activity.IncidentGalleryActivity;
+import nz.co.android.cowseye.activity.GridIncidentGalleryActivity.ViewHolder;
+import nz.co.android.cowseye.database.Incident;
 import nz.co.android.cowseye.event.GetImageEvent;
 import nz.co.android.cowseye.service.GetImageAsyncTask;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -29,15 +32,11 @@ import android.widget.TextView;
  */
 public class RiverWatchGallery extends Gallery {
 
-    private String[] serverImageUris;
-    private String[] localImageUris;
-    private String [] descriptions;
     private static Context context;
     private static MyGalleryImageAdapter imageAdapter;
     private RiverWatchApplication myApplication;
     private LayoutInflater inflater;
-    private IncidentGalleryActivity incidentGalleryActivity;
-    private TextView incidentDescriptionTextView;
+	private List<Incident> incidents;
 
     /* Constructors */
     public RiverWatchGallery(Context context) {
@@ -60,15 +59,9 @@ public class RiverWatchGallery extends Gallery {
      *
      * @param incidentGalleryActivity
      */
-    public void setupUI(RiverWatchApplication app,
-            IncidentGalleryActivity incidentGalleryActivity,
-            String[] serverImageUris, String[] localImageUris, String [] descriptions) {
+    public void setupUI(RiverWatchApplication app,List<Incident> incidents) {
         myApplication = app;
-        this.incidentGalleryActivity = incidentGalleryActivity;
-        this.context = incidentGalleryActivity;
-        this.serverImageUris = serverImageUris;
-        this.localImageUris = localImageUris;
-        this.descriptions=descriptions;
+        this.incidents = incidents;
         // Cache the LayoutInflate to avoid asking for a new one each time.
         inflater = LayoutInflater.from(context);
         // Create and set the imageAdapter on this gallery
@@ -95,7 +88,7 @@ public class RiverWatchGallery extends Gallery {
     }
 
     public int getNumberOfImages() {
-        return serverImageUris.length;
+        return incidents.size();
     }
 
     public View getView(int position, View convertView, View parent) {
@@ -135,15 +128,16 @@ public class RiverWatchGallery extends Gallery {
         buildView(position, holder);
         return convertView;
     }
-
+    
     /* Build a View for the MyGalleryImage adapter */
     public void buildView(int position, final ViewHolder holder) {
+		Incident incident = incidents.get(position);
 
         // try to get from local storage
-        String localImageUri = localImageUris[position];
+        String localImageUri = incident.getLocalImageUrl();
         // Log.d(toString(), "local image : "+localImageUri);
         if (localImageUri != null && !localImageUri.equals(""))
-            setImage(holder, localImageUris[position], position);
+            setImage(holder, localImageUri, position);
         else {
             /**
              * If fails to get from local storage, put a progress bar in and
@@ -151,26 +145,22 @@ public class RiverWatchGallery extends Gallery {
              */
             holder.progressBar.setVisibility(View.VISIBLE);
             // launch asynctask to get image
-            GetImageEvent event = new GetImageEvent(serverImageUris[position]);
-            new GetImageAsyncTask(myApplication, this, holder, event, position)
-                    .execute();
+            GetImageEvent event = new GetImageEvent(incident.getImageUrl());
+            new GetImageAsyncTask(myApplication, this, holder, event, position, incident.getId()) .execute();
         }
-        // holder.pageImageView.setLayoutParams(new
-        // FrameLayout.LayoutParams(myApplication.getScreenWidth(),myApplication.getScreenHeight()));
-        // holder.pageImageView.setScaleType(ImageView.ScaleType.CENTER);
     }
 
     public void setImage(ViewHolder holder, String pathName, int positionInArray) {
         if (pathName != null && !pathName.equals("")) {
-            localImageUris[positionInArray] = pathName;
-            Bitmap bm = BitmapFactory.decodeFile(pathName);
+        	incidents.get(positionInArray).setLocalImageUrl(pathName);
+			Bitmap bm = BitmapFactory.decodeFile(pathName);
             holder.pageImageView.setImageBitmap(bm);
 
             holder.progressBar.setVisibility(View.INVISIBLE);
-            holder.descriptionView.setText(descriptions[positionInArray]);
+            holder.descriptionView.setText(incidents.get(positionInArray).getDescription());
             holder.descriptionView.setVisibility(View.VISIBLE);
-
         }
+
     }
 
     /**

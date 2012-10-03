@@ -4,19 +4,22 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URI;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import nz.co.android.cowseye.database.DatabaseAdapter;
+import nz.co.android.cowseye.database.DatabaseConstructor;
+import nz.co.android.cowseye.event.Event;
+import nz.co.android.cowseye.event.EventHandler;
+import nz.co.android.cowseye.utility.Utils;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 
-import nz.co.android.cowseye.event.Event;
-import nz.co.android.cowseye.event.EventHandler;
-import nz.co.android.cowseye.utility.Utils;
 import android.app.Application;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.graphics.Bitmap;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
@@ -44,40 +47,39 @@ public class RiverWatchApplication extends Application  {
 
 	public EventHandler eventHandler;
 	private Timer updateEventsTimer;
+	private DatabaseConstructor databaseConstructor;
+	private DatabaseAdapter databaseAdapter;
 
 	//Start of application
 	@Override
 	public void onCreate() {
 		super.onCreate();
-//		loadDatabase();
+		loadDatabase();
 		setupApplication();
 	}
 
 	private void setupApplication() {
 		updateEventsTimer = new Timer();
 		eventHandler = new EventHandler(this);
-//		List<Event> unProcessdEvents = databaseAdapter.getAllUnProcessedEvents(this);
-//		for(Event e : unProcessdEvents)
-//			eventHandler.addEvent(e);
 	}
 
 	/**
 	 * Constructs and loads the database
 	 */
-//	private void loadDatabase(){		
-//		databaseConstructor = new DatabaseConstructor(this);
-//		try {
-//			databaseConstructor.createDataBase();
-//		} catch (IOException ioe) {
-//			Log.e(this.toString(),"Unable to create database");
-//		}
-//		try {
-//			databaseConstructor.openDataBase();
-//		}catch(SQLException sqle){
-//			Log.e(this.toString(),"Unable to open database");
-//		}
-//		databaseAdapter = new DatabaseAdapter(databaseConstructor);
-//	}
+	private void loadDatabase(){		
+		databaseConstructor = new DatabaseConstructor(this);
+		try {
+			databaseConstructor.createDataBase();
+		} catch (IOException ioe) {
+			Log.e(this.toString(),"Unable to create database");
+		}
+		try {
+			databaseConstructor.openDataBase();
+		}catch(SQLException sqle){
+			Log.e(this.toString(),"Unable to open database");
+		}
+		databaseAdapter = new DatabaseAdapter(databaseConstructor);
+	}
 	
 
 //	/** Adds this event to the database of events
@@ -91,9 +93,9 @@ public class RiverWatchApplication extends Application  {
 //	}
 	
 
-//	public DatabaseAdapter getDatabaseAdapter() {
-//		return databaseAdapter;
-//	}
+	public DatabaseAdapter getDatabaseAdapter() {
+		return databaseAdapter;
+	}
 
 
 	public EventHandler getEventHandler(){
@@ -203,10 +205,10 @@ public class RiverWatchApplication extends Application  {
 //	}
 
 	/* Saves a bitmap to disk */
-	public String saveBitmapToDisk(Bitmap bitmap) throws IOException {
+	public String saveBitmapToDisk(Bitmap bitmap, int incidentId, boolean isThumb) throws IOException {
 		try{
-			final long num = System.currentTimeMillis();
-			final String ID = getString(R.string.app_name) +num;
+//			final long num = System.currentTimeMillis();
+			final String ID = getString(R.string.app_name).replace(" ", "_")+ (isThumb? "thumb" : "full") +"_"+incidentId;
 			File dir = this.getDir("", Context.MODE_PRIVATE);
 			String pathToDir = dir.getAbsolutePath();
 			final String pathName = pathToDir + File.separator+ ID;

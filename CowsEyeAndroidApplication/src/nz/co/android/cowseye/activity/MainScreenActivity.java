@@ -53,9 +53,9 @@ public class MainScreenActivity extends Activity {
 	private Button buttonSubmit;
 	private Button buttonGallery;
 	private RiverWatchApplication myApplication;
-	
+
 	private ProgressDialog progressDialog;
-	
+
 	private String[] imageUrls;
 	private String[] thumbUrls;
 	private String[] descriptions;
@@ -70,7 +70,7 @@ public class MainScreenActivity extends Activity {
 		setContentView(R.layout.main_screen_layout);
 		myApplication = (RiverWatchApplication)getApplication();
 		setupUI();
-		new GetIncidentsAsyncTask(MainScreenActivity.this, new GetIncidentsEvent(myApplication, 0, 9)).execute();
+		new GetIncidentsAsyncTask(MainScreenActivity.this, new GetIncidentsEvent(myApplication, 0, 50),myApplication).execute();
 	}
 
 	/** This gets called after a successfull submission event as the activity is already open and
@@ -94,7 +94,7 @@ public class MainScreenActivity extends Activity {
 		progressDialog.setTitle(getString(R.string.loading_images_title));
 		progressDialog.setMessage(getString(R.string.please_wait));
 		progressDialog.setCancelable(false);
-		
+
 		buttonSubmit = (Button)findViewById(R.id.button_submit);
 		buttonSubmit.setOnClickListener(new SubmitPollutionEventOnClickListener());
 		buttonGallery = (Button)findViewById(R.id.button_view_gallery);
@@ -105,7 +105,7 @@ public class MainScreenActivity extends Activity {
 				progressDialog.show();
 				//only get new list of incidents if we don't already have them
 				if(!haveBaseIncidents){
-					new GetIncidentsAsyncTask(MainScreenActivity.this, new GetIncidentsEvent(myApplication, 0, 50)).execute();
+					new GetIncidentsAsyncTask(MainScreenActivity.this, new GetIncidentsEvent(myApplication, 0, 50), myApplication).execute();
 					loadingGridView = true;
 				}
 				else
@@ -114,35 +114,23 @@ public class MainScreenActivity extends Activity {
 		});
 
 	}
-	
-	/** Saves incident data received from a JSON object after calling the getIncidents web service */
-	public void saveIncidentDataUris(JSONArray data){
+
+	/**Ends the web service call to get all incidents and opens the grid view if 
+	 * the call was succesful */
+	public void endGetIncidentsServiceCall(boolean result){
 		progressDialog.dismiss();
-		if(data==null ){
+		if(!result){
 			if(loadingGridView)
 				Toast.makeText(this, getString(R.string.failure_load_images_msg), Toast.LENGTH_LONG).show();
 		}
 		else{
-			imageUrls = new String[data.length()];
-			thumbUrls = new String[data.length()];
-			descriptions = new String[data.length()];
-			for(int i = 0; i < data.length(); i++ ){
-				try {
-					JSONObject incident = data.getJSONObject(i);
-					if(incident.has(Constants.JSON_THUMBNAIL_URL_KEY) && incident.has(Constants.JSON_IMAGE_URL_KEY)){
-						imageUrls[i] = incident.getString(Constants.JSON_IMAGE_URL_KEY);
-						thumbUrls[i] = incident.getString(Constants.JSON_THUMBNAIL_URL_KEY);
-						descriptions [i] = incident.getString(Constants.JSON_IMAGE_DESCRIPTION_KEY);
-					}
-				} catch (JSONException e) {
-					Log.e(toString(), "No incident found in JSONObject");
-				}
-				
-			}
 			haveBaseIncidents = true;
-			if(loadingGridView)
+			if(loadingGridView){
+				loadingGridView = false;
 				loadGridView();
+			}
 		}
+
 	}
 	public void loadGridView(){
 		loadingGridView = false;
@@ -151,25 +139,25 @@ public class MainScreenActivity extends Activity {
 		Intent i = new Intent(MainScreenActivity.this, GridIncidentGalleryActivity.class);
 		i.putExtra(Constants.GALLERY_IMAGES_ARRAY_KEY, imageUrls);
 		i.putExtra(Constants.GALLERY_THUMBNAIL_IMAGES_ARRAY_KEY, thumbUrls);
-		i.putExtra(Constants.JSON_IMAGE_DESCRIPTION_KEY,descriptions);
+		i.putExtra(Constants.JSON_INCIDENT_IMAGE_DESCRIPTION_KEY,descriptions);
 		startActivity(i);
 	}
 
 	@Override
 	protected void onStart() {
 		super.onStart();
-//        myApplication.requestStartEventHandling();
+		//        myApplication.requestStartEventHandling();
 		Log.i(toString(), "MainScreen requestStartEventHandling");
 	}
-	
+
 	@Override
 	protected void onDestroy() {
 		Log.i(toString(), "MainScreen stopTimerEventHandling");
-//		myApplication.stopTimerEventHandling();
+		//		myApplication.stopTimerEventHandling();
 		super.onDestroy();
 	}
 
-	
+
 	/** Starts a submission of a pollution event */
 	public class SubmitPollutionEventOnClickListener implements OnClickListener{
 		@Override
