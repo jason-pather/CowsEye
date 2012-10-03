@@ -116,7 +116,7 @@ public class GridIncidentGalleryActivity extends Activity {
 			if (convertView == null) { // if it's not recycled, initialize some
 										// attributes
 				convertView = inflater.inflate(
-						R.layout.incident_gallery_layout_cell, null);
+						R.layout.incident_layout_cellwithouttext, null);
 				holder = new ViewHolder();
 
 				holder.imageView = (ImageView) convertView
