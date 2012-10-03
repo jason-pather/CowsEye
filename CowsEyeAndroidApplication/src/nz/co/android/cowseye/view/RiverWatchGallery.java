@@ -151,6 +151,7 @@ public class RiverWatchGallery extends Gallery {
     }
 
     public void setImage(ViewHolder holder, String pathName, int positionInArray) {
+    	System.out.println ("The image is displaying in set image");
         if (pathName != null && !pathName.equals("")) {
         	incidents.get(positionInArray).setLocalImageUrl(pathName);
 			Bitmap bm = BitmapFactory.decodeFile(pathName);
