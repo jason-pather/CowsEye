@@ -21,7 +21,7 @@ import android.util.Log;
 
 public class GetIncidentsAsyncTask extends AsyncTask<Void, Void, Boolean> {
 
-	private final MainScreenActivity mainScreen;
+	private MainScreenActivity mainScreen;
 	private final GetIncidentsEvent getIncidentEvent;
 	private final RiverWatchApplication myApplication;
 
@@ -30,6 +30,11 @@ public class GetIncidentsAsyncTask extends AsyncTask<Void, Void, Boolean> {
 		this.getIncidentEvent = getIncidentEvent;
 		this.myApplication = myApplication;
 
+	}
+
+	public GetIncidentsAsyncTask(GetIncidentsEvent getIncidentsEvent, RiverWatchApplication myApplication) {
+		this.getIncidentEvent = getIncidentsEvent;
+		this.myApplication = myApplication;
 	}
 
 	protected Boolean doInBackground(Void... Void) {
@@ -91,7 +96,8 @@ public class GetIncidentsAsyncTask extends AsyncTask<Void, Void, Boolean> {
 
 	/** Does not do anything as nothing needs to be done upon ending*/
 	protected void onPostExecute(Boolean value) {
-		mainScreen.endGetIncidentsServiceCall(value);
+		if(mainScreen!=null)
+			mainScreen.endGetIncidentsServiceCall(value);
 
 	}
 }

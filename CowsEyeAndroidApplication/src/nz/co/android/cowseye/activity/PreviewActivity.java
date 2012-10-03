@@ -5,8 +5,10 @@ import java.io.IOException;
 import nz.co.android.cowseye.R;
 import nz.co.android.cowseye.RiverWatchApplication;
 import nz.co.android.cowseye.event.Event;
+import nz.co.android.cowseye.event.GetIncidentsEvent;
 import nz.co.android.cowseye.event.SubmissionEvent;
 import nz.co.android.cowseye.event.SubmissionEventBuilderException;
+import nz.co.android.cowseye.service.GetIncidentsAsyncTask;
 import nz.co.android.cowseye.utility.AlertBuilder;
 import nz.co.android.cowseye.utility.JSONHelper;
 import nz.co.android.cowseye.utility.Utils;
@@ -173,6 +175,7 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 							if(success){
 								Toast.makeText(PreviewActivity.this, getString(R.string.success_submission_msg), Toast.LENGTH_LONG).show();
 								myApplication.deleteImage(currentEvent);
+								new GetIncidentsAsyncTask(new GetIncidentsEvent(myApplication, 0, 50),myApplication).execute();
 								// go back to starting activity
 								Intent intent = new Intent(PreviewActivity.this, MainScreenActivity.class);
 								//Finishes all previous activities on the activity stack
@@ -195,64 +198,5 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 
 	}
 
-//	/**
-//	 * Deals with the response from a submission event return
-//	 * @param response from a submission event
-//	 * @return true if succesfull submission, otherwise false
-//	 */
-//	public static boolean processSubmissionEventResponse(HttpResponse response){
-//		if(response==null)
-//			return false;
-//		StatusLine statusLine = response.getStatusLine();
-//		if(statusLine == null)
-//			return false;
-//		int statusCode = statusLine.getStatusCode();
-//		Log.i("app", "statusCode : "+statusCode);
-//		try{
-//			switch(statusCode){
-//			case Utils.HTTP_OK:
-//				Log.i("app", "Sucessful submission!");
-//				return true;
-//			case Utils.HTTP_LOGIC_ERROR:
-//				Log.i("app", "Logic error: Unsucessful submission!");
-//				return false;
-//			case Utils.HTTP_SERVER_ERROR:
-//				Log.i("app", "Server error: Unsucessful submission!");
-//				return false;
-//			default:
-//				Log.i("app", "Uncaught error: Unsucessful submission!");
-//				return false;
-//			}
-//			//			JSONObject jsonObject = JSONHelper.parseHttpResponseAsJSON(response);
-//			//			Log.d("app", "jsonObject : "+jsonObject);
-//		}
-//		catch(Exception f){ 
-//			Log.e("app", "Exception in JsonParsing : "+f);
-//		}
-//		return false;
-//
-//	}
-
-
-	public void submitEvent(Event e){
-		HttpResponse response = e.processRaw();
-		Log.d(toString(), "response : "+response);
-		try{
-			Log.d(toString(),"Status line : "+ response.getStatusLine());
-			for(Header header : response.getAllHeaders()){
-				Log.d(toString(),"header : "+ header.getName() + " - > "+header.getValue());
-			}
-
-
-			JSONObject jsonObject = JSONHelper.parseHttpResponseAsJSON(response);
-			Log.d(toString(), "jsonObject : "+jsonObject);
-
-			//				            if(jsonObject.has(Utils.RESPONSE_CODE))
-			//				                return ResponseCodeState.stringToResponseCode((String)jsonObject.getString(Utils.RESPONSE_CODE))==ResponseCodeState.SUCCESS;
-		}
-		catch(Exception f){ 
-			Log.e(toString(), "Exception in JsonParsing : "+f);
-		}
-	}
 
 }

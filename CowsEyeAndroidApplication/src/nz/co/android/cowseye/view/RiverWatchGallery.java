@@ -104,8 +104,9 @@ public class RiverWatchGallery extends Gallery {
         // supplied
         // by ListView is null.
         if (convertView == null) {
-            convertView = inflater.inflate(
-                    R.layout.incident_gallery_layout_cell, null);
+            convertView = inflater.inflate(R.layout.incident_gallery_layout_cell, null);
+            LayoutParams lp = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+            convertView.setLayoutParams(lp);
             // Creates a ViewHolder and store references to the children views
             // we want to bind data to.
             holder = new ViewHolder();
@@ -149,6 +150,7 @@ public class RiverWatchGallery extends Gallery {
         	incidents.get(positionInArray).setLocalImageUrl(pathName);
 			Bitmap bm = BitmapFactory.decodeFile(pathName);
             holder.pageImageView.setImageBitmap(bm);
+            holder.pageImageView.setBackgroundDrawable(null);
             holder.progressBar.setVisibility(View.INVISIBLE);
             holder.descriptionView.setText(incidents.get(positionInArray).getDescription());
             holder.descriptionView.setVisibility(View.VISIBLE);

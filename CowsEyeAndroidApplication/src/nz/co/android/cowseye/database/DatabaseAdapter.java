@@ -94,7 +94,6 @@ public class DatabaseAdapter {
 	 * @param valuesToChange -  values to be updated
 	 * */
 	public synchronized void insertIncident(Incident incident) {
-		Log.d(toString(), "Inserting incident : "+incident.toString());
 		database.insert(INCIDENT_TABLE_NAME, null, incident.getContentValues());
 	}
 	/** 

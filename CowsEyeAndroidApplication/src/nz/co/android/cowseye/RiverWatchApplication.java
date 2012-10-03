@@ -225,12 +225,11 @@ public class RiverWatchApplication extends Application  {
 	/** Deletes an image from local storage */
 	public void deleteImage(String filePath) {
 		File imageFile = new File(filePath);
-		Log.d(toString(), "deleteImage image exists before ? "+imageFile.exists());
-
+//		Log.d(toString(), "deleteImage image exists before ? "+imageFile.exists());
 		//delete image
 		if(imageFile.exists())
 			imageFile.delete();
-		Log.d(toString(), "deleteImage image exists after ? "+imageFile.exists());
+//		Log.d(toString(), "deleteImage image exists after ? "+imageFile.exists());
 
 	}
 	
@@ -294,11 +293,11 @@ public class RiverWatchApplication extends Application  {
 	/* Deletes the image belonging to the current event */
 	public void deleteImage(Event currentEvent) {
     File imageFile = new File(currentEvent.getImagePath().toString());
-		Log.d(toString(), "deleteImage image exists before ? "+imageFile.exists());
+//		Log.d(toString(), "deleteImage image exists before ? "+imageFile.exists());
 		//delete image
 		if(imageFile.exists())
 			imageFile.delete();
-		Log.d(toString(), "deleteImage image exists after ? "+imageFile.exists());
+//		Log.d(toString(), "deleteImage image exists after ? "+imageFile.exists());
 
 	}
 	
@@ -307,7 +306,6 @@ public class RiverWatchApplication extends Application  {
 	               .query(contentURI, null, null, null, null); 
 	    cursor.moveToFirst(); 
 	    int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA); 
-	    Log.d(toString(), "path : "+cursor.getString(idx));
 	    return cursor.getString(idx); 
 	}
 }

@@ -41,12 +41,12 @@ public class GridIncidentGalleryActivity extends Activity {
 
 	private List<Incident> incidents;
 	private Handler handler;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.grid_incident_gallery_layout);
-		
+
 		myApplication = (RiverWatchApplication) getApplication();
 		incidents = myApplication.getDatabaseAdapter().getAllIncidents();
 		this.handler = new Handler();
@@ -101,14 +101,14 @@ public class GridIncidentGalleryActivity extends Activity {
 		public View getView(final int position, View convertView, ViewGroup parent) {
 			final ViewHolder holder;
 			if (convertView == null) { // if it's not recycled, initialize some
-										// attributes
+				// attributes
 				convertView = inflater.inflate(R.layout.incident_layout_cellwithouttext, null);
 				holder = new ViewHolder();
 
 				holder.imageView = (ImageView) convertView.findViewById(R.id.incident_image);
 				holder.descriptionView = (TextView)convertView.findViewById(R.id.incident_description);
 				holder.progressBar = (ProgressBar) convertView.findViewById(R.id.incident_progress_bar);
-				
+
 				holder.imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 				holder.imageView.setPadding(8, 8, 8, 8);
 				convertView.setTag(holder);
@@ -116,12 +116,8 @@ public class GridIncidentGalleryActivity extends Activity {
 				// Get the ViewHolder back to get fast access to the View
 				holder = (ViewHolder) convertView.getTag();
 			}
+			buildView(position, holder);
 
-//			handler.postDelayed(new Runnable() {
-//				public void run() {
-					buildView(position, holder);
-//				}
-//			}, 2000);
 			return convertView;
 		}
 	}

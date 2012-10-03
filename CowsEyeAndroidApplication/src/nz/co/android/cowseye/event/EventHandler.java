@@ -81,7 +81,6 @@ public class EventHandler {
 
 	/* Deletes the image belonging to the current event */
 	private void deleteImage(Event currentEvent) {
-		Log.d(toString(), "path1 : "+currentEvent.getImagePath().getPath());
 		URI uri = null;
 		try {
 			uri = new URI(currentEvent.getImagePath().getPath());
@@ -91,11 +90,11 @@ public class EventHandler {
 		}
 			Log.d(toString(), "path1 : "+uri);
 				File imageFile = new File(uri);
-		Log.d(toString(), "deleteImage image exists before ? "+imageFile.exists());
+//		Log.d(toString(), "deleteImage image exists before ? "+imageFile.exists());
 		//delete image
 		if(imageFile.exists())
 			imageFile.delete();
-		Log.d(toString(), "deleteImage image exists after ? "+imageFile.exists());
+//		Log.d(toString(), "deleteImage image exists after ? "+imageFile.exists());
 
 	}
 	
@@ -112,7 +111,7 @@ public class EventHandler {
 		if(statusLine == null)
 			return false;
 		int statusCode = statusLine.getStatusCode();
-		Log.d("app", "statusCode : "+statusCode);
+		Log.i("app", "statusCode : "+statusCode);
 		try{
 			switch(statusCode){
 			case Utils.HTTP_OK:
