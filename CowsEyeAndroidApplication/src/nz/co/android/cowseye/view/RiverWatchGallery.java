@@ -109,14 +109,9 @@ public class RiverWatchGallery extends Gallery {
             // Creates a ViewHolder and store references to the children views
             // we want to bind data to.
             holder = new ViewHolder();
-            holder.pageImageView = (ImageView) convertView
-                    .findViewById(R.id.incident_image);
-           
-            holder.descriptionView = (TextView) convertView
-                    .findViewById(R.id.incident_description);
-           
-            holder.progressBar = (ProgressBar) convertView
-                    .findViewById(R.id.incident_progress_bar);
+            holder.pageImageView = (ImageView) convertView .findViewById(R.id.incident_image);
+            holder.descriptionView = (TextView) convertView.findViewById(R.id.incident_description);
+            holder.progressBar = (ProgressBar) convertView   .findViewById(R.id.incident_progress_bar);
 
             convertView.setTag(holder);
 
@@ -143,7 +138,6 @@ public class RiverWatchGallery extends Gallery {
              * If fails to get from local storage, put a progress bar in and
              * download
              */
-            holder.progressBar.setVisibility(View.VISIBLE);
             // launch asynctask to get image
             GetImageEvent event = new GetImageEvent(incident.getImageUrl());
             new GetImageAsyncTask(myApplication, this, holder, event, position, incident.getId()) .execute();
@@ -151,12 +145,10 @@ public class RiverWatchGallery extends Gallery {
     }
 
     public void setImage(ViewHolder holder, String pathName, int positionInArray) {
-    	System.out.println ("The image is displaying in set image");
         if (pathName != null && !pathName.equals("")) {
         	incidents.get(positionInArray).setLocalImageUrl(pathName);
 			Bitmap bm = BitmapFactory.decodeFile(pathName);
             holder.pageImageView.setImageBitmap(bm);
-
             holder.progressBar.setVisibility(View.INVISIBLE);
             holder.descriptionView.setText(incidents.get(positionInArray).getDescription());
             holder.descriptionView.setVisibility(View.VISIBLE);

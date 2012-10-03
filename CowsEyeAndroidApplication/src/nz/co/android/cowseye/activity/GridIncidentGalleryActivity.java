@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +40,7 @@ public class GridIncidentGalleryActivity extends Activity {
 	private LayoutInflater inflater;
 
 	private List<Incident> incidents;
+	private Handler handler;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -47,7 +49,7 @@ public class GridIncidentGalleryActivity extends Activity {
 		
 		myApplication = (RiverWatchApplication) getApplication();
 		incidents = myApplication.getDatabaseAdapter().getAllIncidents();
-
+		this.handler = new Handler();
 		// Cache the LayoutInflate to avoid asking for a new one each time.
 		inflater = LayoutInflater.from(this);
 
@@ -96,12 +98,11 @@ public class GridIncidentGalleryActivity extends Activity {
 		}
 
 		// create a new ImageView for each item referenced by the Adapter
-		public View getView(int position, View convertView, ViewGroup parent) {
+		public View getView(final int position, View convertView, ViewGroup parent) {
 			final ViewHolder holder;
 			if (convertView == null) { // if it's not recycled, initialize some
 										// attributes
-				convertView = inflater.inflate(
-						R.layout.incident_layout_cellwithouttext, null);
+				convertView = inflater.inflate(R.layout.incident_layout_cellwithouttext, null);
 				holder = new ViewHolder();
 
 				holder.imageView = (ImageView) convertView.findViewById(R.id.incident_image);
@@ -116,7 +117,11 @@ public class GridIncidentGalleryActivity extends Activity {
 				holder = (ViewHolder) convertView.getTag();
 			}
 
-			buildView(position, holder);
+//			handler.postDelayed(new Runnable() {
+//				public void run() {
+					buildView(position, holder);
+//				}
+//			}, 2000);
 			return convertView;
 		}
 	}
@@ -132,14 +137,14 @@ public class GridIncidentGalleryActivity extends Activity {
 		Incident incident = incidents.get(position);
 		// try to get from local storage
 		String localImageUri = incident.getLocalThumbnailUrl();
-		if (localImageUri != null && !localImageUri.equals(""))
+		if (localImageUri != null && !localImageUri.equals("")){
 			setImage(holder, localImageUri, position);
+		}
 		else {
 			/**
 			 * If fails to get from local storage, put a progress bar in and
 			 * download
 			 */
-			holder.progressBar.setVisibility(View.VISIBLE);
 			// launch asynctask to get image
 			GetImageEvent event = new GetImageEvent(incident.getThumbnailUrl());
 			new GetImageAsyncTask(myApplication, this, holder, event, position, incident.getId()).execute();

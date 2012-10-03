@@ -213,20 +213,20 @@ public class IncidentGalleryActivity extends Activity {
 	// }
 
 	/* Class for dealing with a click on the given page thumbnail */
-	public class ThumbnailClickListener implements OnClickListener {
-
-		private final int position;
-
-		public ThumbnailClickListener(int position) {
-			this.position = position;
-		}
-
-		public void onClick(View v) {
-			if (position != currentPosition) {
-				// setThumbnailSelection(position);
-				myGallery.setImageAdapterSelection(position);
-			}
-		}
-	}
+//	public class ThumbnailClickListener implements OnClickListener {
+//
+//		private final int position;
+//
+//		public ThumbnailClickListener(int position) {
+//			this.position = position;
+//		}
+//
+//		public void onClick(View v) {
+//			if (position != currentPosition) {
+//				// setThumbnailSelection(position);
+//				myGallery.setImageAdapterSelection(position);
+//			}
+//		}
+//	}
 
 }
