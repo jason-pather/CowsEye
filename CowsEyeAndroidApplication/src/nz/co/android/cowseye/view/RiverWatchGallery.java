@@ -12,6 +12,7 @@ import nz.co.android.cowseye.service.GetImageAsyncTask;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.text.method.ScrollingMovementMethod;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -154,6 +155,7 @@ public class RiverWatchGallery extends Gallery {
             holder.progressBar.setVisibility(View.INVISIBLE);
             holder.descriptionView.setText(incidents.get(positionInArray).getDescription());
             holder.descriptionView.setVisibility(View.VISIBLE);
+    		holder.descriptionView.setMovementMethod(new ScrollingMovementMethod());
         }
 
     }
