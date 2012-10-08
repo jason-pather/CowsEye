@@ -1,6 +1,6 @@
 <resources>
 
-    <string name="app_name">RiverWatch</string>
+    <string name="app_name">River Watch</string>
     <string name="capture_image">Capture Image</string>
     <string name="select_location">Select Location</string>
     <string name="description_labeltitle"> Enter Image Description </string>
@@ -42,24 +42,30 @@
     <string name="errorInGeoCoding">Unable to convert address to location coordinates</string>
     <string name="pleaseCompleteAllSteps">Please complete all steps before submitting your incident</string>
     <string name="select_image_title">Select Image</string>
-    <string name="preview_title">Preview</string>
-    <string name="preview_image">Picture</string>
+    <string name="preview_title">Preview Incident</string>
+    <string name="preview_image">Image</string>
     <string name="preview_location">Location</string>
     <string name="preview_descriptiontitle"> Description</string>
     <string name="preview_description"> Description</string>
     <string name="preview_imagetag"> Image Tag </string>
-    <string name="preview_imagetagtitle"> Image Tag </string>
+    <string name="preview_imagetagtitle"> Tag </string>
     <string name="no_preview_available">No Preview Available</string>
     <string name="select_image_from_gallery">Select Image From Gallery</string>
     <string name="take_picture_title">Capture Image</string>
     <string name="incident_view_gallery_title">Gallery</string>
+        <string name="incident_view_grid_title">Incident Gallery </string>
+    
     <string name="failed_camera_please_try_again">Failed to save image, please try again</string>
     <string name="failed_to_connect_to_camera_message">Failed to open camera. Please try again later</string>
     <string name="geocoordinates_text">Geocoordinate location:</string>
     <string name="success_submission_msg">You have succesfully submitted a river pollution incident.</string>
     <string name="failure_submission_msg">Your incident submission was unsuccessful. Please try again later.</string>
+    <string name="failure_load_images_msg">Failed to obtain river pollution images. Please try again later.</string>
     <string name="sending_incident_title">Incident Submission</string>
     <string name="sending_incident_msg">Submitting your river pollution incident...</string>
     <string name="sending_incident_msg_please_wait">Please wait</string>
-	<string name = "main_screen_image"> Main Image </string>
+    <string name="loading_images_title">Loading River Pollution Images</string>
+    <string name="please_wait">Please wait...</string>
+    <string name="main_screen_image"> Main Image </string>
+
 </resources>

@@ -46,21 +46,35 @@
           <div class="nav-collapse">
             <ul class="nav">
 				<li><a href="../Public/Index.html">Home</a></li>
-				<li><a href="../Public/GridView.html">Incident Gallary</a></li>
+				<li><a href="../Public/GridView.html">Incident Gallery</a></li>
 				<li><a href="../Public/MapView.html">Incident Map</a></li>
 				<li><a href="../Public/Feedback.html">Contact Us</a></li>
 			</ul>
 			<ul class="nav pull-right">
-				<li><img id = "ajaxLoader" src="../../assets/img/load.gif"></li>
-				<li class="dropdown">
+				<li id="adminMenu" class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         Administration <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
 						<li><a href="../Admin/ApproveIncident.html">Approve Incidents</a></li>
 						<li><a href="../Admin/ApproveComment.html">Approve Comments</a></li>
+						<li><a id = "logoutButton" href="#">Log out</a></li>
                     </ul>
                 </li>
+				<li id="loginMenu" class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                       Log in <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+						<form action="" id="form_login" style= "padding:5px;margin:0px;" accept-charset="utf-8" method="post">
+							<input id="usernameInput" type="text" placeholder="UserName">
+							<input id="passwordInput" type="text" placeholder="Password">
+							
+						</form>
+						<li><a class="" id = "loginButton" href="#">Log In</a></li>
+                    </ul>
+                </li>
+				<li><img id = "ajaxLoader" src="../../assets/img/load.gif"></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -68,8 +82,8 @@
     </div>
 
 	<div class="container">
-	  <h1>Admin Approve Panel</h1>
-	  <p>This view is where an admin will approve incidents to be displayed to the public</p>
+	  <h1>Approve Comments</h1>
+	  <p>Accept or Reject pending comments</p>
 	  <div id = "approveCommentContent">
 	</div>
 </div>
@@ -99,6 +113,7 @@
 	<script src="../../assets/js/bootstrap-modal.js"></script>
 	<script src="../../assets/js/AjaxCommons.js"></script>
 	<script src="../../assets/js/ApproveComment.js"></script>
+	<script src="../../assets/js/Users.js"></script>
 	
   </body>
 </html>

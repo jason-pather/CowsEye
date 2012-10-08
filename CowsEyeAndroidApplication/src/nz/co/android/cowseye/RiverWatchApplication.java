@@ -7,11 +7,19 @@ import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import nz.co.android.cowseye.database.DatabaseAdapter;
+import nz.co.android.cowseye.database.DatabaseConstructor;
 import nz.co.android.cowseye.event.Event;
 import nz.co.android.cowseye.event.EventHandler;
+import nz.co.android.cowseye.utility.Utils;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
+
 import android.app.Application;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.graphics.Bitmap;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
@@ -23,9 +31,11 @@ import android.util.Log;
 public class RiverWatchApplication extends Application  {
 
 	/* Service paths */
-	public static String server_path = "http://barretts.ecs.vuw.ac.nz:4567/wainz/";
-	public static String submission_path = server_path + "submit/";
-	
+	public static String server_path = "http://barretts.ecs.vuw.ac.nz:4567/wainz";
+	public static String submission_path = server_path + "/submit";
+	public static String get_incidents_path = server_path + "/approved";
+	public static String get_incidents_path_start = "/start=";
+	public static String get_incidents_path_number = "/number=";
 	
 	private static final long timerZeroDelay = 0;
 	private static final long timerEventsProcessingPeriod = 300000; // 5 minutes
@@ -37,40 +47,39 @@ public class RiverWatchApplication extends Application  {
 
 	public EventHandler eventHandler;
 	private Timer updateEventsTimer;
+	private DatabaseConstructor databaseConstructor;
+	private DatabaseAdapter databaseAdapter;
 
 	//Start of application
 	@Override
 	public void onCreate() {
 		super.onCreate();
-//		loadDatabase();
+		loadDatabase();
 		setupApplication();
 	}
 
 	private void setupApplication() {
 		updateEventsTimer = new Timer();
 		eventHandler = new EventHandler(this);
-//		List<Event> unProcessdEvents = databaseAdapter.getAllUnProcessedEvents(this);
-//		for(Event e : unProcessdEvents)
-//			eventHandler.addEvent(e);
 	}
 
 	/**
 	 * Constructs and loads the database
 	 */
-//	private void loadDatabase(){		
-//		databaseConstructor = new DatabaseConstructor(this);
-//		try {
-//			databaseConstructor.createDataBase();
-//		} catch (IOException ioe) {
-//			Log.e(this.toString(),"Unable to create database");
-//		}
-//		try {
-//			databaseConstructor.openDataBase();
-//		}catch(SQLException sqle){
-//			Log.e(this.toString(),"Unable to open database");
-//		}
-//		databaseAdapter = new DatabaseAdapter(databaseConstructor);
-//	}
+	private void loadDatabase(){		
+		databaseConstructor = new DatabaseConstructor(this);
+		try {
+			databaseConstructor.createDataBase();
+		} catch (IOException ioe) {
+			Log.e(this.toString(),"Unable to create database");
+		}
+		try {
+			databaseConstructor.openDataBase();
+		}catch(SQLException sqle){
+			Log.e(this.toString(),"Unable to open database");
+		}
+		databaseAdapter = new DatabaseAdapter(databaseConstructor);
+	}
 	
 
 //	/** Adds this event to the database of events
@@ -84,9 +93,9 @@ public class RiverWatchApplication extends Application  {
 //	}
 	
 
-//	public DatabaseAdapter getDatabaseAdapter() {
-//		return databaseAdapter;
-//	}
+	public DatabaseAdapter getDatabaseAdapter() {
+		return databaseAdapter;
+	}
 
 
 	public EventHandler getEventHandler(){
@@ -196,10 +205,10 @@ public class RiverWatchApplication extends Application  {
 //	}
 
 	/* Saves a bitmap to disk */
-	private String saveBitmapToDisk(Bitmap bitmap) throws IOException {
+	public String saveBitmapToDisk(Bitmap bitmap, int incidentId, boolean isThumb) throws IOException {
 		try{
-			final long num = System.currentTimeMillis();
-			final String ID = getString(R.string.app_name) +num;
+//			final long num = System.currentTimeMillis();
+			final String ID = getString(R.string.app_name).replace(" ", "_")+ (isThumb? "thumb" : "full") +"_"+incidentId;
 			File dir = this.getDir("", Context.MODE_PRIVATE);
 			String pathToDir = dir.getAbsolutePath();
 			final String pathName = pathToDir + File.separator+ ID;
@@ -209,22 +218,18 @@ public class RiverWatchApplication extends Application  {
 		}
 		catch (FileNotFoundException e) {
 			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-		}
+		} 
 		throw new IOException("Could not create file or could not write to created file");
 	}
 
 	/** Deletes an image from local storage */
 	public void deleteImage(String filePath) {
 		File imageFile = new File(filePath);
-		Log.d(toString(), "deleteImage image exists before ? "+imageFile.exists());
-
+//		Log.d(toString(), "deleteImage image exists before ? "+imageFile.exists());
 		//delete image
 		if(imageFile.exists())
 			imageFile.delete();
-		Log.d(toString(), "deleteImage image exists after ? "+imageFile.exists());
+//		Log.d(toString(), "deleteImage image exists after ? "+imageFile.exists());
 
 	}
 	
@@ -248,14 +253,51 @@ public class RiverWatchApplication extends Application  {
 //
 //	}
 	
+	/**
+	 * Deals with the response from a submission event return
+	 * @param response from a submission event
+	 * @return true if succesfull submission, otherwise false
+	 */
+	public static boolean processEventResponse(HttpResponse response){
+		if(response==null)
+			return false;
+		StatusLine statusLine = response.getStatusLine();
+		if(statusLine == null)
+			return false;
+		int statusCode = statusLine.getStatusCode();
+		try{
+			switch(statusCode){
+			case Utils.HTTP_OK:
+				Log.i("app", "statusCode : "+statusCode+", Sucessful event response!");
+				return true;
+			case Utils.HTTP_LOGIC_ERROR:
+				Log.i("app", "statusCode : "+statusCode+", Logic error: Unsucessful event response!");
+				return false;
+			case Utils.HTTP_SERVER_ERROR:
+				Log.i("app", "statusCode : "+statusCode+", Server error: Unsucessful event response!");
+				return false;
+			default:
+				Log.i("app", "statusCode : "+statusCode+", ncaught error: Unsucessful event response!");
+				return false;
+			}
+			//			JSONObject jsonObject = JSONHelper.parseHttpResponseAsJSON(response);
+			//			Log.d("app", "jsonObject : "+jsonObject);
+		}
+		catch(Exception f){ 
+			Log.e("app", "Exception in JsonParsing : "+f);
+		}
+		return false;
+
+	}
+	
 	/* Deletes the image belonging to the current event */
 	public void deleteImage(Event currentEvent) {
     File imageFile = new File(currentEvent.getImagePath().toString());
-		Log.d(toString(), "deleteImage image exists before ? "+imageFile.exists());
+//		Log.d(toString(), "deleteImage image exists before ? "+imageFile.exists());
 		//delete image
 		if(imageFile.exists())
 			imageFile.delete();
-		Log.d(toString(), "deleteImage image exists after ? "+imageFile.exists());
+//		Log.d(toString(), "deleteImage image exists after ? "+imageFile.exists());
 
 	}
 	
@@ -264,7 +306,6 @@ public class RiverWatchApplication extends Application  {
 	               .query(contentURI, null, null, null, null); 
 	    cursor.moveToFirst(); 
 	    int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA); 
-	    Log.d(toString(), "path : "+cursor.getString(idx));
 	    return cursor.getString(idx); 
 	}
 }

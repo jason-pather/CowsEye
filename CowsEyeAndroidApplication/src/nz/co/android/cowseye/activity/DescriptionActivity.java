@@ -93,7 +93,6 @@ public class DescriptionActivity extends AbstractSubmissionActivity {
 		// An item was selected. You can retrieve the selected item using
 		imageTag = (String) parent.getItemAtPosition(pos);
 		submissionEventBuilder.setImageTag(imageTags);
-		Log.e("image tag is", imageTag);
 	}
 
 	public void onNothingSelected(AdapterView<?> parent) {
@@ -105,8 +104,6 @@ public class DescriptionActivity extends AbstractSubmissionActivity {
 	 * method checks for inputs being made by the user
 	 */
 	public void pressNextButton() {
-
-		Log.d(toString(), "Sent image tags");
 
 		tosendtags = new ArrayList<String>();
 
@@ -139,10 +136,6 @@ public class DescriptionActivity extends AbstractSubmissionActivity {
 					imageDescription = descriptionEditText.getText().toString();
 					submissionEventBuilder
 							.setImageDescription(imageDescription);
-					System.out.println("Sent DESCRIPTION");
-					Log.e("image description is", imageDescription);
-
-					
 					//checks if there has been any tags selected, else doesn't let the user progress through
 					if (numberOfSelections == 0) {
 						Toast.makeText(DescriptionActivity.this,
@@ -157,8 +150,6 @@ public class DescriptionActivity extends AbstractSubmissionActivity {
 							RecordLocationActivity.class);
 
 					submissionEventBuilder.setImageTag(tosendtags);
-					Log.d("hi", "reached here tan");
-
 					startActivity(intent);
 				}
 
