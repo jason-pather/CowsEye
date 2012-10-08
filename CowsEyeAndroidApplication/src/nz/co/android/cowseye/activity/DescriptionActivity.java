@@ -37,7 +37,7 @@ public class DescriptionActivity extends AbstractSubmissionActivity {
 	private String imageDescription;
 	private String imageTag;
 	protected CharSequence[] _options = { "Cow", "Dog", "Goat", "Horse",
-			"Litter", "River", "Pollution", "Sheep", "Stock" };
+			"Litter", "Pollution", "River", "Sheep", "Stock" };
 	protected boolean[] _selections = new boolean[_options.length];
 	private List<String> imageTags;
 
