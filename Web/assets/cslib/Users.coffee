@@ -3,8 +3,6 @@ logoutButton = $ "#logoutButton"
 loginMenu = $ "#loginMenu"
 loginButton = $ "#loginButton"
 
-loggedIn = false
-
 setCookie = (name, value) ->
 	c_value = escape value
 	c_name = escape name
@@ -21,12 +19,11 @@ getCookie = (name) ->
 			return unescape cookie[1]
 
 isAdmin = () ->
-	getCookie "status" == "Admin"
-	return loggedIn
+	return getCookie "status" == "Admin"
 	
 setLogInControl = () ->
 	if isAdmin()
-		console.log "Showig admin menu"
+		console.log "Showing admin menu"
 		adminMenu.show()
 		loginMenu.hide()
 	else
@@ -36,12 +33,10 @@ setLogInControl = () ->
 
 logoutButton.click ->
 	setCookie "status", "User"
-	loggedIn = false
 	setLogInControl()
 	
 loginButton.click ->
 	setCookie "status", "Admin"
-	loggedIn = true
 	setLogInControl()
 	
 setLogInControl()

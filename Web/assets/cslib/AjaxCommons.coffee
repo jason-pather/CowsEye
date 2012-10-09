@@ -79,12 +79,14 @@ RWCall = (onSuccess, onFailure, data, path, args, callType) ->
 			# contentType: "application/json;charset=UTF-8",
 			# timeout: TIMEOUT,
 			success: (msg) ->
+			
+			    #Sanatise
 				ajaxLoader.css "display", "none"
-				onSuccess msg 
-			error: (msg) -> 
-				ajaxLoader.css "display", "none"
-				onFailure msg
+				onSuccess msg
 				
+			error: (msg) -> 
+                ajaxLoader.css "display", "none"
+                onFailure msg
 				
 	else if (callType == "POST")
 		# $.post BASE_URL + path + args, "{ \"comment\": \"hello comment\"}"
