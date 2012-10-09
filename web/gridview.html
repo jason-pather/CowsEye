@@ -51,6 +51,17 @@
 			  <li><a href="feedback.html">Contact Us</a></li>
 			</ul>
 			<ul class="nav pull-right">
+			<li><img id = "ajaxLoader" src="assets/img/load.gif"></li>
+				<li id="adminMenu" class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        Administration <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+						<li><a href="approveincident.html">Approve Incidents</a></li>
+						<li><a href="approvecomment.html">Approve Comments</a></li>
+						<li><a id = "logoutButton" href="#">Log out</a></li>
+                    </ul>
+                </li>
 				<li id="loginMenu" class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
                        Log in <b class="caret"></b>
@@ -64,7 +75,6 @@
 						<li><a class="" id = "loginButton" href="#">Log In</a></li>
                     </ul>
                 </li>
-				<li><img id = "ajaxLoader" src="assets/img/load.gif"></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
