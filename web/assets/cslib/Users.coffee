@@ -19,17 +19,17 @@ getCookie = (name) ->
 			return unescape cookie[1]
 
 isAdmin = () ->
-	return getCookie "status" == "Admin"
+	return getCookie("status") == "Admin"
 	
 setLogInControl = () ->
 	if isAdmin()
 		console.log "Showing admin menu"
-		adminMenu.show()
-		loginMenu.hide()
+		adminMenu.css {display: "block"} 
+		loginMenu.css {display: "none"} 
 	else
 		console.log "Hiding admin menu"
-		adminMenu.hide()
-		loginMenu.show()
+		adminMenu.css {display: "none"} 
+		loginMenu.css {display: "block"} 
 
 logoutButton.click ->
 	setCookie "status", "User"

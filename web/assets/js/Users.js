@@ -30,18 +30,26 @@
   };
 
   isAdmin = function() {
-    return getCookie("status" === "Admin");
+    return getCookie("status") === "Admin";
   };
 
   setLogInControl = function() {
     if (isAdmin()) {
       console.log("Showing admin menu");
-      adminMenu.show();
-      return loginMenu.hide();
+      adminMenu.css({
+        display: "block"
+      });
+      return loginMenu.css({
+        display: "none"
+      });
     } else {
       console.log("Hiding admin menu");
-      adminMenu.hide();
-      return loginMenu.show();
+      adminMenu.css({
+        display: "none"
+      });
+      return loginMenu.css({
+        display: "block"
+      });
     }
   };
 

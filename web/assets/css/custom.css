@@ -1,4 +1,13 @@
 
+
+#adminMenu{
+    display: "none" 
+}
+
+#loginMenu{
+    display: "none" 
+}
+
 /* Fix for google maps */
 #map_canvas img {
 	max-width: 9999px;
