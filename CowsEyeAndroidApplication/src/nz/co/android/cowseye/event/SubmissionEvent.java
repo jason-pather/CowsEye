@@ -178,7 +178,7 @@ public class SubmissionEvent implements Event{
 		try {
 			//convert data to JSON
 			jsonObject = makeJSONFromSubmissionData();
-			Log.d(toString(), "json thaang : "+jsonObject.toString());
+			Log.i(toString(), "Incident as JSON: "+jsonObject.toString());
 		} 
 		catch (JSONException e) {
 			Log.e(toString(), "JSONException: "+e);
