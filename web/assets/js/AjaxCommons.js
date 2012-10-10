@@ -7,7 +7,7 @@ Author Matthew Betts
 (function() {
   var BASE_URL, CONTENT_TYPE, DATA_TYPE, PROCESS_DATA, RWCall, TIMEOUT;
 
-  BASE_URL = "http://barretts.ecs.vuw.ac.nz:4567/wainz/";
+  BASE_URL = "http://api.riverwatch:80/wainz/";
 
   CONTENT_TYPE = "contentType";
 
