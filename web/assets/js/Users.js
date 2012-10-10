@@ -1,5 +1,5 @@
 (function() {
-  var adminMenu, getCookie, isAdmin, loginButton, loginMenu, logoutButton, setCookie, setLogInControl;
+  var adminMenu, form_login, getCookie, isAdmin, loginButton, loginMenu, logoutButton, passwordInput, setCookie, setLogInControl, usernameInput;
 
   adminMenu = $("#adminMenu");
 
@@ -8,6 +8,12 @@
   loginMenu = $("#loginMenu");
 
   loginButton = $("#loginButton");
+
+  usernameInput = $("#usernameInput");
+
+  passwordInput = $("#passwordInput");
+
+  form_login = $("form_login");
 
   setCookie = function(name, value) {
     var c_name, c_value;
@@ -35,7 +41,6 @@
 
   setLogInControl = function() {
     if (isAdmin()) {
-      console.log("Showing admin menu");
       adminMenu.css({
         display: "block"
       });
@@ -43,7 +48,6 @@
         display: "none"
       });
     } else {
-      console.log("Hiding admin menu");
       adminMenu.css({
         display: "none"
       });
@@ -53,15 +57,17 @@
     }
   };
 
-  logoutButton.click(function() {
-    setCookie("status", "User");
-    return setLogInControl();
-  });
-
-  loginButton.click(function() {
-    setCookie("status", "Admin");
-    return setLogInControl();
-  });
+  /* Old Testing controls
+  logoutButton.click ->
+  	setCookie "status", "User"
+  	setLogInControl()
+  		
+  loginButton.click ->
+  	form_login.submit ->
+  	    alert "Done"
+  	
+  	setLogInControl()
+  */
 
   setLogInControl();
 

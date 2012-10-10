@@ -2,6 +2,9 @@ adminMenu = $ "#adminMenu"
 logoutButton = $ "#logoutButton"
 loginMenu = $ "#loginMenu"
 loginButton = $ "#loginButton"
+usernameInput = $ "#usernameInput"
+passwordInput = $ "#passwordInput"
+form_login = $ "form_login"
 
 setCookie = (name, value) ->
 	c_value = escape value
@@ -23,22 +26,25 @@ isAdmin = () ->
 	
 setLogInControl = () ->
 	if isAdmin()
-		console.log "Showing admin menu"
 		adminMenu.css {display: "block"} 
 		loginMenu.css {display: "none"} 
 	else
-		console.log "Hiding admin menu"
 		adminMenu.css {display: "none"} 
 		loginMenu.css {display: "block"} 
 
+### Old Testing controls
 logoutButton.click ->
 	setCookie "status", "User"
 	setLogInControl()
-	
+		
 loginButton.click ->
-	setCookie "status", "Admin"
-	setLogInControl()
+	form_login.submit ->
+	    alert "Done"
 	
+	setLogInControl()
+###
+	
+# Check for the admin cookie and set the status...	
 setLogInControl()
 
 	

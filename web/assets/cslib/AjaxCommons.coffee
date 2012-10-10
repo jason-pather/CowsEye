@@ -6,7 +6,7 @@ Author Matthew Betts
 
 
 # Globals
-BASE_URL = "http://barretts.ecs.vuw.ac.nz:4567/wainz/"
+BASE_URL = "http://api.riverwatch.co.nz/wainz/"
 CONTENT_TYPE = "contentType"
 PROCESS_DATA = false
 TIMEOUT = 5000
