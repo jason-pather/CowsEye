@@ -78,8 +78,8 @@ createOverlay = (incident) ->
 
 	geo = incident.geolocation
 	
-	lat = new google.maps.LatLng geo.lat - size, geo.long - size * 2
-	lng = new google.maps.LatLng geo.lat + size, geo.long + size * 2
+	lat = new google.maps.LatLng geo.lat - size * 0.125, geo.long - size * 0.25
+	lng = new google.maps.LatLng geo.lat + size * 0.125, geo.long + size * 0.25
 
 	imageBounds = new google.maps.LatLngBounds lat, lng
 	overlay = new google.maps.GroundOverlay "#{incident.thumbnail_url}", imageBounds

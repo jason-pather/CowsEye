@@ -59,7 +59,9 @@
                     <ul class="dropdown-menu">
 						<li><a href="approveincident.html">Approve Incidents</a></li>
 						<li><a href="approvecomment.html">Approve Comments</a></li>
-						<li><a id = "logoutButton" href="#">Log out</a></li>
+												<form action="http://api.riverwatch.co.nz:80/wainz/logout" id="form_logout" style= "padding:5px;margin:0px;" accept-charset="utf-8" method="post">
+			                <input class="btn btn-primary" id = "logoutButton" type="submit" value="Log Out">
+						</form>
                     </ul>
                 </li>
 				<li id="loginMenu" class="dropdown">
@@ -67,12 +69,11 @@
                        Log in <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
-						<form action="" id="form_login" style= "padding:5px;margin:0px;" accept-charset="utf-8" method="post">
-							<input id="usernameInput" type="text" placeholder="UserName">
-							<input id="passwordInput" type="password" placeholder="Password">
-							
+						<form action="http://api.riverwatch.co.nz:80/wainz/login" id="form_login" style= "padding:5px;margin:0px;" accept-charset="utf-8" method="post">
+							<input id="usernameInput" name="username" type="text" placeholder="UserName">
+							<input id="passwordInput" name="password" type="password" placeholder="Password">
+			                <input class="btn btn-primary" id = "loginButton" type="submit" value="Submit">
 						</form>
-						<li><a class="" id = "loginButton" href="#">Log In</a></li>
                     </ul>
                 </li>
             </ul>
@@ -82,12 +83,17 @@
     </div>
 
 		    <div class="container">
+		    
+		    <h1>Feedback</h1>
 		
+		<p>Click on the button below to contact River Watch, and submit feedback or suggestions on our site.</p>
+		<p>Your enquiries will be answered every week by Tania Jacob.</p>
+		<a href="mailto:enquires@riverwatch.co.nz?subject=Feedback&body=Type%20Feedback%20Here" class="btn btn-primary">Send Email Message</a>
+		    
+		<!--
 		<form class = "form-horizontal">
-
-		<h1>Feedback</h1>
+       
 		
-		<p>Fill out the form below to contact River Watch and submit feedback or suggestions on the site. Your enquiries will be answered every week by one of the staff at River Watch. If you would like an email reply please select the contact me option when submitting the form.</p>
 			
 			<div class ="control-group" id = "nameControlGroup">
 				<label class = "control-label" for="appendInput">Name</label>
@@ -142,6 +148,8 @@
 			</div>
 		
 		</form>
+		
+		-->
 
 </div>
 
