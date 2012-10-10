@@ -58,10 +58,12 @@ form_login.submit ->
     
     $.ajax {   
         type: "POST"
-        data : $(this).serialize(),
-        cache: false,  
+        data : $(this).serialize()
+        cache: false
         url: "http://api.riverwatch.co.nz/wainz/login"   
-        success: (data) ->
+        crossDomain: true
+        dataType: "jsonp"
+        success: () ->
             alert "Success"
     }
     

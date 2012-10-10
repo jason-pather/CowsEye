@@ -83,7 +83,9 @@
       data: $(this).serialize(),
       cache: false,
       url: "http://api.riverwatch.co.nz/wainz/login",
-      success: function(data) {
+      crossDomain: true,
+      dataType: "jsonp",
+      success: function() {
         return alert("Success");
       }
     });
