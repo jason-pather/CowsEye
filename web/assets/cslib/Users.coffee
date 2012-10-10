@@ -45,7 +45,8 @@ loginButton.click ->
 ###
 	
 # Check for the admin cookie and set the status...	
-setLogInControl()
+$ ->
+    setLogInControl()
 
 	
 		

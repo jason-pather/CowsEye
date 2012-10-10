@@ -69,6 +69,8 @@
   	setLogInControl()
   */
 
-  setLogInControl();
+  $(function() {
+    return setLogInControl();
+  });
 
 }).call(this);
