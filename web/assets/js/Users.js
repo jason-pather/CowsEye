@@ -13,7 +13,7 @@
 
   passwordInput = $("#passwordInput");
 
-  form_login = $("form_login");
+  form_login = $("#form_login");
 
   /*
   setCookie = (name, value) ->
@@ -41,26 +41,25 @@
   };
 
   setLogInControl = function() {
-    return console.log("setLogInControl Called");
+    console.log("setLogInControl Called");
+    if (isAdmin()) {
+      console.log("Is an Admin");
+      adminMenu.css({
+        display: "block"
+      });
+      return loginMenu.css({
+        display: "none"
+      });
+    } else {
+      console.log("Is a user");
+      adminMenu.css({
+        display: "none"
+      });
+      return loginMenu.css({
+        display: "block"
+      });
+    }
   };
-
-  if (isAdmin()) {
-    console.log("Is an Admin");
-    adminMenu.css({
-      display: "block"
-    });
-    loginMenu.css({
-      display: "none"
-    });
-  } else {
-    console.log("Is a user");
-    adminMenu.css({
-      display: "none"
-    });
-    loginMenu.css({
-      display: "block"
-    });
-  }
 
   /* Old Testing controls
   logoutButton.click ->
@@ -77,5 +76,21 @@
   $(function() {
     return setLogInControl();
   });
+
+  form_login.submit(function() {
+    $.ajax({
+      type: "POST",
+      data: $(this).serialize(),
+      cache: false,
+      url: "http://api.riverwatch.co.nz/wainz/login",
+      success: function(data) {
+        return alert("Success");
+      }
+    });
+    loginMenu.removeClass("open");
+    return false;
+  });
+
+  setInterval(setLogInControl, 1000);
 
 }).call(this);

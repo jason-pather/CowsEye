@@ -4,7 +4,7 @@ loginMenu = $ "#loginMenu"
 loginButton = $ "#loginButton"
 usernameInput = $ "#usernameInput"
 passwordInput = $ "#passwordInput"
-form_login = $ "form_login"
+form_login = $ "#form_login"
 
 ###
 setCookie = (name, value) ->
@@ -29,7 +29,7 @@ isAdmin = () ->
 	
 setLogInControl = () ->
     console.log("setLogInControl Called")
-	if isAdmin()
+    if isAdmin()
 	    console.log("Is an Admin")
 	    adminMenu.css {display: "block"} 
 	    loginMenu.css {display: "none"}
@@ -53,7 +53,23 @@ loginButton.click ->
 # Check for the admin cookie and set the status...	
 $ ->
     setLogInControl()
+    
+form_login.submit ->
+    
+    $.ajax {   
+        type: "POST"
+        data : $(this).serialize(),
+        cache: false,  
+        url: "http://api.riverwatch.co.nz/wainz/login"   
+        success: (data) ->
+            alert "Success"
+    }
+    
+    loginMenu.removeClass "open"
+        
+    return false;   
 
+setInterval setLogInControl, 1000
 	
 		
 
