@@ -6,17 +6,20 @@ usernameInput = $ "#usernameInput"
 passwordInput = $ "#passwordInput"
 form_login = $ "form_login"
 
+###
 setCookie = (name, value) ->
 	c_value = escape value
 	c_name = escape name
 	document.cookie = "#{c_name}=#{c_value};"
 	console.log("Setting cookie to '#{c_name}=#{value};'")
 	console.log "Cookies is '#{document.cookie}'"
-	
+###
+
 getCookie = (name) ->
 	cookies = document.cookie.split(";")
 	console.log "cookies found #{cookies}"
 	for c in cookies
+	    console.log("Cookie is #{c}")
 		cookie = c.split "="
 		if name == cookie[0]
 			return unescape cookie[1]
@@ -25,12 +28,15 @@ isAdmin = () ->
 	return getCookie("status") == "Admin"
 	
 setLogInControl = () ->
+    console.log("setLogInControl Called")
 	if isAdmin()
-		adminMenu.css {display: "block"} 
-		loginMenu.css {display: "none"} 
-	else
-		adminMenu.css {display: "none"} 
-		loginMenu.css {display: "block"} 
+	    console.log("Is an Admin")
+	    adminMenu.css {display: "block"} 
+	    loginMenu.css {display: "none"}
+    else
+        console.log("Is a user")
+        adminMenu.css {display: "none"} 
+        loginMenu.css {display: "block"} 
 
 ### Old Testing controls
 logoutButton.click ->
