@@ -87,8 +87,10 @@ public class GetIncidentsAsyncTask extends AsyncTask<Void, Void, Boolean> {
 		.setPhysicalLocation(incident.getString(Constants.JSON_INCIDENT_PHYSICAL_LOCATION_KEY));
 		if(incident.has(Constants.JSON_INCIDENT_GEOLOCATION_KEY)){
 			JSONObject geoJSON = incident.getJSONObject(Constants.JSON_INCIDENT_GEOLOCATION_KEY);
-			builder.setLatitude(geoJSON.getInt(Constants.JSON_INCIDENT_LATITUDE_KEY))
-			.setLongitude(geoJSON.getInt(Constants.JSON_INCIDENT_LONGITUDE_KEY));
+			if(!geoJSON.isNull(Constants.JSON_INCIDENT_LATITUDE_KEY))
+				builder.setLatitude(geoJSON.getInt(Constants.JSON_INCIDENT_LATITUDE_KEY));
+			if(!geoJSON.isNull(Constants.JSON_INCIDENT_LONGITUDE_KEY))
+				builder.setLongitude(geoJSON.getInt(Constants.JSON_INCIDENT_LONGITUDE_KEY));
 		}
 		return builder.build();
 	}

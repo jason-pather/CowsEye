@@ -41,7 +41,7 @@ public class GetIncidentsEvent{
 		HttpClient client = new DefaultHttpClient();
 		//set timeout to 20 seconds
 		HttpConnectionParams.setConnectionTimeout(client.getParams(), Constants.CONNECTION_TIMEOUT_MS);
-		HttpConnectionParams.setSoTimeout(client.getParams(), 20000);
+		HttpConnectionParams.setSoTimeout(client.getParams(), 25000);
 		return client;
 	}
 
