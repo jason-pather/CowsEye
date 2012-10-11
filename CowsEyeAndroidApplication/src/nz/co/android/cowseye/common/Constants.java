@@ -5,7 +5,7 @@ import java.net.URI;
 
 public interface Constants {
 	
-	public static final int CONNECTION_TIMEOUT_MS = 10000;	
+	public static final int CONNECTION_TIMEOUT_MS = 15000;	
 	public static final int SOCKET_TIMEOUT_MS = 45000;
 
 	//Start Activity requestCode Constants
