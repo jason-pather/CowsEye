@@ -6,6 +6,9 @@ usernameInput = $ "#usernameInput"
 passwordInput = $ "#passwordInput"
 form_login = $ "#form_login"
 
+
+
+
 ###
 setCookie = (name, value) ->
 	c_value = escape value
@@ -14,7 +17,7 @@ setCookie = (name, value) ->
 	console.log("Setting cookie to '#{c_name}=#{value};'")
 	console.log "Cookies is '#{document.cookie}'"
 ###
-
+###
 getCookie = (name) ->
 	cookies = document.cookie.split(";")
 	console.log "cookies found #{cookies}"
@@ -37,7 +40,7 @@ setLogInControl = () ->
         console.log("Is a user")
         adminMenu.css {display: "none"} 
         loginMenu.css {display: "block"} 
-
+###
 ### Old Testing controls
 logoutButton.click ->
 	setCookie "status", "User"
@@ -50,10 +53,30 @@ loginButton.click ->
 	setLogInControl()
 ###
 	
-# Check for the admin cookie and set the status...	
+# Check with the server to see if this session has admin priviliges
 $ ->
+    success = (data) ->
+        status = JSON.parse(data).status
+        console.log "Success #{data}"
+        if status == "true"
+	        console.log("Is an Admin")
+	        adminMenu.css {display: "block"} 
+	        loginMenu.css {display: "none"}
+        else
+            console.log("Is a user")
+            adminMenu.css {display: "none"} 
+            loginMenu.css {display: "block"}    
+        
+    fail = (data) ->
+        console.log "Fail #{data}"    
+
+    window.RWCall success, fail, {}, "status", "", "GET"
+
+    ###
     setLogInControl()
+    ###
     
+   ### 
 form_login.submit ->
     
     $.ajax {   
@@ -70,9 +93,10 @@ form_login.submit ->
     loginMenu.removeClass "open"
         
     return false;   
-
+###
+###
 setInterval setLogInControl, 1000
-	
+	###
 		
 
 		

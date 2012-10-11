@@ -1,5 +1,5 @@
 (function() {
-  var adminMenu, form_login, getCookie, isAdmin, loginButton, loginMenu, logoutButton, passwordInput, setLogInControl, usernameInput;
+  var adminMenu, form_login, loginButton, loginMenu, logoutButton, passwordInput, usernameInput;
 
   adminMenu = $("#adminMenu");
 
@@ -24,42 +24,30 @@
   	console.log "Cookies is '#{document.cookie}'"
   */
 
-  getCookie = function(name) {
-    var c, cookie, cookies, _i, _len;
-    cookies = document.cookie.split(";");
-    console.log("cookies found " + cookies);
-    for (_i = 0, _len = cookies.length; _i < _len; _i++) {
-      c = cookies[_i];
-      console.log("Cookie is " + c);
-    }
-    cookie = c.split("=");
-    if (name === cookie[0]) return unescape(cookie[1]);
-  };
-
-  isAdmin = function() {
-    return getCookie("status") === "Admin";
-  };
-
-  setLogInControl = function() {
-    console.log("setLogInControl Called");
-    if (isAdmin()) {
-      console.log("Is an Admin");
-      adminMenu.css({
-        display: "block"
-      });
-      return loginMenu.css({
-        display: "none"
-      });
-    } else {
-      console.log("Is a user");
-      adminMenu.css({
-        display: "none"
-      });
-      return loginMenu.css({
-        display: "block"
-      });
-    }
-  };
+  /*
+  getCookie = (name) ->
+  	cookies = document.cookie.split(";")
+  	console.log "cookies found #{cookies}"
+  	for c in cookies
+  	    console.log("Cookie is #{c}")
+  		cookie = c.split "="
+  		if name == cookie[0]
+  			return unescape cookie[1]
+  
+  isAdmin = () ->
+  	return getCookie("status") == "Admin"
+  	
+  setLogInControl = () ->
+      console.log("setLogInControl Called")
+      if isAdmin()
+  	    console.log("Is an Admin")
+  	    adminMenu.css {display: "block"} 
+  	    loginMenu.css {display: "none"}
+      else
+          console.log("Is a user")
+          adminMenu.css {display: "none"} 
+          loginMenu.css {display: "block"}
+  */
 
   /* Old Testing controls
   logoutButton.click ->
@@ -74,25 +62,59 @@
   */
 
   $(function() {
-    return setLogInControl();
-  });
-
-  form_login.submit(function() {
-    $.ajax({
-      type: "POST",
-      data: $(this).serialize(),
-      cache: false,
-      url: "http://api.riverwatch.co.nz/wainz/login",
-      crossDomain: true,
-      dataType: "jsonp",
-      success: function() {
-        return alert("Success");
+    var fail, success;
+    success = function(data) {
+      var status;
+      status = JSON.parse(data).status;
+      console.log("Success " + data);
+      if (status === "true") {
+        console.log("Is an Admin");
+        adminMenu.css({
+          display: "block"
+        });
+        return loginMenu.css({
+          display: "none"
+        });
+      } else {
+        console.log("Is a user");
+        adminMenu.css({
+          display: "none"
+        });
+        return loginMenu.css({
+          display: "block"
+        });
       }
-    });
-    loginMenu.removeClass("open");
-    return false;
+    };
+    fail = function(data) {
+      return console.log("Fail " + data);
+    };
+    return window.RWCall(success, fail, {}, "status", "", "GET");
+    /*
+        setLogInControl()
+    */
   });
 
-  setInterval(setLogInControl, 1000);
+  /* 
+  form_login.submit ->
+   
+   $.ajax {   
+       type: "POST"
+       data : $(this).serialize()
+       cache: false
+       url: "http://api.riverwatch.co.nz/wainz/login"   
+       crossDomain: true
+       dataType: "jsonp"
+       success: () ->
+           alert "Success"
+   }
+   
+   loginMenu.removeClass "open"
+       
+   return false;
+  */
+
+  /*
+  setInterval setLogInControl, 1000
+  */
 
 }).call(this);
