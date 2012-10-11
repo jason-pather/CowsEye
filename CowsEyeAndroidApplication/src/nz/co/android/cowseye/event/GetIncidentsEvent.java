@@ -3,6 +3,7 @@ package nz.co.android.cowseye.event;
 import java.io.IOException;
 
 import nz.co.android.cowseye.RiverWatchApplication;
+import nz.co.android.cowseye.common.Constants;
 import nz.co.android.cowseye.utility.JSONHelper;
 
 import org.apache.http.HttpResponse;
@@ -20,7 +21,6 @@ import android.util.Log;
 
 public class GetIncidentsEvent{
 
-	private static final int TIMEOUT_MS = 10000;
 	protected HttpGet httpGet;
 	protected HttpClient client;
 
@@ -40,8 +40,8 @@ public class GetIncidentsEvent{
 	public HttpClient constructHttpClient(){
 		HttpClient client = new DefaultHttpClient();
 		//set timeout to 20 seconds
-		HttpConnectionParams.setConnectionTimeout(client.getParams(), TIMEOUT_MS);
-		HttpConnectionParams.setSoTimeout(client.getParams(), TIMEOUT_MS);
+		HttpConnectionParams.setConnectionTimeout(client.getParams(), Constants.CONNECTION_TIMEOUT_MS);
+		HttpConnectionParams.setSoTimeout(client.getParams(), 25000);
 		return client;
 	}
 

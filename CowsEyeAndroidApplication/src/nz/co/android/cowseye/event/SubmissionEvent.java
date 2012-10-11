@@ -73,8 +73,8 @@ public class SubmissionEvent implements Event{
 	public HttpClient constructHttpClient(){
 		HttpClient client = new DefaultHttpClient();
 		//set timeout to 20 seconds
-		HttpConnectionParams.setConnectionTimeout(client.getParams(), TIMEOUT_MS);
-		HttpConnectionParams.setSoTimeout(client.getParams(), TIMEOUT_MS);
+		HttpConnectionParams.setConnectionTimeout(client.getParams(), Constants.CONNECTION_TIMEOUT_MS);
+		HttpConnectionParams.setSoTimeout(client.getParams(), Constants.SOCKET_TIMEOUT_MS);
 		return client;
 	}
 
@@ -178,7 +178,7 @@ public class SubmissionEvent implements Event{
 		try {
 			//convert data to JSON
 			jsonObject = makeJSONFromSubmissionData();
-			Log.d(toString(), "json thaang : "+jsonObject.toString());
+			Log.i(toString(), "Incident as JSON: "+jsonObject.toString());
 		} 
 		catch (JSONException e) {
 			Log.e(toString(), "JSONException: "+e);

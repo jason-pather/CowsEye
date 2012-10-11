@@ -151,7 +151,7 @@ public class TakePictureActivity  extends Activity{
 				String pathToDir = dir.getAbsolutePath();
 				final String pathName = pathToDir + File.separator+ ID;
 				FileOutputStream out = new FileOutputStream(pathName);
-				rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+				rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 85, out);
 				return pathName;
 			}
 			catch (FileNotFoundException e) {

@@ -31,7 +31,7 @@ import android.util.Log;
 public class RiverWatchApplication extends Application  {
 
 	/* Service paths */
-	public static String server_path = "http://barretts.ecs.vuw.ac.nz:4567/wainz";
+	public static String server_path = "http://api.riverwatch.co.nz:80/wainz";
 	public static String submission_path = server_path + "/submit";
 	public static String get_incidents_path = server_path + "/approved";
 	public static String get_incidents_path_start = "/start=";
