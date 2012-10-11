@@ -1,5 +1,6 @@
 package nz.co.android.cowseye.service;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -73,10 +74,11 @@ public class GetImageAsyncTask extends AsyncTask<Void, Void, String> {
 		HttpEntity entity = response.getEntity();
 		if (entity != null) {
 			// A Simple JSON Response Read
-			InputStream instream;
+//			InputStream instream = new BufferedInputStream(in)
 			try {
-				instream = entity.getContent();
-				Bitmap bm = Utils.scaleBitmap(instream, 2);
+				InputStream instream = entity.getContent();
+				BufferedInputStream bInstream = new BufferedInputStream(instream);
+				Bitmap bm = Utils.scaleBitmap(bInstream, 2);
 				//save bitmap to filepath
 				if(bm!=null){
 					//save image

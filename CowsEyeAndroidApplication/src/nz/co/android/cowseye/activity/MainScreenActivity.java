@@ -124,7 +124,8 @@ public class MainScreenActivity extends Activity {
 				Toast.makeText(this, getString(R.string.failure_load_images_msg), Toast.LENGTH_LONG).show();
 		}
 		else{
-			haveBaseIncidents = true;
+			//REMOVED
+			haveBaseIncidents = false;
 			if(loadingGridView){
 				loadingGridView = false;
 				loadGridView();

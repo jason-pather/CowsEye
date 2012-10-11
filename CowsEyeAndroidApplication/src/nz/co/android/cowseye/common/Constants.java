@@ -4,6 +4,9 @@ import java.net.URI;
 
 
 public interface Constants {
+	
+	public static final int CONNECTION_TIMEOUT_MS = 10000;	
+	public static final int SOCKET_TIMEOUT_MS = 45000;
 
 	//Start Activity requestCode Constants
 	public static final String KEY_REQUEST_CODE = "KEY_REQUEST_CODE"; 
@@ -14,7 +17,6 @@ public interface Constants {
 	public static final int REQUEST_CODE_PROBLEM_DESCRIPTION = 3;
 	public static final int REQUEST_CODE_TAKE_PICTURE = 4;
 	public static final int REQUEST_CODE_GALLERY = 5;
-
 
 	
 	/* Keys for information passed between activities or within for activity destroy on rotation */
