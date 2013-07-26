@@ -75,7 +75,7 @@ public class EventHandler {
 		else{
 			//no internet connection - set delay time to 2 minutes
 			Log.i(toString(), "no internet connection - delaying event timer by 2 minutes");
-			myApplication.requestDelayedEventsTimer();
+	       //myApplication.requestDelayedEventsTimer(); // uncomment if we use this
 		}
 	}
 

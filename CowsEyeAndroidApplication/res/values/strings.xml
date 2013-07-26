@@ -22,6 +22,7 @@
     <string name="pleaseEnterDescription">Please enter a description of the problem</string>
     <string name="pleaseChooseTags">Please choose image tag(s) </string>
     <string name="pleaseEnterAddress">Please enter an address</string>
+    <string name="nocoordinates">No Coordinates (Lat,Lon) found</string>
     <string name="gps_message_submission">Submitting a pollution event uses GPS to tag your location. However your GPS seems to be disabled, do you want to
 		enable it?</string>
     <string name="gps_message">Your GPS seems to be disabled, do you want to
@@ -49,12 +50,13 @@
     <string name="preview_description"> Description</string>
     <string name="preview_imagetag"> Image Tag </string>
     <string name="preview_imagetagtitle"> Tag </string>
+    <string name="map_not_ready">Map is not ready yet</string>
     <string name="no_preview_available">No Preview Available</string>
     <string name="select_image_from_gallery">Select Image From Gallery</string>
     <string name="take_picture_title">Capture Image</string>
     <string name="incident_view_gallery_title">Gallery</string>
         <string name="incident_view_grid_title">Incident Gallery </string>
-    
+
     <string name="failed_camera_please_try_again">Failed to save image, please try again</string>
     <string name="failed_to_connect_to_camera_message">Failed to open camera. Please try again later</string>
     <string name="geocoordinates_text">Geocoordinate location:</string>

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- <activity xmlns:android="http://schemas.android.com/apk/res/android" android:theme="@style/Theme.Sherlock"> -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -6,45 +7,13 @@
     android:orientation="vertical"
     android:weightSum="1" >
 
-    <FrameLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
-
-        <TextView
-            android:id="@+id/locationScreenTitle"
-            style="@style/titleHeading"
-            android:text="@string/locationTitle" />
-
-        <Button
-            android:id="@+id/backButton"
-            style="@style/backButtonStyle" />
-
-        <Button
-            android:id="@+id/doneButton"
-            style="@style/nextButtonStyle" />
-    </FrameLayout>
-
-    <!-- android:apiKey = Mitch's laptop debug key -->
-
-    <com.google.android.maps.MapView
+    <fragment
         android:id="@+id/mapview"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:apiKey="0W_gYkxqIw4RKZGVAyZ0oxubP2GQuPDF45IAM2w"
-        android:clickable="true" />
+        class="com.google.android.gms.maps.SupportMapFragment"/>
 
-    <LinearLayout style="@style/location_layout_style" >
-
-        <TextView
-            style="@style/text_view_style"
-            android:layout_weight="0.3"
-            android:text="@string/userAddress" />
-
-        <EditText
-            android:id="@+id/addressEditText"
-            style="@style/text_field_style"
-            android:layout_weight="0.7" />
-    </LinearLayout>
+    
 
 </LinearLayout>

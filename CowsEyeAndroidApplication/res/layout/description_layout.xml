@@ -5,23 +5,14 @@
     android:background="@drawable/details_background"
     android:orientation="vertical" >
 
-    <FrameLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
-
-        <TextView
-            android:id="@+id/descriptionScreenTitle"
-            style="@style/titleHeading"
-            android:text="@string/description_title" />
-
-        <Button
-            android:id="@+id/backButton"
-            style="@style/backButtonStyle" />
-
-        <Button
-            android:id="@+id/nextButton"
-            style="@style/nextButtonStyle" />
-    </FrameLayout>
+         <Button android:id="@+id/button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Select Image Tags"
+            style="@style/riverWatchButtonStyle"
+            >
+            <requestFocus />
+         </Button>
 
     <TextView
         android:id="@+id/EnterDescriptionLabel"
@@ -38,14 +29,8 @@
         android:inputType="textMultiLine"
         android:singleLine="false" >
 
-        <requestFocus />
+
     </EditText>
 
-        <Button android:id="@+id/button"
-    		android:layout_width="fill_parent"
-    		android:layout_height="wrap_content"
-    		android:text="Select Image Tags"
-  		    style="@style/riverWatchButtonStyle" 
-    		/>
 
 </LinearLayout>

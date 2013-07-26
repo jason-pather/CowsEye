@@ -4,20 +4,12 @@ import java.io.IOException;
 
 import nz.co.android.cowseye.R;
 import nz.co.android.cowseye.RiverWatchApplication;
-import nz.co.android.cowseye.event.Event;
 import nz.co.android.cowseye.event.GetIncidentsEvent;
 import nz.co.android.cowseye.event.SubmissionEvent;
 import nz.co.android.cowseye.event.SubmissionEventBuilderException;
 import nz.co.android.cowseye.service.GetIncidentsAsyncTask;
 import nz.co.android.cowseye.utility.AlertBuilder;
-import nz.co.android.cowseye.utility.JSONHelper;
 import nz.co.android.cowseye.utility.Utils;
-
-import org.apache.http.Header;
-import org.apache.http.HttpResponse;
-import org.apache.http.StatusLine;
-import org.json.JSONObject;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -32,10 +24,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.maps.GeoPoint;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.google.android.gms.maps.model.LatLng;
 
 /** The activity for showing a preview of the pollution event
- * 
+ *
  * This will allow the user to see what they have done so far and to submit a
  * pollution event to the server
  * @author Mitchell Lane
@@ -48,6 +42,7 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 	private TextView location;
 	private TextView description;
 	private TextView tag;
+	//private TextView previewTextView;
 	//	private ListView tagslist;
 	private int maxLength = 1000;
 	//	private List <String> imageTags;
@@ -72,7 +67,7 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 		progressDialog.setMessage(getString(R.string.sending_incident_msg));
 		submitButton = (Button)findViewById(R.id.submit_button);
 		//sends the event to the server
-		submitButton.setOnClickListener(new View.OnClickListener() {	
+		submitButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				try{
@@ -86,15 +81,16 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 		});
 
 		image = (ImageView)findViewById(R.id.PreviewImageImage);
+		//previewTextView = (TextView)findViewById(R.id.preview_text);
 		setPreviewImageOn(Uri.parse(submissionEventBuilder.getImagePath().toString()));
 		//		image.setOnClickListener(new Utils.StartNextActivityEventOnClickListener(this, SelectImageActivity.class));
 
 		location = (TextView)findViewById(R.id.PreviewLocationText);
-		GeoPoint geoPoint = submissionEventBuilder.getGeoCoordinates();
-		if(geoPoint!=null){ //try and set geo coordinate location first
-			double geoPointLat = geoPoint.getLatitudeE6()/1E6;
-			double geoPointLon = geoPoint.getLongitudeE6()/1E6;
-			location.setText(String.format("%s %.2f, %.2f", getString(R.string.geocoordinates_text), geoPointLat, geoPointLon));
+		LatLng latlng = submissionEventBuilder.getGeoCoordinates();
+		if( latlng != null ){ //try and set geo coordinate location first
+			double lat = latlng.latitude;
+			double lon = latlng.longitude;
+			location.setText(String.format("%s %.2f, %.2f", getString(R.string.geocoordinates_text), lat, lon));
 		}
 
 		else //otherwise set address
@@ -115,10 +111,10 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 		StringBuffer st = new StringBuffer();
 
 		for (String s: submissionEventBuilder.getImageTag()){
-			if (s!=null){ 
+			if (s!=null){
 				st.append(s);
-				st.append(", "); 
-			} 
+				st.append(", ");
+			}
 		}
 
 
@@ -135,11 +131,31 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 
 	}
 
-	/** Enables the preview image, first by trying to decode the URI natively into a bitmap 
+
+	@Override
+	  public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		MenuItem item  = menu.findItem(R.id.nextpage);
+		item.setVisible(false);
+		item.setEnabled(false);
+		return true;
+	}
+
+	@Override
+	protected void nextActivety() {
+		// TODO Auto-generated method stub
+
+	}
+
+
+
+	/** Enables the preview image, first by trying to decode the URI natively into a bitmap
 	 * If this fails then the image will be loaded from the uri handled by the system
 	 * @param cameraFileUri - path to the image
 	 */
 	private void setPreviewImageOn(Uri cameraFileUri) {
+		//sets TextView to invisible
+		image.setVisibility(View.VISIBLE);
 		try{
 			Bitmap b = Utils.getAppFriendlyBitmap(cameraFileUri, getContentResolver());
 			if(b==null)
@@ -149,12 +165,29 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 		catch(IOException e){
 			Log.e(toString(), "bitmap failed to decode : "+e);
 			image.setImageURI(cameraFileUri);
-		}	
+			int ih=image.getMeasuredHeight();//height of imageView
+			int iw=image.getMeasuredWidth();//width of imageView
+			int iH=image.getDrawable().getIntrinsicHeight();//original height of underlying image
+			int iW=image.getDrawable().getIntrinsicWidth();//original width of underlying image
+			Log.d(toString(), String.format("ih: %d iw:%d iH: %d iW: %d",ih,iw,iH,iW));
+			//image.setImageURI(cameraFileUri);
+
+		}
 	}
 
 
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		Uri uri = Uri.parse(submissionEventBuilder.getImagePath().toString());
+		Log.d(toString(), "onResume " + uri.toString());
+		//Utils.RotateImageURI(image,uri);
+		setPreviewImageOn(uri);
+	}
+
 	/** Submits a pollution event to the server
-	 * 
+	 *
 	 * @throws SubmissionEventBuilderException if not enough data
 	 */
 	protected void submitPollutionEvent() throws SubmissionEventBuilderException{

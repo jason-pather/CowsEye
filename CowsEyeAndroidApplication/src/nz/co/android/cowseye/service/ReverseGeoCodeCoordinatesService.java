@@ -11,39 +11,57 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.google.android.maps.GeoPoint;
+import com.google.android.gms.maps.model.LatLng;
 
 public class ReverseGeoCodeCoordinatesService extends AsyncTask<Void, Void, String> {
 
 	private Context context;
 	private GPSManager gpsManager;
 	private Geocoder geocoder;
-	private Location location;
 	private String currentAddress;
-	private GeoPoint oldGeoPoint;
+	private LatLng newLatLng;
+	private boolean noAlert;
 
-	public ReverseGeoCodeCoordinatesService(Context context, GPSManager gpsManager, Geocoder geocoder, Location location, String currentAddress, GeoPoint oldGeoPoint){
+	public ReverseGeoCodeCoordinatesService(Context context, GPSManager gpsManager, Geocoder geocoder, LatLng newLatLng, String currentAddress){
 		this.context = context;
 		this.gpsManager = gpsManager;
 		this.geocoder = geocoder;
-		this.location = location;
 		this.currentAddress = currentAddress;
-		this.oldGeoPoint = oldGeoPoint;
+		this.newLatLng = newLatLng;
+		this.noAlert = false;
 	}
+
+	public void setNoAlert(boolean alert) {
+		noAlert = alert;
+	}
+
 
 	protected String doInBackground(Void... Void) {
 		try {
-			List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-			String num = addresses.get(0).getFeatureName().trim();
-			String street = addresses.get(0).getThoroughfare().trim();
-			String subArea = addresses.get(0).getSubAdminArea().trim();
-			String addr =""; 
-			if(!num.equals(""))
-				addr+=num+=" ";
-			if(!street.equals(""))
+			List<Address> addresses = geocoder.getFromLocation(newLatLng.latitude, newLatLng.longitude, 1);
+			if (addresses.isEmpty()) return null;
+			String num = addresses.get(0).getFeatureName(); // .trim();
+			String street = addresses.get(0).getThoroughfare(); //.trim();
+			String subArea = addresses.get(0).getSubLocality(); //.getSubAdminArea();//.trim();
+			String area = addresses.get(0).getLocality();
+			String addr ="";
+			if(num != null && !num.equals("")) {
+				num = num.trim();
+				addr+= num +=" ";
+			}
+			if(street != null && !street.equals("")) {
+				street = street.trim();
 				addr+=street+", ";
-			if(!subArea.equals(""))
-				addr+=subArea;
+			}
+			if(subArea != null && !subArea.equals("")) {
+				subArea = subArea.trim();
+				addr+=subArea + ", ";
+			}
+			if(area != null && !area.equals("")) {
+				area = area.trim();
+				if (! area.equals(subArea))
+					addr += area;
+			}
 			return addr;
 
 		} catch (IOException e) {
@@ -52,15 +70,17 @@ public class ReverseGeoCodeCoordinatesService extends AsyncTask<Void, Void, Stri
 		return null;
 	}
 
-	/** Does not do anything as nothing needs to be done upon ending*/
+
 	protected void onPostExecute(String addr) {
 		if(addr==null){
 			Log.e(toString(), "Error in reverse geo coding");
-			gpsManager.requestBuildAlertMessageUpdatePosition(null,oldGeoPoint);
+			gpsManager.requestBuildAlertMessageUpdatePosition(newLatLng);
 		}
-		else if(!addr.equals("")){
+		else if (currentAddress == null || currentAddress.equals("") || noAlert ) {
+			gpsManager.updatePosition(newLatLng);
+		} else if (!addr.equals("")) {
 			if(!(addr.trim()).equals(currentAddress)){
-				gpsManager.requestBuildAlertMessageUpdatePosition(addr,oldGeoPoint);
+				gpsManager.requestBuildAlertMessageUpdatePosition(newLatLng);
 			}
 		}
 	}

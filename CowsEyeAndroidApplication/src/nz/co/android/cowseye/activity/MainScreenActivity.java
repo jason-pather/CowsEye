@@ -43,7 +43,7 @@ import android.widget.Toast;
 
 import com.google.android.maps.GeoPoint;
 
-/** 
+/**
  * This is the main screen of the CowsEye application
  * @author Mitchell Lane
  *
@@ -70,11 +70,11 @@ public class MainScreenActivity extends Activity {
 		setContentView(R.layout.main_screen_layout);
 		myApplication = (RiverWatchApplication)getApplication();
 		setupUI();
-		new GetIncidentsAsyncTask(MainScreenActivity.this, new GetIncidentsEvent(myApplication, 0, 50),myApplication).execute();
+		//new GetIncidentsAsyncTask(MainScreenActivity.this, new GetIncidentsEvent(myApplication, 0, 50),myApplication).execute();
 	}
 
 	/** This gets called after a successfull submission event as the activity is already open and
-	 * this current opened activity is not destroyed 
+	 * this current opened activity is not destroyed
 	 */
 	@Override
 	public void onNewIntent(Intent newIntent) {
@@ -89,7 +89,7 @@ public class MainScreenActivity extends Activity {
 	}
 
 	/* Sets up the UI */
-	private void setupUI(){
+	private void setupUI() {
 		progressDialog = new ProgressDialog(this);
 		progressDialog.setTitle(getString(R.string.loading_images_title));
 		progressDialog.setMessage(getString(R.string.please_wait));
@@ -97,25 +97,29 @@ public class MainScreenActivity extends Activity {
 
 		buttonSubmit = (Button)findViewById(R.id.button_submit);
 		buttonSubmit.setOnClickListener(new SubmitPollutionEventOnClickListener());
-		buttonGallery = (Button)findViewById(R.id.button_view_gallery);
+		/* buttonGallery = (Button)findViewById(R.id.button_view_gallery);
 		buttonGallery.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				progressDialog.show();
+				//progressDialog.show();
 				//only get new list of incidents if we don't already have them
-				if(!haveBaseIncidents){
-					new GetIncidentsAsyncTask(MainScreenActivity.this, new GetIncidentsEvent(myApplication, 0, 50), myApplication).execute();
-					loadingGridView = true;
-				}
-				else
-					loadGridView();
+				//if(!haveBaseIncidents){
+				//	new GetIncidentsAsyncTask(MainScreenActivity.this, new GetIncidentsEvent(myApplication, 0, 50), myApplication).execute();
+				//	loadingGridView = true;
+				//}
+				//else
+					//loadGridView();
+			//}
+				Intent bIntent = new Intent(Intent.ACTION_VIEW,
+						Uri.parse("http://homepages.ecs.vuw.ac.nz/wainz/maps"));
+						startActivity(bIntent);
 			}
-		});
+		});*/
 
 	}
 
-	/**Ends the web service call to get all incidents and opens the grid view if 
+	/**Ends the web service call to get all incidents and opens the grid view if
 	 * the call was succesful */
 	public void endGetIncidentsServiceCall(boolean result){
 		progressDialog.dismiss();

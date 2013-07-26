@@ -1,105 +1,146 @@
 package nz.co.android.cowseye.gps;
 
-import java.util.List;
-
+import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_NORMAL;
+import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_SATELLITE;
 import nz.co.android.cowseye.R;
-import nz.co.android.cowseye.gps.ontap.UserOnTap;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 
-import com.google.android.maps.GeoPoint;
-import com.google.android.maps.MapController;
-import com.google.android.maps.MapView;
-import com.google.android.maps.Overlay;
-import com.google.android.maps.OverlayItem;
-
+import com.actionbarsherlock.view.MenuItem;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnMarkerDragListener;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 /** A class that provides setup and helping functions for controlling the mapview, its controller,
  * and markers for yourself and your friend's positions
  * @author Mitchell Lane
  *
  */
-public class MapManager{
+public class MapManager implements OnMarkerDragListener {
 	public static final String USER_SATELLITE_KEY = "SAT_KEY";
+
+	private static final LatLng WELLINGTON = new LatLng(-41.300590,174.780373); //
+
 
 	private static final int POSITION_ZOOM_LEVEL = 18;
 	private static final int MARKER_TEXT_SIZE = 20;
 
-	private static MapView mapView;
-	private static MapController mapController;
-	private List<Overlay> mapOverlays;
-	private MapItemizedOverlay myPositionOverlay;
-	private OverlayItem userOverlayItem;
-	
+	private GoogleMap googleMap;
+	private MarkerOptions curMarker;
+	//private OverlayItem userOverlayItem;
+
 	private Drawable myPositionMarker;
 	private static Context mainActivityContext;
 
 	private boolean satelliteOn;
-	
+	private boolean autoZoom = true;
+
 	/* Singleton*/
 	private static MapManager mapManager;
-	
+
 	public static MapManager getInstance(){
 		return mapManager;
 	}
-	public static MapManager getInstance(MapView mapView, boolean satelliteOn, Context mainActivityContext){
-		mapManager = new MapManager(mapView, satelliteOn, mainActivityContext);
+	public static MapManager getInstance(GoogleMap googleMap, boolean satelliteOn, Context mainActivityContext) {
+		mapManager = new MapManager(googleMap, satelliteOn, mainActivityContext);
 		return mapManager;
 	}
 
-	private MapManager(MapView mapView, boolean satelliteOn, Context mainActivityContext) {
-		this.mapView = mapView;
+	private MapManager(GoogleMap googleMap, boolean satelliteOn, Context mainActivityContext) {
+		this.googleMap = googleMap;
 		this.satelliteOn = satelliteOn;
-		setup(mapView, satelliteOn, mainActivityContext);
+		setup(googleMap, satelliteOn, mainActivityContext);
 	}
 
-	private void setup(MapView mapView, boolean satelliteOn, Context mainActivityContext) {
-		mapView.setBuiltInZoomControls(false);
+	private void setup(GoogleMap googleMap, boolean satelliteOn, Context mainActivityContext) {
+		googleMap.getUiSettings().setZoomControlsEnabled(false);
+		googleMap.setOnMarkerDragListener(this);
 		setSatelliteView(satelliteOn);
-		mapOverlays = mapView.getOverlays();
-		mapController = mapView.getController();
+		googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(WELLINGTON, 5));
 		this.mainActivityContext = mainActivityContext;
-		setupMarkerDrawables();
-		myPositionOverlay = new MapItemizedOverlay(myPositionMarker, mainActivityContext, MARKER_TEXT_SIZE, new UserOnTap(mainActivityContext));
+		myPositionMarker = mainActivityContext.getResources().getDrawable(R.drawable.you_are_here_45x45);
+		drawUserPosition(WELLINGTON);
+		//myPositionOverlay = new MapItemizedOverlay(myPositionMarker, mainActivityContext, MARKER_TEXT_SIZE, new UserOnTap(mainActivityContext));
 	}
 
-	
-	private void setupMarkerDrawables(){
-		// gets the drawables
-		myPositionMarker = mainActivityContext.getResources().getDrawable(R.drawable.you_are_here_45x45);
-	}
-	
-	
-	/** 
-	 * Draws the user at the given geo point location 
+
+	/**
+	 * Draws the user at the given geo point location
 	 * @location - location of user
 	 * */
-	public void drawUserPosition(GeoPoint location) {
+	public void drawUserPosition(LatLng latLon) {
 		// Remove the last user location marker overlay
-		if(myPositionOverlay!=null && mapOverlays.contains(myPositionOverlay)){
-			mapOverlays.remove(myPositionOverlay);
-			myPositionOverlay.removeOverlay(userOverlayItem);
-		} 
-		userOverlayItem = new OverlayItem(location, "Location found", "You are here!");
-		myPositionOverlay.addOverlay(userOverlayItem);
-		mapOverlays.add(myPositionOverlay);
-		//redraw the markers
-		mapView.invalidate();
+		googleMap.clear();
+		//curMarker = new MarkerOptions()
+		googleMap.addMarker(new MarkerOptions()
+			.position(latLon)
+			.title("You are here")
+			.snippet(String.format("Lat: %.3f Lon: %.3f",latLon.latitude,latLon.longitude))
+			.draggable(true)
+		);
+
 	}
-	
-	
+
+
 	/** Sets the map view to center itself around the given user location geoPoint */
-	public static void setMapViewToLocation(GeoPoint userLocationGeoPoint){
-		mapController.setZoom(POSITION_ZOOM_LEVEL);
-		mapController.animateTo(userLocationGeoPoint);
+	public void setMapViewToLocation(LatLng latLng){
+		if (autoZoom) {
+			googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, POSITION_ZOOM_LEVEL));
+		} else {
+			googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+		}
 	}
-	
+
+
+	public void setAutoZoom(boolean zoom) {
+		autoZoom = zoom;
+	}
+
+	public void toggleSatelliteView(MenuItem item) {
+		int mapType = googleMap.getMapType();
+		if (mapType == MAP_TYPE_NORMAL) {
+			 setSatelliteView(true);
+			 item.setTitle("Map view");
+			 item.setIcon(R.drawable.location_map);
+		} else {
+			setSatelliteView(false);
+			item.setTitle("Satellite view");
+			item.setIcon(R.drawable.da_layer_satellite);
+		}
+	}
+
 	/** Sets the satellite view on or off */
 	public void setSatelliteView(boolean b){
-		mapView.setSatellite(b);
+		if (b) {
+			googleMap.setMapType(MAP_TYPE_SATELLITE);
+		} else {
+			googleMap.setMapType(MAP_TYPE_NORMAL);
+		}
 		satelliteOn = b;
 	}
 
 	public boolean isSatelliteOn() {
 		return satelliteOn;
+	}
+	@Override
+	public void onMarkerDrag(Marker marker) {
+		// TODO Auto-generated method stub
+
+	}
+	@Override
+	public void onMarkerDragEnd(Marker marker) {
+		if (mainActivityContext instanceof MarkerMoveInterface) {
+			LatLng latlng = marker.getPosition();
+			autoZoom = false;
+			((MarkerMoveInterface) mainActivityContext).newLatLng(latlng);
+		}
+
+	}
+
+	@Override
+	public void onMarkerDragStart(Marker marker) {
+		// TODO Auto-generated method stub
 	}
 }

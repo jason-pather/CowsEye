@@ -5,16 +5,17 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Timer;
-import java.util.TimerTask;
 
 import nz.co.android.cowseye.database.DatabaseAdapter;
 import nz.co.android.cowseye.database.DatabaseConstructor;
 import nz.co.android.cowseye.event.Event;
-import nz.co.android.cowseye.event.EventHandler;
+import nz.co.android.cowseye.utility.JSONHelper;
 import nz.co.android.cowseye.utility.Utils;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
+import org.json.JSONObject;
 
 import android.app.Application;
 import android.content.Context;
@@ -31,12 +32,14 @@ import android.util.Log;
 public class RiverWatchApplication extends Application  {
 
 	/* Service paths */
-	public static String server_path = "http://api.riverwatch.co.nz:80/wainz";
-	public static String submission_path = server_path + "/submit";
+//	public static String server_path = "http://api.riverwatch.co.nz:80/wainz";
+//	public static String server_path = "http://homepages.ecs.vuw.ac.nz/wainz";
+	public static String server_path = "http://www.wainz.org.nz/api/image";
+	public static String submission_path = server_path + "/api/image";
 	public static String get_incidents_path = server_path + "/approved";
 	public static String get_incidents_path_start = "/start=";
 	public static String get_incidents_path_number = "/number=";
-	
+
 	private static final long timerZeroDelay = 0;
 	private static final long timerEventsProcessingPeriod = 300000; // 5 minutes
 	private static final long timerEventsProcessingLargeDelay = 6000000; // 30 minutes
@@ -45,7 +48,7 @@ public class RiverWatchApplication extends Application  {
 
 	private static boolean eventProcessingSetup = false;
 
-	public EventHandler eventHandler;
+	//public EventHandler eventHandler;
 	private Timer updateEventsTimer;
 	private DatabaseConstructor databaseConstructor;
 	private DatabaseAdapter databaseAdapter;
@@ -60,13 +63,13 @@ public class RiverWatchApplication extends Application  {
 
 	private void setupApplication() {
 		updateEventsTimer = new Timer();
-		eventHandler = new EventHandler(this);
+		//eventHandler = new EventHandler(this);
 	}
 
 	/**
 	 * Constructs and loads the database
 	 */
-	private void loadDatabase(){		
+	private void loadDatabase(){
 		databaseConstructor = new DatabaseConstructor(this);
 		try {
 			databaseConstructor.createDataBase();
@@ -80,10 +83,10 @@ public class RiverWatchApplication extends Application  {
 		}
 		databaseAdapter = new DatabaseAdapter(databaseConstructor);
 	}
-	
+
 
 //	/** Adds this event to the database of events
-//	 * 
+//	 *
 //	 * @param event - event to add
 //	 * @param type - type of the event. one of (check_in, check_out, registration)
 //	 * @param employeeId - employeedId of the employee if type is registration, otherwise null
@@ -91,24 +94,24 @@ public class RiverWatchApplication extends Application  {
 //	public void addNewEventToDatabase(Event event, String type, String employeeId) {
 //		databaseAdapter.addNewEvent(event, type, employeeId);
 //	}
-	
+
 
 	public DatabaseAdapter getDatabaseAdapter() {
 		return databaseAdapter;
 	}
 
-
+/*
 	public EventHandler getEventHandler(){
 		return eventHandler;
 	}
 
 	/* Sets up and starts the timer to update events */
-	private void startEventProcessingTimer(final long initialDelay){
+/*	private void startEventProcessingTimer(final long initialDelay){
 		eventProcessingSetup = true;
 		Log.i(toString(), "Starting Event Processing");
 		updateEventsTimer = new Timer();
 		/* Updates the event processing */
-		TimerTask processEvents = new TimerTask() {
+/*		TimerTask processEvents = new TimerTask() {
 			public void run() {
 				Log.i(toString(), "processing events");
 				eventHandler.processEvents();
@@ -118,7 +121,7 @@ public class RiverWatchApplication extends Application  {
 	}
 
 	/** Requests the timer to update event processing if not already */
-	public void requestStartEventHandling(){
+/*	public void requestStartEventHandling(){
 		if(!eventProcessingSetup){
 			eventProcessingSetup = true;
 			//starts timer with the normal delay of 0 milliseconds
@@ -128,7 +131,7 @@ public class RiverWatchApplication extends Application  {
 
 	/** Stops the current time and starts a delayed timer
 	 * Called when the network is down, for a longer delay between trying again */
-	public void requestDelayedEventsTimer(){
+/*	public void requestDelayedEventsTimer(){
 		stopTimerEventHandling();
 		if(timerDelayedMultiplier<1)
 			timerDelayedMultiplier=1;
@@ -142,7 +145,7 @@ public class RiverWatchApplication extends Application  {
 	}
 
 	/** Forces the event processing to start*/
-	public void forceStartEventHandling(){
+/*	public void forceStartEventHandling(){
 		//stops the current timer
 		stopTimerEventHandling();
 		//starts timer again with delay of zero so instant update
@@ -150,14 +153,14 @@ public class RiverWatchApplication extends Application  {
 	}
 
 	/** Stops the event processing timer if it is currently running */
-	public void stopTimerEventHandling(){
+/*	public void stopTimerEventHandling(){
 		if(eventProcessingSetup){
 			Log.i(toString(),"stopping Timer Event Handling" );
 			eventProcessingSetup = false;
 			updateEventsTimer.cancel();
 		}
 	}
-	/** Returns whether this device is currently connected to a network */
+*/	/** Returns whether this device is currently connected to a network */
 	public boolean isOnline() {
 		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 		if(cm==null)
@@ -178,15 +181,15 @@ public class RiverWatchApplication extends Application  {
 		return mLocationManager.isProviderEnabled( LocationManager.GPS_PROVIDER );
 	}
 
-	
-	/** Downloads an employee image thumbnail 
+
+	/** Downloads an employee image thumbnail
 	 * @param url - url to download image thumbnail from
 	 * @param e - thumbnail belongs to this employee
 	 * @param lastImageThumbPath - path where the last thumbnail for the employee is if it exists
 	 * @return the local path of the saved thumbnail
 	 */
 //	private String downloadEmployeeImageThumbnail(String url, String lastImageThumbPath) {
-//		
+//
 //		Bitmap image = RestClient.getBitmapThroughGETRequestURL(url);
 //		if(image!=null){
 //			try{
@@ -218,7 +221,7 @@ public class RiverWatchApplication extends Application  {
 		}
 		catch (FileNotFoundException e) {
 			e.printStackTrace();
-		} 
+		}
 		throw new IOException("Could not create file or could not write to created file");
 	}
 
@@ -232,7 +235,7 @@ public class RiverWatchApplication extends Application  {
 //		Log.d(toString(), "deleteImage image exists after ? "+imageFile.exists());
 
 	}
-	
+
 //	/* Deletes the image belonging to the current event */
 //	public void deleteImage(Event currentEvent) {
 //		Log.d(toString(), "path1 : "+currentEvent.getImagePath().getPath());
@@ -252,7 +255,7 @@ public class RiverWatchApplication extends Application  {
 //		Log.d(toString(), "deleteImage image exists after ? "+imageFile.exists());
 //
 //	}
-	
+
 	/**
 	 * Deals with the response from a submission event return
 	 * @param response from a submission event
@@ -269,7 +272,7 @@ public class RiverWatchApplication extends Application  {
 			switch(statusCode){
 			case Utils.HTTP_OK:
 				Log.i("app", "statusCode : "+statusCode+", Sucessful event response!");
-				return true;
+				break;
 			case Utils.HTTP_LOGIC_ERROR:
 				Log.i("app", "statusCode : "+statusCode+", Logic error: Unsucessful event response!");
 				return false;
@@ -280,16 +283,19 @@ public class RiverWatchApplication extends Application  {
 				Log.i("app", "statusCode : "+statusCode+", ncaught error: Unsucessful event response!");
 				return false;
 			}
-			//			JSONObject jsonObject = JSONHelper.parseHttpResponseAsJSON(response);
-			//			Log.d("app", "jsonObject : "+jsonObject);
+			//HttpEntity ans = response.getEntity();
+			//ans.consumeContent();
+			JSONObject jsonObject = JSONHelper.parseHttpResponseAsJSON(response);
+			Log.d("app", "jsonObject : "+jsonObject);
+			return true;
 		}
-		catch(Exception f){ 
+		catch(Exception f){
 			Log.e("app", "Exception in JsonParsing : "+f);
 		}
 		return false;
 
 	}
-	
+
 	/* Deletes the image belonging to the current event */
 	public void deleteImage(Event currentEvent) {
     File imageFile = new File(currentEvent.getImagePath().toString());
@@ -300,12 +306,12 @@ public class RiverWatchApplication extends Application  {
 //		Log.d(toString(), "deleteImage image exists after ? "+imageFile.exists());
 
 	}
-	
+
 	public String getRealPathFromURI(Uri contentURI) {
 	    Cursor cursor = getContentResolver()
-	               .query(contentURI, null, null, null, null); 
-	    cursor.moveToFirst(); 
-	    int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA); 
-	    return cursor.getString(idx); 
+	               .query(contentURI, null, null, null, null);
+	    cursor.moveToFirst();
+	    int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+	    return cursor.getString(idx);
 	}
 }

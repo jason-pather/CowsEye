@@ -3,7 +3,6 @@ package nz.co.android.cowseye.utility;
 import nz.co.android.cowseye.R;
 import nz.co.android.cowseye.RiverWatchApplication;
 import nz.co.android.cowseye.activity.RecordLocationActivity;
-import nz.co.android.cowseye.common.Constants;
 import nz.co.android.cowseye.gps.MapManager;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -15,10 +14,10 @@ import android.util.Log;
 import android.view.WindowManager.BadTokenException;
 import android.widget.EditText;
 
-import com.google.android.maps.GeoPoint;
+import com.google.android.gms.maps.model.LatLng;
 
 public class AlertBuilder {
-	
+
 	public static AlertDialog buildAlertMessageNoInternet(final Context context) {
 		//Activity transfer to wifi settings
 
@@ -58,17 +57,17 @@ public class AlertBuilder {
 		});
 		return builder.create();
 	}
-	
-	public static AlertDialog buildAlertMessageUpdatePosition(final RecordLocationActivity locationActivity, final MapManager mapHelper, final Context context, final String address, final GeoPoint userPoint) {
+
+	public static AlertDialog buildAlertMessageUpdatePosition(final RecordLocationActivity locationActivity, final MapManager mapHelper, final Context context, final LatLng userLatLng) {
 		try{
 		final AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setMessage(context.getResources().getString(R.string.newLocationFound) +"\n"+context.getResources().getString(R.string.wouldYouLikeToUpdate))
 		.setCancelable(false)
 		.setPositiveButton(context.getResources().getString(R.string.positive_button_title), new DialogInterface.OnClickListener() {
 			public void onClick(final DialogInterface dialog, final int id) {
-				locationActivity.setAddress(address,userPoint);
-				mapHelper.drawUserPosition(userPoint);
-				mapHelper.setMapViewToLocation(userPoint);
+				locationActivity.setAddress(userLatLng);
+				mapHelper.drawUserPosition(userLatLng);
+				mapHelper.setMapViewToLocation(userLatLng);
 				dialog.cancel();
 			}
 		})
@@ -84,9 +83,9 @@ public class AlertBuilder {
 			Log.e("AlertBuilder", "Trying to alert user of new location : "+e);
 		}
 		return null;
-	
+
 	}
-	
+
 	/** Builds a dialog where the user has to input the correct pin to launch an intent*/
 	public static AlertDialog buildServerPrompt(final Context context) {
 		final AlertDialog.Builder builder = new AlertDialog.Builder(context);

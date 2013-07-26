@@ -6,25 +6,10 @@
     android:orientation="vertical"
     android:weightSum="1" >
 
-    <FrameLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
-
-        <TextView
-            android:id="@+id/preview_title"
-            style="@style/titleHeading"
-            android:text="@string/preview_title" />
-
-        <Button
-            android:id="@+id/backButton"
-            style="@style/backButtonStyle" />
-    </FrameLayout>
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.525"
+        android:layout_height="fill_parent"
         android:orientation="vertical" >
 
         <TextView
@@ -33,20 +18,28 @@
             android:layout_gravity="center_horizontal"
             android:text="@string/preview_image" />
 
-        <ImageView
-            android:id="@+id/PreviewImageImage"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_gravity="center"
-            android:contentDescription="@string/preview_image"
-            android:src="@drawable/next_button" />
-    </LinearLayout>
+        <FrameLayout style="@style/preview_image_framelayout_style">
+            <!-- android:layout_width="fill_parent"
+            android:layout_height="wrap_content" -->
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.125"
-        android:orientation="vertical" >
+            <ImageView
+                android:id="@+id/PreviewImageImage"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:contentDescription="@string/preview_image"
+                android:src="@drawable/next_button" />
+            <!--
+            <TextView
+                android:id="@+id/preview_text"
+                style="@style/text_style"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@drawable/preview_image_background"
+                android:gravity="center"
+                android:text="@string/no_preview_available" />
+                -->
+        </FrameLayout>
 
         <TextView
             android:id="@+id/PreviewLocationTag"
@@ -60,13 +53,6 @@
             style="@style/text_view_style"
             android:layout_gravity="center_horizontal"
             android:text="@string/preview_location" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.15"
-        android:orientation="vertical" >
 
         <TextView
             android:id="@+id/PreviewImageTagTitle"
@@ -81,13 +67,6 @@
             android:layout_gravity="center_horizontal"
             android:gravity="center_horizontal"
             android:text="@string/preview_imagetag" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.2"
-        android:orientation="vertical" >
 
         <TextView
             android:id="@+id/PreviewDescriptionTitle"
@@ -103,13 +82,15 @@
             android:maxLines="5"
             android:scrollbars="vertical"
             android:text="@string/preview_description" />
+
+        <Button
+            android:id="@+id/submit_button"
+            style="@style/riverWatchButtonStyle"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|bottom"
+            android:text="@string/submit" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/submit_button"
-        style="@style/riverWatchButtonStyle"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|bottom"
-        android:text="@string/submit" />
+
 
 </LinearLayout>

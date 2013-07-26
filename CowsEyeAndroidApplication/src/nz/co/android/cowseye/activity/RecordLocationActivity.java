@@ -1,15 +1,14 @@
 package nz.co.android.cowseye.activity;
 import nz.co.android.cowseye.R;
 import nz.co.android.cowseye.RiverWatchApplication;
-import nz.co.android.cowseye.R.id;
-import nz.co.android.cowseye.R.layout;
-import nz.co.android.cowseye.R.string;
 import nz.co.android.cowseye.common.Constants;
 import nz.co.android.cowseye.event.SubmissionEventBuilder;
 import nz.co.android.cowseye.gps.GPSManager;
 import nz.co.android.cowseye.gps.MapManager;
+import nz.co.android.cowseye.gps.MarkerMoveInterface;
 import nz.co.android.cowseye.utility.Utils;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -17,75 +16,61 @@ import android.content.Intent;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
+//import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+//import android.view.Menu;
+//import android.view.MenuInflater;
+//import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.maps.GeoPoint;
-import com.google.android.maps.MapActivity;
-import com.google.android.maps.MapView;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 
-/** 
+
+
+/**
  * This is the activity for selecting the location of the pollution event
  * @author Mitchell Lane
  *
  */
-public class RecordLocationActivity extends MapActivity {
+public class RecordLocationActivity extends SherlockFragmentActivity implements MarkerMoveInterface {
 
-	private Button backButton;
-	private Button nextButton;
+	//private Button backButton;
+	//private Button nextButton;
 
 	private static LocationManager mLocationManager;
-	private EditText addressEditText;
 	private GPSManager gpsManager;
 	private MapManager mapManager;
 	private ProgressDialog dialog;
+	private GoogleMap mMap;
 
 	//address got from reverse geo coding
-	private String geoAddress;
-	private GeoPoint addressCoordinates;
+	private LatLng addressCoordinates;
 	private SubmissionEventBuilder submissionEventBuilder;
 	private RiverWatchApplication myApplication;
+	private Bundle savedInstanceState;
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setTheme(R.style.Theme_Sherlock);
 		myApplication = (RiverWatchApplication)getApplication();
-
+        this.savedInstanceState = savedInstanceState;
 		setContentView(R.layout.location_layout);
-		addressEditText = (EditText)findViewById(R.id.addressEditText);
 		Intent intent = getIntent();
-		if(intent.hasExtra(Constants.LOCATION_KEY))
-			addressEditText.setText(intent.getStringExtra(Constants.LOCATION_KEY));
-		backButton = (Button)findViewById(R.id.backButton);
-		nextButton = (Button)findViewById(R.id.doneButton);
-		backButton.setOnClickListener(new Utils.BackEventOnClickListener(this));
-		nextButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if(hasAllDetails()){
-//					Intent intent = buildLocationDataIntent(RESULT_OK);
-//					startActivity(intent);
-					if(dialog!=null)
-						dialog.dismiss();
-					if(addressCoordinates!=null)
-						submissionEventBuilder.setGeoCoordinates(addressCoordinates);
-					if(!getAddress().equals(""))
-						submissionEventBuilder.setAddress(getAddress());
-					startActivity(new Intent(RecordLocationActivity.this, PreviewActivity.class));
-					
-					// get coordinates from address location
-					//					dialog = ProgressDialog.show(LocationActivity.this, "Acquiring coordinates from address", "Please wait...");
-					//TODO DO NOT 
-					//					new GeoCodeCoordinatesService(LocationActivity.this, gpsManager.getGeoCoder(), addressEditText.getText().toString().trim()).execute();
-				}
-				else
-					Toast.makeText(RecordLocationActivity.this, getResources().getString(R.string.pleaseEnterAddress), Toast.LENGTH_SHORT).show();
-			}
-		});
+		//backButton = (Button)findViewById(R.id.backButton);
+		//nextButton = (Button)findViewById(R.id.doneButton);
+		//backButton.setOnClickListener(new Utils.BackEventOnClickListener(this));
 
 		mLocationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 		// Check if GPS enabled
@@ -95,7 +80,67 @@ public class RecordLocationActivity extends MapActivity {
 		else
 			setupManagers(savedInstanceState);
 		submissionEventBuilder = SubmissionEventBuilder.getSubmissionEventBuilder(myApplication);
+
 	}
+
+	@Override
+	  public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getSupportMenuInflater(); //getMenuInflater();
+	    inflater.inflate(R.menu.map_menu, menu);
+	        return true;
+	  }
+
+	@Override
+	  public boolean onOptionsItemSelected(MenuItem item) {
+	     int itemId = item.getItemId();
+		if (itemId == R.id.legal) {
+			buildMapslegalMessage(this.savedInstanceState);
+		} else if (itemId == R.id.mapview) {
+			mapManager.toggleSatelliteView(item);
+		} else if (itemId == R.id.nextpage) {
+			nextActivety();
+		} else {
+			return super.onOptionsItemSelected(item);
+		}
+	     return true;
+	  }
+
+
+	private void nextActivety() {
+		if(hasAllDetails()) {
+//			Intent intent = buildLocationDataIntent(RESULT_OK);
+//			startActivity(intent);
+			if(dialog!=null)
+				dialog.dismiss();
+			if(addressCoordinates!=null)
+				submissionEventBuilder.setGeoCoordinates(addressCoordinates);
+			startActivity(new Intent(RecordLocationActivity.this, PreviewActivity.class));
+
+			// get coordinates from address location
+			//					dialog = ProgressDialog.show(LocationActivity.this, "Acquiring coordinates from address", "Please wait...");
+			//TODO DO NOT
+			//					new GeoCodeCoordinatesService(LocationActivity.this, gpsManager.getGeoCoder(), addressEditText.getText().toString().trim()).execute();
+		}
+		else
+			Toast.makeText(RecordLocationActivity.this, getResources().getString(R.string.nocoordinates), Toast.LENGTH_SHORT).show();
+	}
+
+
+	private void buildMapslegalMessage(final Bundle savedInstanceState) {
+		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(GooglePlayServicesUtil.getOpenSourceSoftwareLicenseInfo(this))
+		//.setCancelable(false)
+		.setPositiveButton(this.getResources().getString(R.string.positive_button_title), new DialogInterface.OnClickListener() {
+			public void onClick(final DialogInterface dialog, final int id) {
+				dialog.cancel();
+				setupManagers(savedInstanceState);
+			}
+		});
+		final AlertDialog alert = builder.create();
+		alert.show();
+	}
+
+
 
 	private void buildAlertMessageNoGps(final Bundle savedInstanceState) {
 		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -118,8 +163,14 @@ public class RecordLocationActivity extends MapActivity {
 	}
 
 	protected void setupManagers(Bundle savedInstanceState) {
-		mapManager = MapManager.getInstance((MapView) findViewById(R.id.mapview),false, this);
-		gpsManager = GPSManager.getInstance(mapManager, mLocationManager, this, savedInstanceState);
+		int result = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext());
+	     if(result != ConnectionResult.SUCCESS)
+	      {
+	          Dialog dialog = GooglePlayServicesUtil.getErrorDialog(result, this, 69);
+	          dialog.setCancelable(false);
+	          dialog.show();
+	      }
+	     setUpMapIfNeeded(savedInstanceState);
 	}
 
 	@Override
@@ -135,7 +186,32 @@ public class RecordLocationActivity extends MapActivity {
 		if(gpsManager!=null)
 			gpsManager.requestUpdateListeners();
 		super.onResume();
+		setUpMapIfNeeded(this.savedInstanceState);
 	}
+
+	private void setUpMapIfNeeded(Bundle savedInstanceState) {
+	        // Do a null check to confirm that we have not already instantiated the map.
+	        if (mMap == null) {
+	            // Try to obtain the map from the SupportMapFragment.
+	        	SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapview);
+	            mMap = mapFragment.getMap();
+	            if (checkReady()) {
+	            // Check if we were successful in obtaining the map.
+	            	mapManager = MapManager.getInstance(mMap,false, this);
+	            	gpsManager = GPSManager.getInstance(mapManager, mLocationManager, this, savedInstanceState);
+	            }
+	        }
+
+
+	}
+
+    private boolean checkReady() {
+        if (mMap == null) {
+            Toast.makeText(this, R.string.map_not_ready, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
 
 	/** Save state of app if activity is destroyed */
 	@Override
@@ -147,21 +223,14 @@ public class RecordLocationActivity extends MapActivity {
 			gpsManager.saveStateOnDestroy(savedInstanceState);
 	}
 
-	@Override
-	protected boolean isRouteDisplayed() {
-		return false;
-	}
+//	@Override
+//	protected boolean isRouteDisplayed() {
+//		return false;
+//	}
 
-	public void setAddress(String addr, GeoPoint addressCoordinates) {
-		addressEditText.setText(addr);
-		geoAddress = addr;
+	public void setAddress(LatLng addressCoordinates) {
 		this.addressCoordinates = addressCoordinates;
-		Log.d(toString(), "setting addr : " +addr);
 		Log.d(toString(), "setting geo : "+ addressCoordinates);
-	}
-
-	public String getAddress() {
-		return addressEditText.getText().toString().trim();
 	}
 
 	@Override
@@ -197,14 +266,16 @@ public class RecordLocationActivity extends MapActivity {
 
 	}
 
-	public String getLocation(){
-		return addressEditText.getText().toString().trim();
-	}
 
 	protected boolean hasAllDetails() {
 		Log.d(toString(), "coord : "+ addressCoordinates);
-		Log.d(toString(), "address : "+ getLocation());
-		return addressCoordinates!=null || !getLocation().equals("");
+		return addressCoordinates!=null;
+	}
+
+	@Override
+	public void newLatLng(LatLng latlng) {
+		gpsManager.setAutoUpdateLocation(false);
+		gpsManager.updateLocationActivity(latlng,true);
 	}
 
 }

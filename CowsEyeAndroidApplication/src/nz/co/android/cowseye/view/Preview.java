@@ -5,13 +5,12 @@ import java.util.List;
 
 import nz.co.android.cowseye.R;
 import nz.co.android.cowseye.common.Constants;
-import nz.co.android.cowseye.utility.Utils;
 import android.app.Activity;
-import android.content.Context;
+import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.hardware.Camera.Parameters;
-import android.hardware.Camera.PreviewCallback;
 import android.hardware.Camera.Size;
+import android.hardware.Camera.CameraInfo;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
@@ -19,7 +18,6 @@ import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.ViewParent;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -28,6 +26,8 @@ public class Preview extends SurfaceView implements SurfaceHolder.Callback {
 
 	private SurfaceHolder mHolder;
 	public Camera camera;
+	private CameraInfo cameraInfo;
+	private int curDisplayOrientation;
 
 	private boolean correctPictureSizeSet;
 
@@ -44,8 +44,10 @@ public class Preview extends SurfaceView implements SurfaceHolder.Callback {
 	public Preview(Activity parentActivity, Display display) {
 		super(parentActivity);
 		this.display = display;
+		this.curDisplayOrientation = 0;
 		this.parentActivity = parentActivity;
 		correctPictureSizeSet = false;
+		this.cameraInfo = new CameraInfo();
 
 		// Install a SurfaceHolder.Callback so we get notified when the
 		// underlying surface is created and destroyed.
@@ -58,20 +60,27 @@ public class Preview extends SurfaceView implements SurfaceHolder.Callback {
 		Log.e(toString(), " surfaceCreated :"+holder);
 		// The Surface has been created, acquire the camera and tell it where
 		// to draw.
+		int cameraId = -1;
+		boolean cameraError = false;
 		try {
+
 			// This case can actually happen if the user opens and closes the camera too frequently.
 			// The problem is that we cannot really prevent this from happening as the user can easily
 			// get into a chain of activities and tries to escape using the back button.
 			// The most sensible solution would be to quit the entire EPostcard flow once the picture is sent.
-			camera = Camera.open();
+			camera = Camera.open(0);
 		} catch(Exception e) {
 			Log.e(toString(), "Failed to open camera : "+e);
+			cameraError = true;
+		}
+        if (camera == null || cameraError) {
 			Toast.makeText(parentActivity, parentActivity.getString(R.string.failed_to_connect_to_camera_message), Toast.LENGTH_LONG).show();
 			parentActivity.finish();
 			return;
-		}
-
+        }
 		try {
+			camera.getCameraInfo(0, cameraInfo);
+			Log.i(toString(), String.format("CameraInfo, facing: %d orientation: %d",cameraInfo.facing,cameraInfo.orientation));
 			camera.setPreviewDisplay(holder);
 
 		} catch (IOException e) {
@@ -108,59 +117,60 @@ public class Preview extends SurfaceView implements SurfaceHolder.Callback {
 		}
 
 		Parameters parameters = camera.getParameters();
+		camera.getCameraInfo(0, cameraInfo);
 
-		if(display.getRotation() == Surface.ROTATION_0)
-		{
-			//            parameters.setPreviewSize(h, w);  
-			setPreviewSize(h, w, parameters, false);
-			setPictureSize(Constants.IMAGE_HEIGHT, Constants.IMAGE_WIDTH, parameters);
-			camera.setDisplayOrientation(90);
+		int rotation = cameraInfo.orientation; //display.getRotation();
+		int displayRotation = display.getRotation();
+		Log.i(toString(), String.format("Display Rotation: %d Camera Rotation: %d",displayRotation,rotation));
+		int degrees = 0;
+		switch (displayRotation) {
+        	case Surface.ROTATION_0: degrees = 0; break;
+        	case Surface.ROTATION_90: degrees = 90; break;
+        	case Surface.ROTATION_180: degrees = 180; break;
+        	case Surface.ROTATION_270: degrees = 270; break;
 		}
 
-		if(display.getRotation() == Surface.ROTATION_90)
-		{
-			//            parameters.setPreviewSize(w, h);  
-			setPreviewSize(w, h, parameters, true);
-			setPictureSize(Constants.IMAGE_WIDTH, Constants.IMAGE_HEIGHT, parameters);
-		}
-
-		if(display.getRotation() == Surface.ROTATION_180)
-		{
-			//            parameters.setPreviewSize(h, w);  
-			setPreviewSize(h, w, parameters, false);
-			setPictureSize(Constants.IMAGE_HEIGHT, Constants.IMAGE_WIDTH, parameters);
-
-
-		}
-
-		if(display.getRotation() == Surface.ROTATION_270)
-		{
-			//            parameters.setPreviewSize(w, h);
-			setPreviewSize(w, h, parameters, true);
-			setPictureSize(Constants.IMAGE_WIDTH,Constants.IMAGE_HEIGHT, parameters);
-
-			camera.setDisplayOrientation(180);
-		}
+		int result = 0;
+	    if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+	    	result = (cameraInfo.orientation + degrees) % 360;
+	    	result = (360 - result) % 360;  // compensate the mirror
+	    } else {  // back-facing
+	    	result = (cameraInfo.orientation - degrees + 360) % 360;
+	    }
+		setPreviewSize(h, w, parameters, false);
+		setPictureSize(Constants.IMAGE_HEIGHT, Constants.IMAGE_WIDTH, parameters);
+		Log.i(toString(), String.format("Display Rotation: %d Setting Display: %s",degrees,result));
+	    camera.setDisplayOrientation(result);
+	    curDisplayOrientation = result;
 
 		//        parameters.getP
 		//        camera.setParameters(parameters);
-		previewCamera();   
+		previewCamera();
 
 		//		Camera.Parameters parameters = camera.getParameters();
 		//		setPreviewSize(w, h, parameters);
 		//		camera.startPreview();
 	}
 
+
+	public int getCurDisplayOrientation()
+	{
+		if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+			return (360 - curDisplayOrientation) % 360;
+		}
+		return curDisplayOrientation;
+	}
+
 	public void previewCamera()
-	{        
-		try 
-		{           
+	{
+		try
+		{
 			camera.startPreview();
 			isPreviewRunning = true;
 		}
 		catch(Exception e)
 		{
-			Log.d(toString(), "Cannot start preview", e);    
+			Log.d(toString(), "Cannot start preview", e);
 		}
 	}
 

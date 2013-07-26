@@ -1,28 +1,16 @@
 package nz.co.android.cowseye.activity;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.http.Header;
-import org.apache.http.HttpResponse;
-import org.json.JSONObject;
-
-import com.google.android.maps.GeoPoint;
 
 import nz.co.android.cowseye.R;
 import nz.co.android.cowseye.common.Constants;
-import nz.co.android.cowseye.event.Event;
-import nz.co.android.cowseye.event.SubmissionEventBuilder;
-import nz.co.android.cowseye.event.SubmissionEventBuilderException;
 import nz.co.android.cowseye.utility.AlertBuilder;
-import nz.co.android.cowseye.utility.JSONHelper;
 import nz.co.android.cowseye.utility.Utils;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -30,11 +18,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
 import android.widget.Toast;
 
 /** The activity for selecting an image for a pollution event submission
- * 
+ *
  * This will allow the user to either capture a new image or select an image from the gallery
  * @author lanemitc
  *
@@ -72,24 +61,7 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 		previewImageView = (ImageView)findViewById(R.id.preview_image);
 		previewTextView = (TextView)findViewById(R.id.preview_text);
 
-		//goes to the description activity
-		nextButton.setOnClickListener(new View.OnClickListener() {
 
-
-			@Override
-			public void onClick(View v) {
-				if(cameraFileUri!=null){
-					//save the image URI to the submissionEventBuilder
-						submissionEventBuilder.setImagePath(cameraFileUri);
-						submissionEventBuilder.setFromGallery(fromGallery);
-					//start description activity
-					startActivity(new Intent(SelectImageActivity.this,DescriptionActivity.class));
-					//					Toast.makeText(SelectImageActivity.this, getString(R.string.saving_image), Toast.LENGTH_LONG).show();
-				}
-				else
-					Toast.makeText(SelectImageActivity.this, getString(R.string.please_select_a_image), Toast.LENGTH_LONG).show();
-			}
-		});
 		captureImageButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -104,16 +76,26 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 				retrieveImageFromGallery();
 			}
 		});
-		backButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				onBackPressed();
-			}
-		});
-
 	}
 
-	/** Loads any state back in 
+	@Override
+	protected void nextActivety() {
+		//goes to the description activity
+		if(cameraFileUri!=null){
+			//save the image URI to the submissionEventBuilder
+				submissionEventBuilder.setImagePath(cameraFileUri);
+				submissionEventBuilder.setFromGallery(fromGallery);
+			//start description activity
+			startActivity(new Intent(SelectImageActivity.this,DescriptionActivity.class));
+			//					Toast.makeText(SelectImageActivity.this, getString(R.string.saving_image), Toast.LENGTH_LONG).show();
+		}
+		else
+			Toast.makeText(SelectImageActivity.this, getString(R.string.please_select_a_image), Toast.LENGTH_LONG).show();
+	}
+
+
+
+	/** Loads any state back in
 	 *  Loads the path of the image if taken*/
 	private void loadState(Bundle savedInstanceState) {
 		if(savedInstanceState!=null){
@@ -142,7 +124,7 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 		// create a file to save the image
 		cameraFileUri = Utils.getNewCameraFileUri();
 		// set the image file name
-		intent.putExtra(MediaStore.EXTRA_OUTPUT, cameraFileUri); 
+		intent.putExtra(MediaStore.EXTRA_OUTPUT, cameraFileUri);
 		//trigger activity
 		startActivityForResult(intent, 	Constants.REQUEST_CODE_CAMERA);
 	}
@@ -177,7 +159,7 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 		Log.i(toString(), "cameraFileUri : "+cameraFileUri);
 	}
 
-	/** Enables the preview image, first by trying to decode the URI natively into a bitmap 
+	/** Enables the preview image, first by trying to decode the URI natively into a bitmap
 	 * If this fails then the image will be loaded from the uri handled by the system
 	 * @param cameraFileUri - path to the image
 	 */
@@ -195,10 +177,10 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 		catch(IOException e){
 			Log.e(toString(), "bitmap failed to decode : "+e);
 			setPreviewURIImageOn(cameraFileUri);
-		}	
+		}
 	}
 
-	/** Enables the preview image 
+	/** Enables the preview image
 	 * @param uriToImage - URI to the image captured or selected*/
 	private void setPreviewURIImageOn(Uri uriToImage) {
 		if(uriToImage!=null){
@@ -207,12 +189,42 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 			//sets image to visible
 			previewImageView.setVisibility(View.VISIBLE);
 			//set background preview image to image taken
+			try {
+				ExifInterface exif = new ExifInterface(uriToImage.toString());
+				double angle = 0.0;
+				int orientation = Integer.parseInt(exif.getAttribute(ExifInterface.TAG_ORIENTATION));
+				switch (orientation) {
+					case ExifInterface.ORIENTATION_ROTATE_90:
+						angle = 90.0;
+						break;
+					case ExifInterface.ORIENTATION_ROTATE_180:
+						angle = 180.0;
+						break;
+					case ExifInterface.ORIENTATION_ROTATE_270:
+						angle = 270.0;
+						break;
+				}
+
+				if (orientation > 0.0) {
+					Matrix matrix=new Matrix();
+					previewImageView.setScaleType(ScaleType.MATRIX);   //required
+	                int height = previewImageView.getHeight();
+	                int width = previewImageView.getWidth();
+					//matrix.postRotate((float)angle,previewImageView.getMeasuredHeight()/2,previewImageView.getMeasuredWidth()/2);
+	                Log.d(toString(),String.format("previewImageView width: %d height: %d",width,height));
+	                matrix.postRotate((float)angle,height/2,width/2);
+					previewImageView.setImageMatrix(matrix);
+				}
+			} catch (IOException e) {
+				Log.e(toString(), "failed to find exif image data : "+e);
+			}
 			previewImageView.setImageURI(uriToImage);
+
 		}
 
 	}
 
-	/** Enables the preview image 
+	/** Enables the preview image
 	 * @param bitmap - the image bitmap*/
 	private void setPreviewBitmapImageOn(Bitmap bitmap) {
 		if(bitmap!=null){
@@ -237,6 +249,5 @@ public class SelectImageActivity extends AbstractSubmissionActivity {
 		}
 		super.onBackPressed();
 	}
-
 
 }

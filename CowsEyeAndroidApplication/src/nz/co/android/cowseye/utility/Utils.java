@@ -1,7 +1,8 @@
 package nz.co.android.cowseye.utility;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileInputStream;
+import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
@@ -20,6 +21,8 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 
 public class Utils {
 
@@ -67,12 +70,24 @@ public class Utils {
 		return mediaFile;
 	}
 
+	public static InputStream  getInputStream(Uri uri,ContentResolver contentResolver) throws IOException
+	{
+		InputStream inputStream = null;
+		String scheme = uri.getScheme();
+		if (scheme != null && scheme.equals("content") ) {
+			inputStream = contentResolver.openInputStream(uri);
+		} else {
+			inputStream = new FileInputStream(uri.getPath());
+		}
+		return inputStream;
+	}
+
 	/**
 	 * Playing around with full-size images -> OOMErrors. Bad.
-	 * So, let's downscale them 
+	 * So, let's downscale them
 	 * @param uri - holds the path to the bitmap
 	 * @return the scaled-down bitmap.
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public static Bitmap getAppFriendlyBitmap(Uri uri, ContentResolver contentResolver) throws IOException {
 		Bitmap b = null;
@@ -80,11 +95,13 @@ public class Utils {
 		Cursor cur = null;
 		try {
 			//Decode image size
+			Log.d("Utils","uri String: " + uri.toString());
+			Log.d("Utils","uri Path: " + uri.getPath());
 			BitmapFactory.Options o = new BitmapFactory.Options();
 			o.inJustDecodeBounds = true;
-
-			inputStream = contentResolver.openInputStream(uri);
+			inputStream = getInputStream(uri,contentResolver);
 			BitmapFactory.decodeStream(inputStream, null, o);
+			//BitmapFactory.decodeFile(uri.getPath(), o);
 			inputStream.close();
 
 			int scale = 1;
@@ -95,8 +112,9 @@ public class Utils {
 			//Decode with inSampleSize
 			BitmapFactory.Options o2 = new BitmapFactory.Options();
 			o2.inSampleSize = scale;
-			inputStream = contentResolver.openInputStream(uri);
+			inputStream = getInputStream(uri,contentResolver);
 			b = BitmapFactory.decodeStream(inputStream, null, o2);
+			//b = BitmapFactory.decodeFile(uri.getPath(), o2);;
 			inputStream.close();
 			//re-orient
 			float rotation = rotationForImage(uri);
@@ -120,7 +138,7 @@ public class Utils {
 						b = Bitmap.createBitmap(b, 0, 0, b.getWidth(),
 								b.getHeight(), matrix, true);
 					}
-				}  
+				}
 			}
 		}
 		finally {
@@ -131,9 +149,9 @@ public class Utils {
 		return b;
 	}
 	/**
-	 * Scales the bitmap 
+	 * Scales the bitmap
 	 * @return the scaled-down bitmap.
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public static Bitmap scaleBitmap(InputStream inputStream, int scale) throws IOException {
 		Bitmap b = null;
@@ -148,7 +166,7 @@ public class Utils {
 
 	/** Tries to return the rotation for an image if it has the associated EXIF data */
 	public static float rotationForImage(Uri uri) {
-		if (uri.getScheme().equals("file")) {
+		//if (uri.getScheme().equals("file")) {
 			try {
 				ExifInterface exif = new ExifInterface(uri.getPath());
 				int rotation = (int)exifOrientationToDegrees(
@@ -158,7 +176,7 @@ public class Utils {
 			} catch (IOException e) {
 				Log.e("Utils", "Error checking exif", e);
 			}
-		}
+		//}
 		return 0f;
 	}
 
@@ -219,11 +237,52 @@ public class Utils {
 		@Override
 		public void onClick(View v) {
 			activity.startActivity(activityToStartIntent);
-		}	
+		}
 	}
 
+	public static void RotateImageURI(ImageView imageview,Uri uri) {
+		try {
+			ExifInterface exif = new ExifInterface(uri.toString());
+			double angle = 0.0;
+			int orientation = Integer.parseInt(exif.getAttribute(ExifInterface.TAG_ORIENTATION));
+			switch (orientation) {
+				case ExifInterface.ORIENTATION_ROTATE_90:
+					angle = 90.0;
+					break;
+				case ExifInterface.ORIENTATION_ROTATE_180:
+					angle = 180.0;
+					break;
+				case ExifInterface.ORIENTATION_ROTATE_270:
+					angle = 270.0;
+					break;
+			}
+			if (angle > 0.0) {
+				//
+				//imageview.setImageURI(uri);
+				Matrix matrix=new Matrix();
+				imageview.setScaleType(ScaleType.MATRIX);   //required
+				//matrix.postRotate((float)angle,previewImageView.getMeasuredHeight()/2,previewImageView.getMeasuredWidth()/2);
+                //int height = imageview.getHeight();
+                //int width = imageview.getWidth();
+    			int height=imageview.getDrawable().getIntrinsicHeight();//original height of underlying image
+    			int width=imageview.getDrawable().getIntrinsicWidth();//original width of underlying image
+                Log.d("Utils",String.format("Image width: %d height: %d",width,height));
+				matrix.preRotate((float)angle,height/2,width/2);
+				//matrix.postRotate((float)angle,0,0);
+				imageview.setImageMatrix(matrix);
+			}
+		} catch (IOException e) {
+			Log.e("Utils", "failed to find exif image data : "+e);
+		}
+		//sets preview text view to invisible
+		imageview.setVisibility(View.VISIBLE);
+		//imageview.setScaleType(ImageView.ScaleType.FIT_CENTER);
+		imageview.setImageURI(uri);
+	}
+
+
 	/**
-	 * Helper method for creating an intent to go from one activity to another activity 
+	 * Helper method for creating an intent to go from one activity to another activity
 	 * @param activityFrom - the activity you are coming from
 	 * @param activityToClass - the class of the activity to go to
 	 * @return
@@ -232,4 +291,28 @@ public class Utils {
 		return new Intent(activityFrom, activityToClass);
 	}
 
+}
+
+class FlushedInputStream extends FilterInputStream {
+    public FlushedInputStream(InputStream inputStream) {
+        super(inputStream);
+    }
+
+    @Override
+    public long skip(long n) throws IOException {
+        long totalBytesSkipped = 0L;
+        while (totalBytesSkipped < n) {
+            long bytesSkipped = in.skip(n - totalBytesSkipped);
+            if (bytesSkipped == 0L) {
+                  int curbyte = read();
+                  if (curbyte < 0) {
+                      break;  // we reached EOF
+                  } else {
+                      bytesSkipped = 1; // we read one byte
+                  }
+           }
+            totalBytesSkipped += bytesSkipped;
+        }
+        return totalBytesSkipped;
+    }
 }

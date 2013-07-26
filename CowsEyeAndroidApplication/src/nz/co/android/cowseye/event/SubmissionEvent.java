@@ -27,7 +27,10 @@ import org.json.JSONObject;
 import android.net.Uri;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.maps.GeoPoint;
+
+
 
 /**
  * Models a standard event to send to the web server
@@ -42,7 +45,7 @@ public class SubmissionEvent implements Event{
 	protected String imageDescription;
 	protected List<String> imageTag;
 	protected String address;
-	protected GeoPoint geoCoordinates;
+	protected LatLng geoCoordinates;
 
 
 	//    protected final String password;
@@ -93,7 +96,7 @@ public class SubmissionEvent implements Event{
 		HttpResponse response = null;
 		try {
 			response = client.execute(httpPost);
-		} 
+		}
 		catch (HttpResponseException e) {
 			Log.e(toString(), "HttpResponseException : "+e);
 		} catch (ClientProtocolException e) {
@@ -113,7 +116,7 @@ public class SubmissionEvent implements Event{
 		HttpResponse response = null;
 		try {
 			response = client.execute(httpPost);
-		} 
+		}
 		catch (HttpResponseException e) {
 			Log.e(toString(), "HttpResponseException : "+e);
 		} catch (ClientProtocolException e) {
@@ -127,11 +130,12 @@ public class SubmissionEvent implements Event{
 		}
 		try{
 			JSONObject jsonObject = JSONHelper.parseHttpResponseAsJSON(response);
+			//if (jsonObject.has(Utils.RESPONSE_CODE))
+			//               return ResponseCodeState.stringToResponseCode((String)jsonObject.getString(Utils.RESPONSE_CODE))==ResponseCodeState.SUCCESS;
+
 			return true;
-			//            if(jsonObject.has(Utils.RESPONSE_CODE))
-			//                return ResponseCodeState.stringToResponseCode((String)jsonObject.getString(Utils.RESPONSE_CODE))==ResponseCodeState.SUCCESS;
 		}
-		catch(Exception e){ 
+		catch(Exception e){
 			Log.e(toString(), "Exception in JsonParsing : "+e);
 		}
 		return false;
@@ -179,7 +183,7 @@ public class SubmissionEvent implements Event{
 			//convert data to JSON
 			jsonObject = makeJSONFromSubmissionData();
 			Log.i(toString(), "Incident as JSON: "+jsonObject.toString());
-		} 
+		}
 		catch (JSONException e) {
 			Log.e(toString(), "JSONException: "+e);
 			return null;
@@ -189,7 +193,7 @@ public class SubmissionEvent implements Event{
 			String imagePath = imageToPath.toString();
 			if(fromGallery)
 				imagePath = myApplication.getRealPathFromURI(imageToPath);
-				
+
 			reqEntity.addPart(Constants.FORM_POST_IMAGE, new FileBody(new File(imagePath)));
 			//add Data in JSON format
 			reqEntity.addPart(Constants.FORM_POST_DATA, new StringBody(jsonObject.toString()));
@@ -202,13 +206,13 @@ public class SubmissionEvent implements Event{
 	/* Returns a JSON object representing the submission data */
 	private JSONObject makeJSONFromSubmissionData() throws JSONException {
 		JSONObject jsonObject = new JSONObject();
-		JSONObject jsonObjectGeoCoordinates = null; 
+		JSONObject jsonObjectGeoCoordinates = null;
 		JSONArray jsonObjectTags = new JSONArray();
 		//try and put geo coordinates in
 		if(geoCoordinates!=null){
 			jsonObjectGeoCoordinates = new JSONObject();
-			jsonObjectGeoCoordinates.put(Constants.SUBMISSION_JSON_GEO_LAT, geoCoordinates.getLatitudeE6());
-			jsonObjectGeoCoordinates.put(Constants.SUBMISSION_JSON_GEO_LON, geoCoordinates.getLongitudeE6());
+			jsonObjectGeoCoordinates.put(Constants.SUBMISSION_JSON_GEO_LAT, geoCoordinates.latitude);
+			jsonObjectGeoCoordinates.put(Constants.SUBMISSION_JSON_GEO_LON, geoCoordinates.longitude);
 			jsonObject.put(Constants.SUBMISSION_JSON_GEO_LOCATION, jsonObjectGeoCoordinates);
 		}
 		//otherwise put in address
@@ -223,7 +227,7 @@ public class SubmissionEvent implements Event{
 	}
 
 	public void setImagePath(Uri uriToImage) {
-		imageToPath = uriToImage;        
+		imageToPath = uriToImage;
 	}
 
 	public void setImageDescription (String description) {
@@ -242,11 +246,11 @@ public class SubmissionEvent implements Event{
 		this.address = address;
 	}
 
-	public GeoPoint getGeoCoordinates() {
+	public LatLng getGeoCoordinates() {
 		return geoCoordinates;
 	}
 
-	public void setGeoCoordinates(GeoPoint geoCoordinates) {
+	public void setGeoCoordinates(LatLng geoCoordinates) {
 		this.geoCoordinates = geoCoordinates;
 	}
 

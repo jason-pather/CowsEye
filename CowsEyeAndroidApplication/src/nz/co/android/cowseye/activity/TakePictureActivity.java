@@ -17,6 +17,7 @@ import android.graphics.Matrix;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
 import android.hardware.Camera.ShutterCallback;
+import android.media.ExifInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
@@ -33,7 +34,7 @@ import android.widget.Toast;
  * @author Mitchell Lane
  *
  */
-public class TakePictureActivity  extends Activity{
+public class TakePictureActivity  extends Activity {
 
 	private Button backButton;
 	private Button captureButton;
@@ -72,9 +73,9 @@ public class TakePictureActivity  extends Activity{
 		public void onClick(View v) {
 			if(!pictureTaken){
 				pictureTaken = true;
-				preview.camera.takePicture(shutterCallback, rawCallback, jpegCallback);
+				preview.camera.takePicture(shutterCallback, null,null, jpegCallback);
 			}
-		} 
+		}
 	}
 
 	ShutterCallback shutterCallback = new ShutterCallback() {
@@ -92,50 +93,35 @@ public class TakePictureActivity  extends Activity{
 	/** Handles data for jpeg picture */
 	PictureCallback jpegCallback = new PictureCallback() {
 		public void onPictureTaken(byte[] data, Camera camera) {
-			try{
+			try {
 				String pathname = null;
-				boolean rotateBitmap = false;
+				//boolean rotateBitmap = true;
 				int rotateAmount = 0;
+				int curRotate = preview.getCurDisplayOrientation();
 
-				if(display.getRotation() == Surface.ROTATION_0)
-				{
-					rotateBitmap= true;
-					rotateAmount = 90;
+				switch (curRotate) {
+				//case 0: rotateBitmap = false; break;
+				case 90: rotateAmount = ExifInterface.ORIENTATION_ROTATE_90; break;
+				case 180: rotateAmount = ExifInterface.ORIENTATION_ROTATE_180; break;
+				case 270: rotateAmount = ExifInterface.ORIENTATION_ROTATE_270; break;
 				}
-				else if(display.getRotation() == Surface.ROTATION_180)
-				{
-					rotateBitmap= true;
-					rotateAmount = 270;            
+
+				pathname = savePictureToDisk(data);
+				if(pathname==null) {
+					endActivityUnsuccessfully();
+					return;
 				}
-				else if(display.getRotation() == Surface.ROTATION_270)
-				{
-					rotateBitmap= true;
-					rotateAmount = 180;
-				}
-				if(rotateBitmap){
-					Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-					if(bitmap==null){
-						Toast.makeText(TakePictureActivity.this, getString(R.string.failed_camera_please_try_again), Toast.LENGTH_LONG).show();
-						endActivityUnsuccessfully();
-					}
-					//rotate matrix
-					Matrix matrix = new Matrix();
-					matrix.postRotate(rotateAmount); 
-					// create a new bitmap from the original using the matrix to transform the result
-					Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap , 0, 0, bitmap .getWidth(), bitmap .getHeight(), matrix, true);
+				//if(rotateBitmap){
+					ExifInterface exif = new ExifInterface(pathname);
+					exif.setAttribute(ExifInterface.TAG_ORIENTATION,String.valueOf(rotateAmount));
 					try {
-						pathname = saveBitmapToDisk(rotatedBitmap);
+						exif.saveAttributes();
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-				}else
-					pathname = savePictureToDisk(data);
+				//}
 				pictureTaken = false;
-				if(pathname==null)
-					endActivityUnsuccessfully();
-				else{
-					endActivitySuccessfully(pathname);
-				}
+		        endActivitySuccessfully(pathname);
 			}
 			catch(IOException e){
 				Log.e(toString(), "IOException : " +e);
@@ -146,8 +132,8 @@ public class TakePictureActivity  extends Activity{
 		private String saveBitmapToDisk(Bitmap rotatedBitmap) throws IOException {
 			try{
 				final long num = System.currentTimeMillis();
-				final String ID = getString(R.string.app_name) +num;
-				File dir = TakePictureActivity.this.getDir("", Context.MODE_PRIVATE);
+				final String ID = getString(R.string.app_name).replaceAll("\\s", "") +num;
+				File dir = TakePictureActivity.this.getDir("", Context.MODE_WORLD_READABLE);
 				String pathToDir = dir.getAbsolutePath();
 				final String pathName = pathToDir + File.separator+ ID;
 				FileOutputStream out = new FileOutputStream(pathName);
@@ -168,10 +154,11 @@ public class TakePictureActivity  extends Activity{
 			try {
 				// write to local file system
 				final long num = System.currentTimeMillis();
-				final String ID = getString(R.string.app_name) +num;
-				File dir = TakePictureActivity.this.getDir("", Context.MODE_PRIVATE);
+				final String ID = getString(R.string.app_name).replaceAll("\\s", "") +num;
+				File dir = TakePictureActivity.this.getDir("", Context.MODE_WORLD_READABLE);
 				String pathToDir = dir.getAbsolutePath();
 				final String pathName = pathToDir + File.separator+ ID;
+				Log.d(toString(),"Picture Path: " + pathName);
 				outStream = new FileOutputStream(String.format(
 						"%s.jpg", pathName));
 				outStream.write(data);
@@ -207,7 +194,7 @@ public class TakePictureActivity  extends Activity{
 	public void onBackPressed() {
 		endActivityUnsuccessfully();
 	}
-	
+
 
 }
 

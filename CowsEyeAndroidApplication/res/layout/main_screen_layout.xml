@@ -29,10 +29,4 @@
         android:layout_height="wrap_content"
         android:text="@string/submit_pollution_event" />
 
-    <Button
-        android:id="@+id/button_view_gallery"
-        style="@style/riverWatchButtonStyle"
-        android:text="@string/view_submission_gallery"
-        android:visibility="visible" />
-
 </LinearLayout>

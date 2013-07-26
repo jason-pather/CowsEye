@@ -1,13 +1,12 @@
 package nz.co.android.cowseye.event;
 
-import java.net.URI;
 import java.util.List;
 
 import nz.co.android.cowseye.RiverWatchApplication;
-
-import com.google.android.maps.GeoPoint;
-
 import android.net.Uri;
+
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.maps.GeoPoint;
 
 /**
  * A class to help build a submission event
@@ -45,12 +44,12 @@ public class SubmissionEventBuilder {
 		submissionEvent.setImageDescription(descr);
 		return this;
 	}
-	public SubmissionEventBuilder setGeoCoordinates(GeoPoint addressCoordinates) {
+	public SubmissionEventBuilder setGeoCoordinates(LatLng addressCoordinates) {
 		submissionEvent.setGeoCoordinates(addressCoordinates);
 		return this;
 	}
 	public SubmissionEventBuilder setAddress(String address) {
-		submissionEvent.setAddress(address);	
+		submissionEvent.setAddress(address);
 		return this;
 	}
 	public SubmissionEventBuilder setFromGallery(boolean b) {
@@ -70,13 +69,13 @@ public class SubmissionEventBuilder {
 	public List<String> getImageTag(){
 		return submissionEvent.getImageTag();
 	}
-	public GeoPoint getGeoCoordinates(){
+	public LatLng getGeoCoordinates(){
 		return submissionEvent.getGeoCoordinates();
 	}
 	public String getAddress(){
 		return submissionEvent.getAddress();
 	}
-	
+
 	/** Tries to return a built submissionEvent */
 	public SubmissionEvent build() throws SubmissionEventBuilderException{
 		if(hasDetails())

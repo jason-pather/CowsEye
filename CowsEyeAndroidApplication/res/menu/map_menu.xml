@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/legal"
+          android:title="Legal Notices"/>
+       <item android:id="@+id/mapview"
+         android:title="Satellite view"
+         android:icon="@drawable/da_layer_satellite"
+         android:showAsAction="always"/>
+       <item android:id="@+id/nextpage"
+         android:icon="@drawable/ic_action_done"
+         android:title="Next"
+         android:showAsAction="always"/>
+</menu>

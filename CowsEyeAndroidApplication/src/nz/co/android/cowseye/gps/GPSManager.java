@@ -10,7 +10,6 @@ import nz.co.android.cowseye.service.ReverseGeoCodeCoordinatesService;
 import nz.co.android.cowseye.utility.AlertBuilder;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
@@ -19,31 +18,33 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Window;
 import android.view.WindowManager.BadTokenException;
 import android.widget.Toast;
 
-import com.google.android.maps.GeoPoint;
+import com.google.android.gms.maps.model.LatLng;
 
-/** Managers the GPS updates and location of client 
+
+/** Managers the GPS updates and location of client
  *
  * @author Mitchell Lane
  */
-public class GPSManager implements LocationListener{
+public class GPSManager implements LocationListener {
 
 	AlertDialog alert;
 
 	private static final String USER_LOCATION_LATITUDE_KEY = "LAT_KEY";
 	private static final String USER_LOCATION_LONGITUDE_KEY = "LON_KEY";
 
-	private GeoPoint userLocationGeoPoint;
+	private LatLng latLng;
 	private Location lastKnownLocation;
+	private boolean autoUpdateLocation;
+	private boolean firstLocation;
 	private static MapManager mapHelper;
 
 	private static Context context;
 	private static RecordLocationActivity locationActivity;
 
-	private LocationManager locationManager; 
+	private LocationManager locationManager;
 	private Geocoder geocoder;
 	/* Singleton*/
 	private static GPSManager gpsManager;
@@ -61,6 +62,8 @@ public class GPSManager implements LocationListener{
 		this.mapHelper = mapHelper;
 		locationManager = lm;
 		context = app;
+		autoUpdateLocation = true;
+		firstLocation = true;
 		locationActivity = (RecordLocationActivity)app;
 		geocoder = new Geocoder(context, Locale.getDefault());
 		setupGPS(savedInstanceState);
@@ -76,7 +79,7 @@ public class GPSManager implements LocationListener{
 			try{
 				Location loc = determineLastKnownLocation();
 				if(loc!=null){
-					updateLocationActivity(loc);
+					updateLocationActivity(new LatLng(loc.getLatitude(), loc.getLongitude()),true);
 //					mapHelper.drawUserPosition(userLocationGeoPoint);
 //					mapHelper.setMapViewToLocation(userLocationGeoPoint);
 				}
@@ -87,7 +90,7 @@ public class GPSManager implements LocationListener{
 		}
 		//location found so draw it
 		else{
-			mapHelper.drawUserPosition(userLocationGeoPoint);
+			mapHelper.drawUserPosition(latLng);
 		}
 	}
 
@@ -98,7 +101,7 @@ public class GPSManager implements LocationListener{
 		criteria.setAltitudeRequired(false);
 //		Log.d(toString(), "locMan: "+ locationManager);
 //		Log.d(toString(), "provid: "+ locationManager.getBestProvider(criteria, true));
-		
+
 		String provider = locationManager.getBestProvider(criteria, true);
 		if(provider==null)
 			throw new NoLocationFoundException("No provider - LocationManager");
@@ -107,7 +110,7 @@ public class GPSManager implements LocationListener{
 			throw new NoLocationFoundException("Originated from FriendFinderActivity.determineUserPosition - LocationManager");
 		}
 		lastKnownLocation = location;
-		userLocationGeoPoint = new GeoPoint((int)(lastKnownLocation.getLatitude()*1E6), (int)(lastKnownLocation.getLongitude()*1E6));
+		latLng = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
 		return lastKnownLocation;
 	}
 
@@ -123,8 +126,8 @@ public class GPSManager implements LocationListener{
 	}
 
 	/** Returns the location of the user as a geo point containing latitude and longitutude */
-	public GeoPoint getUserLocationGeoPoint() {
-		return userLocationGeoPoint;
+	public LatLng getUserLocationLatLng() {
+		return latLng;
 	}
 
 	/**
@@ -132,11 +135,11 @@ public class GPSManager implements LocationListener{
 	 */
 	public void saveStateOnDestroy(Bundle savedInstanceState) {
 		//store user location
-		if(userLocationGeoPoint!=null){
-			savedInstanceState.putInt(USER_LOCATION_LATITUDE_KEY, userLocationGeoPoint.getLatitudeE6());
-			savedInstanceState.putInt(USER_LOCATION_LONGITUDE_KEY, userLocationGeoPoint.getLongitudeE6());
+		if(latLng!=null){
+			savedInstanceState.putDouble(USER_LOCATION_LATITUDE_KEY, latLng.latitude);
+			savedInstanceState.putDouble(USER_LOCATION_LONGITUDE_KEY, latLng.longitude);
 		}
-	}	
+	}
 
 	/**
 	 * Set last location upon resume
@@ -147,7 +150,7 @@ public class GPSManager implements LocationListener{
 			return false;
 		//Retrieve user location if it exists
 		if(savedInstanceState.containsKey(USER_LOCATION_LATITUDE_KEY) && savedInstanceState.containsKey(USER_LOCATION_LONGITUDE_KEY)){
-			userLocationGeoPoint = new GeoPoint(savedInstanceState.getInt(USER_LOCATION_LATITUDE_KEY),savedInstanceState.getInt(USER_LOCATION_LONGITUDE_KEY));
+			latLng = new LatLng(savedInstanceState.getDouble(USER_LOCATION_LATITUDE_KEY),savedInstanceState.getDouble(USER_LOCATION_LONGITUDE_KEY));
 			return true;
 		}
 		return false;
@@ -157,30 +160,48 @@ public class GPSManager implements LocationListener{
 	@Override
 	public void onLocationChanged(Location location) {
 		// update last known position
-		lastKnownLocation = location;
+		if (! autoUpdateLocation) return;
+ 		lastKnownLocation = location;
 		double lat = 0;
 		double lon = 0;
-		if(userLocationGeoPoint!=null){
-			lat = userLocationGeoPoint.getLatitudeE6()/1E6;
-			lon = userLocationGeoPoint.getLongitudeE6()/1E6;
+		if(latLng != null){
+			lat = latLng.latitude;
+			lon = latLng.longitude;
 		}
-		GeoPoint newGeoPoint  = new GeoPoint((int) ( lastKnownLocation.getLatitude() * 1E6), (int) ( lastKnownLocation.getLongitude() * 1E6));
-		if((newGeoPoint.getLatitudeE6()/1E6 == lat) && (newGeoPoint.getLongitudeE6()/1E6 == lon)){
+		LatLng newLatLng  = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+		if((newLatLng.latitude == lat) && (newLatLng.longitude == lon)){
 			return;
 		}
-		userLocationGeoPoint = newGeoPoint;
 
 //		locationActivity.setGeoCoordinates(userLocationGeoPoint);
 		// add new user position
-		updateLocationActivity(location);
-		Log.i(toString(), "User location changed : "+(int) ( location.getLatitude() * 1E6)+" , "+ (int) ( location.getLongitude() * 1E6));
+		updateLocationActivity(newLatLng,firstLocation);
+		firstLocation = false;
+		Log.i(toString(), "User location changed : "+ location.getLatitude() +" , "+ location.getLongitude() );
 	}
 
 	/** Converts a location with latitude and longitude coordinates to an address */
-	public void updateLocationActivity(Location location) {
+	public void updateLocationActivity(LatLng newLatLng,boolean noAlert) {
 		//execute service to get a human readable address from given latitude and longitude coordinates
-		new ReverseGeoCodeCoordinatesService(context, this, geocoder, location, locationActivity.getAddress().trim(),userLocationGeoPoint).execute();
+		latLng = newLatLng;
+		//ReverseGeoCodeCoordinatesService revLookup = new ReverseGeoCodeCoordinatesService(context, this, geocoder,latLng, locationActivity.getAddress().trim());
+		//revLookup.setNoAlert(noAlert);
+		//revLookup.execute();
+		if (noAlert) {
+			updatePosition(newLatLng);
+		} else {
+			requestBuildAlertMessageUpdatePosition(newLatLng);
+		}
 	}
+
+
+	public void updatePosition(LatLng userLatLng) {
+		mapHelper.drawUserPosition(userLatLng);
+		mapHelper.setMapViewToLocation(userLatLng);
+		locationActivity.setAddress(userLatLng);
+	}
+
+
 	/** Converts a given address in text to latitude and longitude coordinates in an Address object */
 	public Address getCoordinatesFromAddress(String addr){
 		try{
@@ -200,23 +221,31 @@ public class GPSManager implements LocationListener{
 		}
 		return null;
 	}
+
+	/** Enables/disables onLocationChanged event callback*/
+	public void setAutoUpdateLocation(boolean auto) {
+		autoUpdateLocation = auto;
+	}
+
+
 	@Override
 	public void onProviderDisabled(String provider) {}
 	@Override
 	public void onProviderEnabled(String provider) {}
 	@Override
 	public void onStatusChanged(String provider, int status, Bundle extras) {}
-	
-	public void requestBuildAlertMessageUpdatePosition(String addr, GeoPoint userPoint) {
+
+	public void requestBuildAlertMessageUpdatePosition(LatLng userLatLng) {
 		if(alert!=null)
 			alert.dismiss();
-		alert = AlertBuilder.buildAlertMessageUpdatePosition(locationActivity, mapHelper, locationActivity, addr, userPoint);
+		alert = AlertBuilder.buildAlertMessageUpdatePosition(locationActivity, mapHelper, locationActivity, userLatLng);
 		try{
 		if(alert!=null)
 			alert.show();
 		}
 		catch(BadTokenException e){};
 	}
+
 	public Geocoder getGeoCoder() {
 		return geocoder;
 	}
