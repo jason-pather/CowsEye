@@ -192,13 +192,18 @@ public class RecordLocationActivity extends SherlockFragmentActivity implements 
 	private void setUpMapIfNeeded(Bundle savedInstanceState) {
 	        // Do a null check to confirm that we have not already instantiated the map.
 	        if (mMap == null) {
+	        	Log.d("RecLocAc", "1");
 	            // Try to obtain the map from the SupportMapFragment.
 	        	SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapview);
+	        	Log.d("RecLocAc", "2");
 	            mMap = mapFragment.getMap();
+	            Log.d("RecLocAc", "3");
 	            if (checkReady()) {
+	            	Log.d("RecLocAc", "4");
 	            // Check if we were successful in obtaining the map.
 	            	mapManager = MapManager.getInstance(mMap,false, this);
 	            	gpsManager = GPSManager.getInstance(mapManager, mLocationManager, this, savedInstanceState);
+	            	Log.d("RecLocAc", "5");
 	            }
 	        }
 

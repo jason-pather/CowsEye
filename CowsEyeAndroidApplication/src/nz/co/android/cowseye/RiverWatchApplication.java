@@ -34,7 +34,8 @@ public class RiverWatchApplication extends Application  {
 	/* Service paths */
 //	public static String server_path = "http://api.riverwatch.co.nz:80/wainz";
 //	public static String server_path = "http://homepages.ecs.vuw.ac.nz/wainz";
-	public static String server_path = "http://www.wainz.org.nz/api/image";
+	//public static String server_path = "http://www.wainz.org.nz/api/image";
+	public static String server_path = "http://www.wainz.org.nz";
 	public static String submission_path = server_path + "/api/image";
 	public static String get_incidents_path = server_path + "/approved";
 	public static String get_incidents_path_start = "/start=";

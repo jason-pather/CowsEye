@@ -100,7 +100,7 @@ public class Utils {
 			BitmapFactory.Options o = new BitmapFactory.Options();
 			o.inJustDecodeBounds = true;
 			inputStream = getInputStream(uri,contentResolver);
-			BitmapFactory.decodeStream(inputStream, null, o);
+			//BitmapFactory.decodeStream(inputStream, null, o);
 			//BitmapFactory.decodeFile(uri.getPath(), o);
 			inputStream.close();
 
@@ -113,15 +113,19 @@ public class Utils {
 			BitmapFactory.Options o2 = new BitmapFactory.Options();
 			o2.inSampleSize = scale;
 			inputStream = getInputStream(uri,contentResolver);
+			System.gc();
 			b = BitmapFactory.decodeStream(inputStream, null, o2);
+			System.gc();
 			//b = BitmapFactory.decodeFile(uri.getPath(), o2);;
 			inputStream.close();
+			System.gc();
 			//re-orient
 			float rotation = rotationForImage(uri);
 			//			Log.d("UTILS", "rotation : "+rotation);
 			if (rotation != 0f) {
 				Matrix matrix = new Matrix();
 				matrix.preRotate(rotation);
+				System.gc();
 				b = Bitmap.createBitmap(b, 0, 0, b.getWidth(), b.getHeight(),
 						matrix, true);
 			}

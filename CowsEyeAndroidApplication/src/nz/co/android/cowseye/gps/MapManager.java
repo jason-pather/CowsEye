@@ -5,6 +5,7 @@ import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_SATELLITE;
 import nz.co.android.cowseye.R;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 import com.actionbarsherlock.view.MenuItem;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -44,17 +45,21 @@ public class MapManager implements OnMarkerDragListener {
 		return mapManager;
 	}
 	public static MapManager getInstance(GoogleMap googleMap, boolean satelliteOn, Context mainActivityContext) {
+		Log.d("MapMan", "getInstance");
 		mapManager = new MapManager(googleMap, satelliteOn, mainActivityContext);
 		return mapManager;
 	}
 
 	private MapManager(GoogleMap googleMap, boolean satelliteOn, Context mainActivityContext) {
+		Log.d("MapMan", "Contr");
 		this.googleMap = googleMap;
+		
 		this.satelliteOn = satelliteOn;
 		setup(googleMap, satelliteOn, mainActivityContext);
 	}
 
 	private void setup(GoogleMap googleMap, boolean satelliteOn, Context mainActivityContext) {
+		Log.d("MapMan", "Setup");
 		googleMap.getUiSettings().setZoomControlsEnabled(false);
 		googleMap.setOnMarkerDragListener(this);
 		setSatelliteView(satelliteOn);
@@ -62,6 +67,7 @@ public class MapManager implements OnMarkerDragListener {
 		this.mainActivityContext = mainActivityContext;
 		myPositionMarker = mainActivityContext.getResources().getDrawable(R.drawable.you_are_here_45x45);
 		drawUserPosition(WELLINGTON);
+		Log.d("MapMan", "Setup end");
 		//myPositionOverlay = new MapItemizedOverlay(myPositionMarker, mainActivityContext, MARKER_TEXT_SIZE, new UserOnTap(mainActivityContext));
 	}
 

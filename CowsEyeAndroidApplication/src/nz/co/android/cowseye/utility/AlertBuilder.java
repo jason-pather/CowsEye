@@ -97,7 +97,7 @@ public class AlertBuilder {
 		.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 			public void onClick(final DialogInterface dialog, final int id) {
 				RiverWatchApplication.server_path = input.getText().toString().trim();
-				RiverWatchApplication.submission_path = RiverWatchApplication.server_path + "submit/";
+				RiverWatchApplication.submission_path = RiverWatchApplication.server_path + "/submit/";
 			}
 		})
 		.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
