@@ -1,5 +1,6 @@
 package nz.co.android.cowseye2.activity;
 
+import com.crashlytics.android.Crashlytics;
 import org.apache.http.HttpResponse;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -67,6 +68,7 @@ public class MainScreenActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Crashlytics.start(this);
 		setContentView(R.layout.main_screen_layout);
 		myApplication = (RiverWatchApplication)getApplication();
 		setupUI();

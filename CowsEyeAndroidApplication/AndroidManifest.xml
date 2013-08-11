@@ -93,6 +93,13 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
+
+
+
+    
+
+
+    <meta-data android:name="com.crashlytics.ApiKey" android:value="5d6c5e6c70396a84db4e75299f8b51a29842e90f"/>
     </application>
 
 </manifest>
