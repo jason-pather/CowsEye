@@ -10,7 +10,9 @@ import nz.co.android.cowseye2.event.SubmissionEventBuilderException;
 import nz.co.android.cowseye2.service.GetIncidentsAsyncTask;
 import nz.co.android.cowseye2.utility.AlertBuilder;
 import nz.co.android.cowseye2.utility.Utils;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -32,7 +34,7 @@ import com.google.android.gms.maps.model.LatLng;
  *
  * This will allow the user to see what they have done so far and to submit a
  * pollution event to the server
- * @author Mitchell Lane
+ * @author Mitchell Lane (modified by Hamish Cundy, SYNERGY2, 2013)
  *
  */
 public class PreviewActivity extends AbstractSubmissionActivity {
@@ -225,10 +227,34 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 					});
 				}
 			}).start();
+		}else{
+			AlertDialog.Builder build = new AlertDialog.Builder(this);
+			build.setMessage("Could not connect to internet. Your submission will be automatically submitted when you have internet coverage.");
+			build.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					new Thread(new Runnable(){
+						public void run(){
+							//we now want to store the submission data in the image (in case the app gets killed)
+							//then poll for Internet/set listener for internet. Once submitted, delete image as above
+							
+							
+						}
+					});
+					
+				}
+			});
+			AlertDialog dialog = build.create();
+			dialog.show();
+			
+			
+			
+			
+			
+			
 		}
-		else
-			AlertBuilder.buildAlertMessageNoInternet(this).show();
-
+		
 	}
 
 
