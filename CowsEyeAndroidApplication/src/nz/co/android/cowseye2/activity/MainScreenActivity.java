@@ -1,6 +1,12 @@
 package nz.co.android.cowseye2.activity;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.crashlytics.android.Crashlytics;
+
 import org.apache.http.HttpResponse;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,6 +20,7 @@ import nz.co.android.cowseye2.R.string;
 import nz.co.android.cowseye2.common.Constants;
 import nz.co.android.cowseye2.event.Event;
 import nz.co.android.cowseye2.event.GetIncidentsEvent;
+import nz.co.android.cowseye2.event.SubmissionEvent;
 import nz.co.android.cowseye2.event.SubmissionEventBuilder;
 import nz.co.android.cowseye2.event.SubmissionEventBuilderException;
 import nz.co.android.cowseye2.service.GetIncidentsAsyncTask;
@@ -23,11 +30,13 @@ import nz.co.android.cowseye2.utility.Utils;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.media.ExifInterface;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -42,11 +51,12 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.maps.GeoPoint;
 
 /**
  * This is the main screen of the CowsEye application
- * @author Mitchell Lane
+ * @author Mitchell Lane (modified by Hamish Cundy)
  *
  */
 public class MainScreenActivity extends Activity {
@@ -73,6 +83,74 @@ public class MainScreenActivity extends Activity {
 		myApplication = (RiverWatchApplication)getApplication();
 		setupUI();
 		//new GetIncidentsAsyncTask(MainScreenActivity.this, new GetIncidentsEvent(myApplication, 0, 50),myApplication).execute();
+		checkForCachedSubmissions();
+	}
+
+	/**Checks the apps photo storage for any cached submissions, and upload them if internet is available
+	 * 
+	 */
+	private void checkForCachedSubmissions() {
+		if(myApplication.isOnline()){
+			
+			
+			File dir = MainScreenActivity.this.getDir("", Context.MODE_WORLD_READABLE);
+			String pathToDir = dir.getAbsolutePath();
+			//Log.d("MainScreenAct", pathToDir);
+			File[] fileNames = dir.listFiles();
+			Log.d("MainScreenAct", pathToDir + " " + fileNames.length);
+			for(File f:fileNames){
+				ExifInterface exif;
+				try {
+					exif = new ExifInterface(f.getPath());
+					SubmissionEventBuilder build = SubmissionEventBuilder.getSubmissionEventBuilder(myApplication);
+					
+					LatLng coord = new LatLng(Double.parseDouble(exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE)), Double.parseDouble(exif.getAttribute(ExifInterface.TAG_GPS_LONGITUDE)));
+					build.setGeoCoordinates(coord);
+					build.setImageDescription(exif.getAttribute("EVENT_DESCRIPTION"));
+					int count = 1;
+					String tag = exif.getAttribute("TAG_" + count);
+					List<String> tagList = new ArrayList<String>();
+					while(tag != null){
+						tagList.add(tag);
+						count++;
+						tag = exif.getAttribute("TAG_" + count);
+					}
+					build.setImageTag(tagList);
+					build.setImagePath(Uri.fromFile(f));
+					final SubmissionEvent event = build.build();
+					new Thread(new Runnable(){
+						public void run(){
+							boolean result = RiverWatchApplication.processEventResponse(event.processRaw());
+							if(result == false){
+								Toast.makeText(getApplicationContext(), "Could not send cached submission. Will try again later", Toast.LENGTH_SHORT).show();
+							}else{
+								Toast.makeText(getApplicationContext(), "Successfully sent cached submissions", Toast.LENGTH_SHORT).show();
+							}
+						}
+					}).start();
+					
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SubmissionEventBuilderException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				
+				
+				
+			}
+			
+			
+			
+		}else{
+			Toast.makeText(getApplicationContext(), "Could not submit cached submissions (no internet connection)", Toast.LENGTH_SHORT).show();
+			
+		}
+		
+		
+		
 	}
 
 	/** This gets called after a successfull submission event as the activity is already open and

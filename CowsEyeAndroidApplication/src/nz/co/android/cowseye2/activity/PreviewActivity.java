@@ -1,6 +1,7 @@
 package nz.co.android.cowseye2.activity;
 
 import java.io.IOException;
+import java.util.List;
 
 import nz.co.android.cowseye2.R;
 import nz.co.android.cowseye2.RiverWatchApplication;
@@ -15,6 +16,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -238,11 +240,29 @@ public class PreviewActivity extends AbstractSubmissionActivity {
 						public void run(){
 							//we now want to store the submission data in the image (in case the app gets killed)
 							//then poll for Internet/set listener for internet. Once submitted, delete image as above
+							try {
+								ExifInterface exif = new ExifInterface(currentEvent.getImagePath().getPath());
+								LatLng coord = currentEvent.getGeoCoordinates();
+								exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE, Double.toString(coord.latitude));
+								exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE, Double.toString(coord.longitude));
+								exif.setAttribute("EVENT_DESCRIPTION", currentEvent.getImageDescription());
+								List<String> tags = currentEvent.getImageTag();
+								int count = 1;
+								for(String s:tags){
+									exif.setAttribute("TAG_" + count, s);
+									count++;
+								}
+								exif.setAttribute("TIMESTAMP", currentEvent.getTimeStamp());
+								exif.saveAttributes();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 							
 							
 						}
 					});
-					
+					finish();
 				}
 			});
 			AlertDialog dialog = build.create();
